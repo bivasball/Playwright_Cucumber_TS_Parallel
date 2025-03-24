@@ -27,3 +27,19 @@ When(`user fills the Pop up with username and password`, () => {
 Then(`user should be able to login to the page successfully`, () => {
     // [Then] Describes the expected outcome or result of the scenario.
 });
+
+When(`user clicks on the Broken Images link`, () => {
+    // [When] Describes the action or event that triggers the scenario.
+});
+
+Then(`user should see the Broken Images page heading`, () => {
+    // [Then] Describes the expected outcome or result of the scenario.
+});
+
+When(`user click on the link`, () => {
+    // [When] Describes the action or event that triggers the scenario.
+});
+
+Then(`user verify the Checkbox`, () => {
+    // [Then] Describes the expected outcome or result of the scenario.
+});

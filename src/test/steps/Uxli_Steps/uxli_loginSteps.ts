@@ -54,4 +54,10 @@ Then('user should see the Broken Images page heading', async function () {
   await uxliPage.verifyBrokenImagesPageHeading();
 });
 
+When(`user click on the link`, async () => {
+  await uxliPage.clickonelinkToVerifyTheCheckBox();
+});
 
+Then(`user verify the Checkbox`, () => {
+  
+});

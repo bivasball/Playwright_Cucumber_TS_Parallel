@@ -69,10 +69,17 @@ async clickOnBrokenImagesLink() {
 
 async verifyBrokenImagesPageHeading() {
   fixture.logger.info("Verifying the Broken Images page heading");
-  await expect(fixture.page.getByRole('heading')).toContainText('Broken Images');
+  await expect(fixture.page.getByRole('heading')).toContainText('kkk Broken Images jjjj');
   await fixture.page.waitForTimeout(5000);
 }
 
+
+async clickonelinkToVerifyTheCheckBox() {
+  await fixture.page.locator('body').click();
+  await fixture.page.getByRole('link', { name: 'Checkboxes' }).click();
+  await fixture.page.locator('html').click();
+  await fixture.page.getByRole('checkbox').first().check();
+}
 
 
 

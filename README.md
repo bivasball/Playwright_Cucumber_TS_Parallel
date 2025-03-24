@@ -1,3 +1,21 @@
+###  Quick Setup:
+1. Clone or download the project
+2. Extract and open in the VS-Code
+3. npm i to install the dependencies
+4. npx playwright install to install the browsers
+--Checking Playwright version:
+npx @playwright/test --version
+--Install latest official version
+npm install @playwright/test@latest
+## to run by tags --
+npm run testUXL --TAGS="@uxli and @e2e and @test_001"
+npm run testUXL --TAGS="@uxli and @e2e and @test_002"
+npm run testUXL --TAGS="@uxli and @e2e and @test_003"
+## to run all the three at once by tags --
+npm run testUXL --TAGS="@uxli and @e2e and (@test_001 or @test_002 or @test_003)"
+
+ ===============================================================
+
 # Playwright (TS binding) + Cucumber (BDD)
 
 Cucumber is a popular behavior-driven development (BDD) tool that allows developers and stakeholders to collaborate on defining and testing application requirements in a human-readable format. 

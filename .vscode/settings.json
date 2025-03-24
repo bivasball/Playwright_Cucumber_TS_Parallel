@@ -1,0 +1,21 @@
+{
+    "cucumberautocomplete.steps": [
+        "src/test/steps/Uxli_Steps/*.ts"
+    ],
+    "cucumberautocomplete.syncfeatures": "src/test/features/Uxli_Features/*.feature",
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "cucumberautocomplete.smartSnippets": true,
+    "cucumberautocomplete.stepsInvariants": true,
+    "cucumberautocomplete.skipDocStringsFormat": true,
+    "cucumberautocomplete.formatConfOverride": {
+        "And": 3,
+        "But": "relative",
+    },
+    "cucumberautocomplete.onTypeFormat": true,
+    "editor.quickSuggestions": {
+        "comments": false,
+        "strings": true,
+        "other": true
+    },
+    "cucumberautocomplete.pureTextSteps": true
+}

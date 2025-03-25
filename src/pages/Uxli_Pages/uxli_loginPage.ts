@@ -81,6 +81,9 @@ async clickonelinkToVerifyTheCheckBox() {
   await fixture.page.getByRole('checkbox').first().check();
 }
 
-
+async verifyDataFromJsonFile(jsonData:any) {
+  console.log("Verifying the json data -------- right"+jsonData[0].env);
+  console.log("Verifying the json data -------- right"+jsonData[1].env);
+}
 
 }

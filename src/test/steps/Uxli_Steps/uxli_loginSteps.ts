@@ -1,7 +1,7 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { fixture } from "../../../hooks/pageFixture";
 import uxli_loginPage from "../../../pages/Uxli_Pages/uxli_loginPage";
-
+import { getJsonDataUi } from '../../../helper/util/jsonFileReader';
 let uxliPage = new uxli_loginPage(fixture.page);
 
 setDefaultTimeout(60 * 1000 * 2);
@@ -54,10 +54,24 @@ Then('user should see the Broken Images page heading', async function () {
   await uxliPage.verifyBrokenImagesPageHeading();
 });
 
-When(`user click on the link`, async () => {
+When('user click on the link {string}', async function (jsonfilename: string) {
+  console.log(`Step executed with parameter: ${jsonfilename}`);
+  const jsonData = { env: null, ...getJsonDataUi(jsonfilename) };
+  console.log(JSON.stringify(jsonData));
   await uxliPage.clickonelinkToVerifyTheCheckBox();
 });
 
-Then(`user verify the Checkbox`, () => {
+Then(`user verify the Checkbox {string}`, async function (filename: string) {
+  
+});
+
+
+
+
+Then('user verify the Checkbox {string} by passing data from the json file', async function (jsonfilename: string) {
+  console.log(`Step bivas tsteing : ${jsonfilename}`);
+  const jsonData = getJsonDataUi(jsonfilename);
+  console.log(JSON.stringify(jsonData));
+  await uxliPage.verifyDataFromJsonFile(jsonData);
   
 });

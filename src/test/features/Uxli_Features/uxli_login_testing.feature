@@ -20,7 +20,19 @@ Feature: To test various Action of herokuapp page
     When user clicks on the Broken Images link
     Then user should see the Broken Images page heading
 
-@uxli @e2e @test_004
+  @uxli @e2e @test_004
   Scenario: Verify Checkbox
-    When user click on the link
-    Then user verify the Checkbox
+    When user click on the link "<data>"
+    #Then user verify the Checkbox
+    Examples:
+      | data                            |
+      | AccountData-testdataForScenario |
+
+  @uxli @e2e @test_005
+  Scenario: Verify to read the data from json file
+    When user click on the link "<data>"
+    Then user verify the Checkbox "<data>" by passing data from the json file
+
+    Examples:
+      | data                            |
+      | AccountData-testdataForScenario |

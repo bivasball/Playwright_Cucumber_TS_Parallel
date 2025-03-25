@@ -1,0 +1,14 @@
+[
+    {
+        "env": "dev",
+        "username": "testuser",
+        "password": "testpassword",
+        "account": "Tester123"
+    },
+    {
+        "env": "dev2",
+        "username": "testuser2",
+        "password": "testpassword2",
+        "account": "Tester1232"
+    }
+]

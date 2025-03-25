@@ -7,13 +7,16 @@
 npx @playwright/test --version
 --Install latest official version
 npm install @playwright/test@latest
-## to run by tags --
+## to run by tags -- the below run on default browser chrome
 npm run testUXL --TAGS="@uxli and @e2e and @test_001"
 npm run testUXL --TAGS="@uxli and @e2e and @test_002"
 npm run testUXL --TAGS="@uxli and @e2e and @test_003"
 ## to run all the three at once by tags --
 npm run testUXL --TAGS="@uxli and @e2e and (@test_001 or @test_002 or @test_003)"
-
+### to run in Headless mode of Chrome
+npm run testUXL --BROWSER=chromeHeadless --TAGS="@uxli and @e2e and @test_001"
+##### to enable capture image and Video recording in LOCAL only 
+npm run  testUXL -- --RUN_MODE=local --BROWSER=chrome  --TAGS="@uxli and @e2e and @test_001"
  ===============================================================
 
 # Playwright (TS binding) + Cucumber (BDD)

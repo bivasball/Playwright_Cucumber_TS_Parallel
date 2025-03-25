@@ -5,13 +5,13 @@ module.exports = {
             snippetInterface: "async-await"
         },
         paths: [
-            "src/test/features/"
+            "e2e/test/features/"
         ],
         publishQuiet: true,
         dryRun: false,
         require: [
-            "src/test/steps/*.ts",
-            "src/hooks/hooks.ts"
+            "e2e/test/steps/*.ts",
+            "e2e/hooks/hooks.ts"
         ],
         requireModule: [
             "ts-node/register"
@@ -31,8 +31,8 @@ module.exports = {
         publishQuiet: true,
         dryRun: false,
         require: [
-            "src/test/steps/*.ts",
-            "src/hooks/hooks.ts"
+            "e2e/test/steps/*.ts",
+            "e2e/hooks/hooks.ts"
         ],
         requireModule: [
             "ts-node/register"

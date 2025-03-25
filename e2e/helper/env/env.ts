@@ -4,7 +4,7 @@ export const getEnv = () => {
     if (process.env.ENV) {
         dotenv.config({
             override: true,
-            path: `src/helper/env/.env.${process.env.ENV}`
+            path: `e2e/helper/env/.env.${process.env.ENV}`
         })
     } else {
         console.error("NO ENV PASSED!")

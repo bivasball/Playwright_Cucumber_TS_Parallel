@@ -41,7 +41,7 @@ TypeScript is a powerful superset of JavaScript that adds optional static typing
 ## Project structure
 
 - .github -> yml file to execute the tests in GitHub Actions
-- src -> Contains all the features & Typescript code
+- e2e -> Contains all the features & Typescript code
 - test-results -> Contains all the reports related file
 
 ## Reports
@@ -65,7 +65,7 @@ TypeScript is a powerful superset of JavaScript that adds optional static typing
 6. To run a particular test change
 ```
   paths: [
-            "src/test/features/featurename.feature"
+            "e2e/test/features/featurename.feature"
          ]
 ```
 7. Use tags to run a specific or collection of specs
@@ -74,18 +74,18 @@ npm run test --TAGS="@test or @add"
 ```
 
 ### Folder structure
-0. `src\pages` -> All the page (UI screen)
-1. `src\test\features` -> write your features here
-2. `src\test\steps` -> Your step definitions goes here
-3. `src\hooks\hooks.ts` -> Browser setup and teardown logic
-4. `src\hooks\pageFixture.ts` -> Simple way to share the page objects to steps
-5. `src\helper\env` -> Multiple environments are handled
-6. `src\helper\types` -> To get environment code suggestions
-7. `src\helper\report` -> To generate the report
+0. `e2e\pages` -> All the page (UI screen)
+1. `e2e\test\features` -> write your features here
+2. `e2e\test\steps` -> Your step definitions goes here
+3. `e2e\hooks\hooks.ts` -> Browser setup and teardown logic
+4. `e2e\hooks\pageFixture.ts` -> Simple way to share the page objects to steps
+5. `e2e\helper\env` -> Multiple environments are handled
+6. `e2e\helper\types` -> To get environment code suggestions
+7. `e2e\helper\report` -> To generate the report
 8. `config/cucumber.js` -> One file to do all the magic
 9. `package.json` -> Contains all the dependencies
-10. `src\helper\auth` -> Storage state (Auth file)
-11. `src\helper\util` -> Read test data from json & logger
+10. `e2e\helper\auth` -> Storage state (Auth file)
+11. `e2e\helper\util` -> Read test data from json & logger
 
 ## Tutorials
 1. Learn Playwright - [Playwright - TS](https://youtube.com/playlist?list=PL699Xf-_ilW7EyC6lMuU4jelKemmS6KgD)

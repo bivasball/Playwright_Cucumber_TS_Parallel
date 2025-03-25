@@ -29,10 +29,13 @@ Feature: To test various Action of herokuapp page
       | AccountData-testdataForScenario |
 
   @uxli @e2e @test_005
-  Scenario: Verify to read the data from json file
+  Scenario Outline:  Verify to read the data from json file
     When user click on the link "<data>"
     Then user verify the Checkbox "<data>" by passing data from the json file
 
     Examples:
       | data                            |
       | AccountData-testdataForScenario |
+
+
+ 

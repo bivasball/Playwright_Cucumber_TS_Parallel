@@ -2,6 +2,9 @@ import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { fixture } from "../../../hooks/pageFixture";
 import uxli_loginPage from "../../../pages/Uxli_Pages/uxli_loginPage";
 import { getJsonDataUi } from '../../../helper/util/jsonFileReader';
+import xgenLoginPage from "../../../pages/XgenLogin/xgenLoginPage";
+let xgenloginPage = new xgenLoginPage(fixture.page);
+
 let uxliPage = new uxli_loginPage(fixture.page);
 
 setDefaultTimeout(60 * 1000 * 2);
@@ -75,3 +78,72 @@ Then('user verify the Checkbox {string} by passing data from the json file', asy
   await uxliPage.verifyDataFromJsonFile(jsonData);
   
 });
+
+//=================================================//
+
+Given('User navigates to the login page', async function () {
+  await fixture.page.goto('https://xgenuat.uxli.com/'); // Replace with the actual login page URL
+});
+
+When(
+  "User logs in using data from the JSON file {string}",
+  async function (dataFile: string) {
+    const jsonData = getJsonDataUi(dataFile);
+    await xgenloginPage.login(jsonData[0].username, jsonData[0].password);
+  }
+);
+
+Then("User should see the message {string}", async function (dataFile: string) {
+  const jsonData = getJsonDataUi(dataFile);
+  await xgenloginPage.verifyLoginMessage(jsonData[0].message);
+});
+
+When(
+  "User selects the subscription {string}",
+  async function (dataFile: string) {
+    const jsonData = getJsonDataUi(dataFile);
+    await xgenloginPage.selectSubscription(jsonData[0].subscription);
+  }
+);
+
+Then(
+  "User should see the {string} button",
+  async function (buttonName: string) {
+    await xgenloginPage.verifyButtonVisible(buttonName);
+  }
+);
+
+When("User clicks on the {string} button", async function (buttonName: string) {
+  await xgenloginPage.clickButton(buttonName);
+});
+
+Then("User should see the {string} page", async function (pageName: string) {
+  await xgenloginPage.verifyPageHeading(pageName);
+});
+
+When(
+  "User selects the {string} radio option",
+  async function (radioOption: string) {
+    await xgenloginPage.selectRadioOption(radioOption);
+  }
+);
+
+Then(
+  "User should see the welcome message {string}",
+  async function (welcomeMessage: string) {
+    await xgenloginPage.verifyWelcomeMessage(welcomeMessage);
+  }
+);
+
+When("User logs out", async function () {
+  await xgenloginPage.logout();
+});
+
+Then(
+  "User should see the {string} button",
+  async function (buttonName: string) {
+    await xgenloginPage.verifyButtonVisible(buttonName);
+  }
+);
+
+

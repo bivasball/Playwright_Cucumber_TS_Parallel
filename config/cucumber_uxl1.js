@@ -5,13 +5,15 @@ module.exports = {
             snippetInterface: "async-await"
         },
         paths: [
-            "e2e/test/features/Uxli_Features/"
+            "e2e/test/features/Uxli_Features/",
+            "e2e/test/features/XgenLoginFeature/XgenLoginNav.feature"
         ],
         publishQuiet: true,
         dryRun: false,
         require: [
             "e2e/test/steps/Uxli_Steps/*.ts",
-            "e2e/hooks/hooks.ts"
+            "e2e/hooks/hooks.ts",
+            "e2e/test/steps/XgenLoginStep/xgenLoginNavSteps.ts"
         ],
         requireModule: [
             "ts-node/register"

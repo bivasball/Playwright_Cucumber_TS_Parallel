@@ -4,14 +4,14 @@ report.generate({
     jsonDir: "test-results",
     reportPath: "test-results/reports/",
     reportName: "Playwright Automation Report",
-    pageTitle: "Uxli App test report",
+    pageTitle: "Uxli Xgen Automation test report",
     displayDuration: false,
     metadata: {
         browser: {
             name: "chrome",
             version: "Latest",
         },
-        device: "Company- PC",
+        device: "Uxli- PC",
         platform: {
             name: "Windows",
             version: "10",
@@ -20,9 +20,9 @@ report.generate({
     customData: {
         title: "Test Info",
         data: [
-            { label: "Project", value: "Book Cart Application" },
-            { label: "Release", value: "1.2.3" },
-            { label: "Cycle", value: "Smoke-1" }
+            { label: "Project", value: "Xgen Application" },
+            { label: "Release", value: "1.0" },
+            { label: "Cycle", value: "E2E" }
         ],
     },
 });

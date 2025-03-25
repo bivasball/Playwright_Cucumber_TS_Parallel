@@ -1,1 +1,1 @@
-e2e\test\features\Uxli_Features\uxli_login_testing.feature:19
+e2e\test\features\XgenLoginFeature\XgenLoginNav.feature:21

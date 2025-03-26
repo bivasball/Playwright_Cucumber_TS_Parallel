@@ -14,13 +14,13 @@
 
 7. 
 ### to run in Headless mode of Chrome, no video recording.
-npm run testUat --BROWSER=chromeHeadless --TAGS="@uxli and @e2e and @test_001"
+npm run testUat --BROWSER=chromeHeadless --TAGS="@xgen and @e2e and @test_001"
 
 ##### to enable capture image and Video recording in LOCAL only 
-npm run  testUat -- --RUN_MODE=local --BROWSER=chrome  --TAGS="@uxli and @e2e and @test_001"
+npm run  testUat -- --RUN_MODE=local --BROWSER=chrome  --TAGS="@xgen and @e2e and @test_001"
 
 ## to run all the three at once by tags --
-npm run testUat -- --RUN_MODE=local --BROWSER=chrome --TAGS="@uxli and @e2e and (@test_001 or @test_002 or @test_003)"
+npm run testUat -- --RUN_MODE=local --BROWSER=chrome --TAGS="@xgen and @e2e and (@test_001 or @test_002 or @test_003)"
  ===============================================================
 
 # Playwright (TS binding) + Cucumber (BDD)

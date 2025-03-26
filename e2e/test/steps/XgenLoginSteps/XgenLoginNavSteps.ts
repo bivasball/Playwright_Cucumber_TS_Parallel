@@ -51,3 +51,19 @@ Then(
     await xgenloginPage.verifyWelcomeMessage(jsonData);
   }
 );
+
+
+When(
+  'User logout from the application {string}',
+  async function (logoutButton: string) {
+    
+
+    // Log out
+    await xgenloginPage.logout();
+    
+    // Verify the "Logout" button is visible
+    await xgenloginPage.verifyButtonVisible(logoutButton);
+
+    
+  }
+);

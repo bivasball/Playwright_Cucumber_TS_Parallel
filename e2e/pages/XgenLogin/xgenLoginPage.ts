@@ -90,4 +90,13 @@ export default class xgenLoginPage {
         fixture.logger.info(`Verifying welcome message: ${welcomeMessage}`);
         await expect(fixture.page.getByRole('heading', { name: welcomeMessage })).toBeVisible();
     }
+
+    async logout() {
+      fixture.logger.info(`Click on the name`);
+      await fixture.page.getByRole('button', { name: 'BB' }).click();
+      fixture.logger.info(`Click on the logout button`);
+      await fixture.page.getByRole('button', { name: 'Logout' }).click();
+    }
+
+
 }

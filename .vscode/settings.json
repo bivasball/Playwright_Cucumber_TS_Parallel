@@ -1,8 +1,8 @@
 {
     "cucumberautocomplete.steps": [
-        "e2e/test/steps/Uxli_Steps/*.ts"
+        "e2e/test/steps/**/*.ts"
     ],
-    "cucumberautocomplete.syncfeatures": "e2e/test/features/Uxli_Features/*.feature",
+    "cucumberautocomplete.syncfeatures": "e2e/test/features/**/*.feature",
     "cucumberautocomplete.strictGherkinCompletion": true,
     "cucumberautocomplete.smartSnippets": true,
     "cucumberautocomplete.stepsInvariants": true,

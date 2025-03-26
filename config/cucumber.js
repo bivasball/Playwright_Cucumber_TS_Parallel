@@ -5,13 +5,13 @@ module.exports = {
             snippetInterface: "async-await"
         },
         paths: [
-            "e2e/test/features/"
+            "e2e/test/features/XgenLoginFeature/*.feature"
         ],
         publishQuiet: true,
         dryRun: false,
         require: [
-            "e2e/test/steps/*.ts",
-            "e2e/hooks/hooks.ts"
+            "e2e/hooks/hooks.ts",
+            "e2e/test/steps/XgenLoginSteps/*.ts"
         ],
         requireModule: [
             "ts-node/register"
@@ -31,8 +31,8 @@ module.exports = {
         publishQuiet: true,
         dryRun: false,
         require: [
-            "e2e/test/steps/*.ts",
-            "e2e/hooks/hooks.ts"
+            "e2e/hooks/hooks.ts",
+            "e2e/test/steps/XgenLoginSteps/*.ts"
         ],
         requireModule: [
             "ts-node/register"

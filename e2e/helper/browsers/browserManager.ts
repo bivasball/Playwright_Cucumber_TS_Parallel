@@ -9,7 +9,9 @@ export const invokeBrowser = () => {
   console.log(`=================== the browser chosen is ================` +browserType) ;
   switch (browserType) {
     case "chrome":
-      return chromium.launch(options);
+      return chromium.launch({
+        headless: false,
+        slowMo: 2000});
     case "chromeHeadless":
       return chromium.launch({ ...options, headless: true }); // Override headless to true
     case "firefox":

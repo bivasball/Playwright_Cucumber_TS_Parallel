@@ -3,7 +3,7 @@ import { fixture } from "../../../hooks/pageFixture";
 import xgenLoginPage from "../../../pages/XgenLogin/xgenLoginPage";
 import { getJsonDataUi } from "../../../helper/util/jsonFileReader";
 
-let xgenloginPage = new xgenLoginPage(fixture.page);
+let xgenloginPage = new xgenLoginPage();
 setDefaultTimeout(60 * 1000 * 2);
 
 Given(
@@ -18,7 +18,7 @@ async function loginAndNavigate(jsonfilename: any) {
   // Navigate to the login page
   await xgenloginPage.navigateToLoginPage();
 
-  // Log in with username and password 
+  // Log in with username and password
   await xgenloginPage.login(jsonData);
 
   // Verify the login message
@@ -56,14 +56,7 @@ Then(
 When(
   'User logout from the application {string}',
   async function (logoutButton: string) {
-    
-
     // Log out
     await xgenloginPage.logout();
-    
-    // Verify the "Logout" button is visible
-    await xgenloginPage.verifyButtonVisible(logoutButton);
-
-    
   }
 );

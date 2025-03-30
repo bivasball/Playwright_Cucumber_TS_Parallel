@@ -5,16 +5,19 @@ module.exports = {
             snippetInterface: "async-await"
         },
         paths: [
-            "e2e/test/features/XgenLoginFeature/*.feature"
+            "e2e/test/features/XgenLoginFeature/*.feature",
+            "e2e/test/features/XgenSourceFeatures/*.feature"
         ],
         publishQuiet: true,
         dryRun: false,
         require: [
             "e2e/hooks/hooks.ts",
-            "e2e/test/steps/XgenLoginSteps/*.ts"
+            "e2e/test/steps/XgenLoginSteps/*.ts",
+            "e2e/test/steps/XgenSourceSteps/*.ts"
         ],
         requireModule: [
-            "ts-node/register"
+            "ts-node/register",
+            "tsconfig-paths/register"
         ],
         format: [
             "progress-bar",
@@ -32,10 +35,12 @@ module.exports = {
         dryRun: false,
         require: [
             "e2e/hooks/hooks.ts",
-            "e2e/test/steps/XgenLoginSteps/*.ts"
+            "e2e/test/steps/XgenLoginSteps/*.ts",
+            "e2e/test/steps/XgenSourceSteps/*.ts"
         ],
         requireModule: [
-            "ts-node/register"
+            "ts-node/register",
+            "tsconfig-paths/register"
         ],
         format: [
             "progress-bar",

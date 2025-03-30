@@ -10,7 +10,8 @@
 5. npx @playwright/test --version
 --Install latest official version
 6. npm install @playwright/test@latest
-
+6.1 npm install tsconfig-paths --save-dev
+6.2 npm install cross-env --save-dev
 
 7. 
 ### to run in Headless mode of Chrome, no video recording.
@@ -22,6 +23,16 @@ npm run  testUat -- --RUN_MODE=local --BROWSER=chrome  --TAGS="@xgen and @e2e an
 ## to run all the three at once by tags --
 npm run testUat -- --RUN_MODE=local --BROWSER=chrome --TAGS="@xgen and @e2e and (@test_001 or @test_002 or @test_003)"
  ===============================================================
+
+# How to View the Trace?Generate the Trace File:
+
+The trace file is saved as a .zip file (e.g., ./test-results/trace/<pickle.id>.zip).
+Open the Trace Viewer:
+Run the following command to open the Playwright Trace Viewer:
+npx playwright show-trace ./test-results/trace/<pickle.id>.zip
+
+
+
 
 # Playwright (TS binding) + Cucumber (BDD)
 
@@ -128,3 +139,47 @@ npm run test --TAGS="@test or @add"
 #### install the below Extension in VS code ###########
 Cucumber (Gherkin) Full Support
 
+##### Notes #######
+Configure Your Build Tool: If you're using a build tool like Webpack, Vite, or ESBuild, ensure it supports TypeScript path aliases. For example, in Webpack, you can configure the resolve.alias field in webpack.config.js:
+const path = require("path");
+
+module.exports = {
+  resolve: {
+    alias: {
+      "@pages": path.resolve(__dirname, "e2e/test/pages"),
+      "@steps": path.resolve(__dirname, "e2e/test/steps"),
+      "@hooks": path.resolve(__dirname, "e2e/test/hooks"),
+      "@helper": path.resolve(__dirname, "e2e/test/helper")
+    },
+    extensions: [".ts", ".js"]
+  }
+};
+
+##############
+
+1. Ensure Path Aliases Are Defined in tsconfig.json
+Verify that your tsconfig.json file has the correct paths and baseUrl configuration. For example:
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@pages/*": ["e2e/test/pages/*"],
+      "@steps/*": ["e2e/test/steps/*"],
+      "@hooks/*": ["e2e/test/hooks/*"],
+      "@helper/*": ["e2e/test/helper/*"]
+    }
+  }
+}
+2. Install tsconfig-paths
+The Node.js runtime does not natively understand TypeScript path aliases. To fix this, you need to use a package like tsconfig-paths.
+
+Install it using npm or yarn:
+npm install tsconfig-paths --save-dev
+3. Update the Test Runner Script
+Modify your test runner script (e.g., in package.json) to include tsconfig-paths/register. This ensures that path aliases are resolved at runtime.
+
+For example, if you are using cucumber-js, update the scripts section in package.json:
+"scripts": {
+  "test": "cucumber-js --require-module ts-node/register --require-module tsconfig-paths/register"
+}
+######

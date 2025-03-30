@@ -5,6 +5,7 @@ import { invokeBrowser } from "../helper/browsers/browserManager";
 import { getEnv } from "../helper/env/env";
 import { createLogger } from "winston";
 import { options } from "../helper/util/logger";
+import  {TIMEOUT}  from "playwright.config";
 const fs = require("fs-extra");
 
 let browser: Browser;
@@ -12,7 +13,8 @@ let context: BrowserContext;
 
 BeforeAll(async function () {
     const isLocal = process.env.npm_config_RUN_MODE || "Remote or Pipeline";
-    console.log(`=================== RUN_MODE chosen is  ================` +isLocal) ;
+    console.log(`=================== RUN_MODE chosen is  ================ ` +isLocal) ;
+    console.log(`=================== Custom Timeout in milliseconds  ================ ` +TIMEOUT) ;
     getEnv();
     browser = await invokeBrowser();
 });
@@ -53,13 +55,16 @@ Before({ tags: '@auth' }, async function ({ pickle }) {
         recordVideo: isLocal ? { dir: "test-results/videos" } : undefined, // Enable video recording only in local mode
     });
 
-    await context.tracing.start({
-        name: scenarioName,
-        title: pickle.name,
-        sources: true,
-        screenshots: isLocal, // Enable screenshots only in local mode
-        snapshots: isLocal,  // Enable snapshots only in local mode
-    });
+    // Start tracing only if in local mode
+    if (isLocal) {
+        await context.tracing.start({
+            name: scenarioName,
+            title: pickle.name,
+            sources: true,
+            screenshots: true, // Enable screenshots in local mode
+            snapshots: true,   // Enable snapshots in local mode
+        });
+    }
 
     const page = await context.newPage();
     fixture.page = page;
@@ -80,7 +85,11 @@ After(async function ({ pickle, result }) {
         videoPath = await fixture.page.video().path();
     }
 
-    await context.tracing.stop({ path: path });
+
+    // Stop tracing only if in local mode
+    if (isLocal) {
+        await context.tracing.stop({ path: path });
+    }
     await fixture.page.close();
     await context.close();
 

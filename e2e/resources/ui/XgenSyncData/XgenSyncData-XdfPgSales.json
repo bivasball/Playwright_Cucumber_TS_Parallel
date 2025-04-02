@@ -1,0 +1,9 @@
+[
+  {
+    "syncName": "PG_SALES_AUTOMATION",
+    "SyncDescription": "sales data load testing",
+    "selectSource":"Fitness Data Source",
+    "selectDestination":"Testing DW"
+    
+  }
+]

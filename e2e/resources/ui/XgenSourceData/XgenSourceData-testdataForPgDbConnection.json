@@ -1,0 +1,15 @@
+[
+  {
+    "sourcename": "PGDB_SALES_DB_test",
+    "SourceDescription": "PostgreSQL Database connection for testing",
+    "hostname": "xgen-dev.ckvh7cnonk8s.us-east-1.rds.amazonaws.com",
+    "databaseName": "f1race",
+    "schemas": "sales",
+    "usernameForPG": "sa",
+    "passwordForPG": "Spider20",
+    "SSLModes": "disable",
+    "SSH Tunnel Modes": "No tunnel",
+    "JDBCURLParameters": "",
+    "UpdateMethods": "Scan changes with user defined cursor"
+  }
+]

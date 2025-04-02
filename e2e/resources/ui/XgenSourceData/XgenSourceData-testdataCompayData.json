@@ -1,0 +1,8 @@
+[
+  {
+    "SourceName": "COMPANY_TEST",
+    "sourceDesc": "Company Data by automation",
+    "fileType": "csv",
+    "fileName": "company_data.csv"
+  }
+]

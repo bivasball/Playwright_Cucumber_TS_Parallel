@@ -12,14 +12,14 @@ async function navigateToConnectPage() {
     await createPgDbConnection.navigateToLoginPageforPgDB();
 };
 
-When('user create a PostgreSQL source using data from {string}',connectionUsingData);
+When('user first do a cleanup and then create a PostgreSQL source, using data from {string}',connectionUsingData);
  async function connectionUsingData (jsonfilename: string) {
     console.log(`Step executed with data from json file: ${jsonfilename}`);
     const jsonData = getJsonDataUi(jsonfilename);
     await createPgDbConnection.createPgDbConnectionWithData(jsonData);
 }
 
-Then('user edit the source with password by click on save and validate the source {string}',verifyDataConnectionCreated);
+Then('user edit the source with password by click on save and validate the source, using data from {string}',verifyDataConnectionCreated);
  async function verifyDataConnectionCreated(jsonfilename: string) {
     console.log("Step: Verifying the source database connection creation.");
     console.log(`Step executed with data from json file: ${jsonfilename}`);

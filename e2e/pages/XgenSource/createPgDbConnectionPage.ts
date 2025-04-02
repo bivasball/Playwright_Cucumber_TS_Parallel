@@ -1,4 +1,4 @@
-import { expect, Page } from "@playwright/test";
+import { expect} from "@playwright/test";
 import { fixture } from "@hooks/pageFixture";
 import PlaywrightWrapper from "@helper/wrapper/PlaywrightWrappers";
 import { TIMEOUT } from "playwright.config";
@@ -24,13 +24,13 @@ export default class createPgDbConnectionPage {
         );
         // Verify the source name in the Connect Sources tab list and return the row number if not found then it is zero
         let presentornot =
-            await this.verifySourceNameDisplayedInConnectSourcesTabList(
+            await playwrightWrapper.verifySourceNameDisplayedInConnectSourcesTabList(
                 jsonData[0].sourcename
             );
         console.log("Present or not==========", presentornot);
         if (presentornot !== 0) {
             console.log("Deleting the source as per the request.");
-            await this.deleteTheSource(presentornot);
+            await playwrightWrapper.deleteTheSource(presentornot);
         }
 
         // Get the source name from the json data
@@ -180,7 +180,9 @@ export default class createPgDbConnectionPage {
         //await fixture.page.locator("#Input_L_1_password").fill(password);
         //fixture.logger.info(`Filled 'Password' field with ${password}`);
         // Type the password using the keyboard
-        await fixture.page.locator("#Input_L_1_password").type(password, { delay: 100 });
+        await fixture.page
+            .locator("#Input_L_1_password")
+            .type(password, { delay: 100 });
         fixture.logger.info(`Typed 'Password' field with ${password}`);
 
         // Wait for "Scan Changes with User" radio button and check it
@@ -225,80 +227,10 @@ export default class createPgDbConnectionPage {
         ).toContainText("created successfully");
     }
 
-    async verifySourceNameDisplayedInConnectSourcesTabList(
-        sourceName: string
-    ): Promise<number> {
-        console.log(
-            "Page Object: Verifying that the source name is displayed in the Connect Sources tab list..."
-        );
-        let flag = 0;
-        await playwrightWrapper.loadingWebPage();
-
-        // Get the number of rows displayed
-        await fixture.page.waitForSelector(
-            "//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div",
-            { state: "visible", timeout: TIMEOUT }
-        );
-          fixture.logger.info(
-                "Waiting for the source list to be visible in the Connect Sources tab..."
-            );
-        const rows = fixture.page.locator(
-            "//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div"
-        );
-        const numberOfRowsDisplayed = await rows.count();
-        console.log("ROWS :-", numberOfRowsDisplayed);
-
-        // Iterate through each row to find the source name
-        for (let row = 1; row <= numberOfRowsDisplayed; row++) {
-            await playwrightWrapper.loadingWebPage();
-            let sourceNameElement = `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${row}]/div/div/div//span//p`;
-
-            // Wait for the element to be available
-            await fixture.page.waitForSelector(sourceNameElement, {
-                state: "visible",
-                timeout: TIMEOUT,
-            });
-
-            const sourceNameFromUI = await fixture.page
-                .locator(sourceNameElement)
-                .textContent();
-            console.log("source name from ui :-", sourceNameFromUI);
-
-            if (sourceNameFromUI?.trim().toLowerCase() === sourceName.toLowerCase()) {
-                console.log("This is true");
-                flag = row;
-                break;
-            } else {
-                flag = 0;
-            }
-        }
-
-        return flag;
-    }
-
-    async deleteTheSource(rownumber: number) {
-        let sourceToBedeleted = `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${rownumber}]//span[@aria-label='Delete Source']`;
-        console.log("Source to be deleted: ", sourceToBedeleted);
-        await fixture.page.waitForSelector(sourceToBedeleted, {
-            state: "visible",
-            timeout: TIMEOUT,
-        });
-        await fixture.page.locator(sourceToBedeleted).click();
-        fixture.logger.info(
-            "Clicked on the delete icon for the source.",
-            sourceToBedeleted
-        );
-        await fixture.page
-            .locator("//button[@type='button' and  @iconcolor='confirm']")
-            .click();
-        fixture.logger.info("Clicked on the confirm button to delete the source.");
-        fixture.logger.info("Waiting for success alert to be visible...");
-    }
-
     async editTheSourceReEnterThePaswordAndSaveThenValidate(jsonData: any) {
         // Verify the source name in the Connect Sources tab list and return the row number if not found then it is zero
         let presentornot =
-            await this.verifySourceNameDisplayedInConnectSourcesTabList(
+            await playwrightWrapper.verifySourceNameDisplayedInConnectSourcesTabList(
                 jsonData[0].sourcename
             );
         console.log("Present or not==========", presentornot);
@@ -336,7 +268,9 @@ export default class createPgDbConnectionPage {
 
             // Type the password using the keyboard
             let password = jsonData[0].passwordForPG;
-            await fixture.page.locator("#Input_L_1_password").type(password, { delay: 100 });
+            await fixture.page
+                .locator("#Input_L_1_password")
+                .type(password, { delay: 100 });
             //fixture.logger.info(`Typed 'Password' field with ${password}`);
 
             await fixture.page
@@ -367,11 +301,11 @@ export default class createPgDbConnectionPage {
             ).toContainText("Source validation Successful.");
             //type="button" iconcolor="close"
             //closing the validation pop up by click on cross icon
-            let crossicon =`//div[contains(@class,'MuiCardActions-root')]//button[@type='button' and  @iconcolor='close']`;
-                await fixture.page.waitForSelector(crossicon, {
-                    state: "visible",
-                    timeout: TIMEOUT,
-                });
+            let crossicon = `//div[contains(@class,'MuiCardActions-root')]//button[@type='button' and  @iconcolor='close']`;
+            await fixture.page.waitForSelector(crossicon, {
+                state: "visible",
+                timeout: TIMEOUT,
+            });
             await fixture.page.locator(crossicon).click();
             await playwrightWrapper.loadingWebPage();
         }

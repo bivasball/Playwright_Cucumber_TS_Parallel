@@ -41,6 +41,10 @@ Before({ tags: "not @auth" }, async function ({ pickle }) {
     const page = await context.newPage();
     fixture.page = page;
     fixture.logger = createLogger(options(scenarioName));
+
+    const scenarioNametoLog = pickle.name;
+    fixture.logger.info(`------- Execution started: ${scenarioNametoLog}`); // Log the scenario name when execution starts
+   
 });
 
 // It will trigger for auth scenarios
@@ -69,6 +73,8 @@ Before({ tags: '@auth' }, async function ({ pickle }) {
     const page = await context.newPage();
     fixture.page = page;
     fixture.logger = createLogger(options(scenarioName));
+    const scenarioNametoLog = pickle.name;
+    fixture.logger.info(`------- Execution started: ${scenarioNametoLog}`); // Log the scenario name when execution starts
 });
 
 After(async function ({ pickle, result }) {
@@ -99,6 +105,8 @@ After(async function ({ pickle, result }) {
         const traceFileLink = `<a href="https://trace.playwright.dev/">Open ${path}</a>`;
         await this.attach(`Trace file: ${traceFileLink}`, 'text/html');
     }
+    const scenarioNametoLog = pickle.name;
+    fixture.logger.info(`------- Execution done: ${scenarioNametoLog}`); // Log the scenario name when execution starts
 });
 
 AfterAll(async function () {

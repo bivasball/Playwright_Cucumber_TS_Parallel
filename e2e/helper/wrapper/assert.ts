@@ -1,24 +1,23 @@
-import { expect, Page } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { fixture } from "@hooks/pageFixture";
 
 export default class Assert {
 
-    constructor(private page: Page) { }
-
     async assertTitle(title: string) {
-        await expect(this.page).toHaveTitle(title);
+        await expect(fixture.page).toHaveTitle(title);
     }
 
     async assertTitleContains(title: string) {
-        const pageTitle = await this.page.title();
+        const pageTitle = await fixture.page.title();
         expect(pageTitle).toContain(title);
     }
 
     async assertURL(url: string) {
-        await expect(this.page).toHaveURL(url);
+        await expect(fixture.page).toHaveURL(url);
     }
 
     async assertURLContains(title: string) {
-        const pageURL = this.page.url();
+        const pageURL = fixture.page.url();
         expect(pageURL).toContain(title);
     }
 

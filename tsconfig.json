@@ -10,13 +10,22 @@
         "resolveJsonModule": true,
         "baseUrl": "./",
         "paths": {
-      "@pages/*": ["e2e/pages/*"],
-      "@steps/*": ["e2e/test/steps/*"],
-      "@hooks/*": ["e2e/hooks/*"],
-      "@helper/*": ["e2e/helper/*"]
-    }
+            "@pages/*": [
+                "e2e/pages/*"
+            ],
+            "@steps/*": [
+                "e2e/test/steps/*"
+            ],
+            "@hooks/*": [
+                "e2e/hooks/*"
+            ],
+            "@helper/*": [
+                "e2e/helper/*"
+            ]
+        },
+        "allowJs": true, // Allow importing JavaScript files
+        "checkJs": false // Disable type checking for JavaScript files
     },
-    
     "include": [
         "e2e/**/*.ts", // Include all TypeScript files in the "e2e" directory
         "playwright.config.ts" // Include the Playwright configuration file

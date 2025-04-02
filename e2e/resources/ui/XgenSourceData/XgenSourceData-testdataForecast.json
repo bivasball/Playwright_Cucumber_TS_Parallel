@@ -1,14 +1,8 @@
 [
   {
-    "username": "bball@spaces.com",
-    "password": "12345678",
-    "message": "Please login to a subscription.",
-    "subscription": "TESTING",
-    "welcomeMessage":"Welcome, Bivas!",
-    "SourceName":"CATEGORY_TEST",
-    "sourceDesc":"Forecast testing by automation",
-    "fileType":"csv",
-    "fileName":"CategoryForecast.xlsx"
-    
+    "SourceName": "CATEGORY_TEST",
+    "sourceDesc": "Forecast testing by automation",
+    "fileType": "excel",
+    "fileName": "CategoryForecast.xlsx"
   }
 ]

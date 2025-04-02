@@ -19,6 +19,14 @@ Given(`user should be able to upload the file. {string}`, uploadTheFile);
 async function uploadTheFile(jsonfilename: any) {
     console.log("===Navigate to upload pop up ===");
     console.log(`Step executed with data from json file: ${jsonfilename}`);
-    const jsonData = getJsonDataUi(jsonfilename);    
+    const jsonData = getJsonDataUi(jsonfilename);
     await uploadingFile.uploadfiles(jsonData);
+};
+
+Given(`user cleanup and upload the file. {string}`, cleanUpAnduploadTheFile);
+async function cleanUpAnduploadTheFile(jsonfilename: any) {
+    console.log("===Navigate to upload pop up ===");
+    console.log(`Step executed with data from json file: ${jsonfilename}`);
+    const jsonData = getJsonDataUi(jsonfilename);
+    await uploadingFile.cleanUpAnduploadfiles(jsonData);
 };

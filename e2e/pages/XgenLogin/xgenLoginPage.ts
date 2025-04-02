@@ -1,4 +1,4 @@
-import { expect, Page } from "@playwright/test";
+import { expect} from "@playwright/test";
 import { fixture } from "@hooks/pageFixture";
 import  {TIMEOUT}  from "playwright.config";
 import PlaywrightWrapper from "@helper/wrapper/PlaywrightWrappers";
@@ -52,7 +52,7 @@ export default class xgenLoginPage {
         // Wait for the login button to be visible
         await fixture.page.waitForSelector('role=button[name="Login"]', { state: "visible", timeout: TIMEOUT });
         await fixture.page.getByRole('button', { name: 'Login' }).click();
-        playwrightWrapper.loadingWebPage();
+        await playwrightWrapper.loadingWebPage();
         fixture.logger.info("Waiting for the login process to complete");
     }
 
@@ -92,7 +92,7 @@ export default class xgenLoginPage {
         fixture.logger.info(`Selecting subscription option: ${subscription}`);
         await fixture.page.getByRole('option', { name: subscription }).click();
 
-        playwrightWrapper.loadingWebPage();
+        await playwrightWrapper.loadingWebPage();
         fixture.logger.info("Waiting for the subscription selection process to complete");
     }
 
@@ -112,7 +112,7 @@ export default class xgenLoginPage {
         // Wait for the button to be visible
         await fixture.page.waitForSelector(`role=button[name="${buttonName}"]`, { state: "visible", timeout: TIMEOUT });
         await fixture.page.getByRole('button', { name: buttonName }).click();
-        playwrightWrapper.loadingWebPage();
+        await playwrightWrapper.loadingWebPage();
         fixture.logger.info("Waiting for the button click process to complete");
     }
 
@@ -168,7 +168,7 @@ export default class xgenLoginPage {
         // Wait for the "Logout" button to be visible
         await fixture.page.waitForSelector('role=button[name="Logout"]', { state: "visible", timeout: TIMEOUT });
         await fixture.page.getByRole('button', { name: 'Logout' }).click();
-        playwrightWrapper.loadingWebPage();
+        await playwrightWrapper.loadingWebPage();
         fixture.logger.info(`Waiting for the logout process to complete`);
     }
 }

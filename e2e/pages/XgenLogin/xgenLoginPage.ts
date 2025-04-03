@@ -121,8 +121,8 @@ export default class xgenLoginPage {
         fixture.logger.info(`Verifying page heading: ${pageName}`);
 
         // Wait for the page heading to be visible
-        await fixture.page.waitForSelector(`role=heading[name="${pageName}"]`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('heading', { name: pageName })).toBeVisible();
+        await fixture.page.waitForSelector(`//p[text()='${pageName}']`, { state: "visible", timeout: TIMEOUT });
+        await expect(fixture.page.locator(`//p[text()='${pageName}']`)).toBeVisible();
     }
 
     async selectRadioOption(radioOption: string) {

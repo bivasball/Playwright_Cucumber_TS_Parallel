@@ -1,0 +1,7 @@
+[
+  {
+    "modelName": "TESTING_AUTOMATE",
+    "modelDescription": "Testing the model with automation",
+    "sourceObjectFromSourceNode":"CUSTOMER"
+  }
+]

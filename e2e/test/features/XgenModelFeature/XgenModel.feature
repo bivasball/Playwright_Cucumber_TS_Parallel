@@ -13,3 +13,32 @@ Feature: Create Data ModelsModel
             | loginData                       | data                            |
             | LoginData-testdataForLoginUser1 | XgenModelData-createLinearModel |
 
+    @xgen @e2e @model @model_02
+    Scenario Outline: To Create Data Models using JOIN NODE,Taking one table from Source Node and one table from Lookup Node, to Model name, for Load Mode type Full Load
+        Given User logs into the application with username and password and sees the message and selects the subscription "<loginData>"
+        Then User navigates through the "Home" and "Spaces" pages, selects the "Fitness" radio option, and sees the welcome message "<loginData>"
+        When user navigate to the Model page
+            And user perform the clean up activity "<data>"
+        Then user should be able to create a data model,taking one table from Source Node and one table from Lookup Node "<data>"
+            And user should be able to execute the model for Load Mode Full Load "<data>"
+            And User logout from the application "Logout"
+        Examples:
+            | loginData                       | data                            |
+            | LoginData-testdataForLoginUser1 | XgenModelData-OneSNode_onePnode |
+
+
+    @xgen @e2e @model @model_03
+    Scenario Outline: To Create Data Models using STAR NODE,Taking one table from Source Node and one table from Lookup Node, to Model name, for Load Mode type Full Load
+        Given User logs into the application with username and password and sees the message and selects the subscription "<loginData>"
+        Then User navigates through the "Home" and "Spaces" pages, selects the "Fitness" radio option, and sees the welcome message "<loginData>"
+        When user navigate to the Model page
+            And user perform the clean up activity "<dataStar>"
+        Then user should be able to create a Star Node data model, taking one from Source Node and one from Lookup Node "<dataStar>"
+            #And user should be able to execute the Star Node model for Load Mode Full Load "<dataStar>"
+           
+        #Then user should be able to create a Star Node data model,taking one table from Source Node and two table from Lookup Node "<data>"
+            # And user should be able to execute the Star Node model for Load Mode Full Load "<data>"
+            #And User logout from the application "Logout"
+        Examples:
+            | loginData                       | dataStar                                     |
+            | LoginData-testdataForLoginUser1 | XgenModelData-StarNodeoneSourcetwoLookup |

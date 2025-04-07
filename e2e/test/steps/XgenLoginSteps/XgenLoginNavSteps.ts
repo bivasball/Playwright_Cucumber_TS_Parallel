@@ -44,8 +44,16 @@ Then(
     // Verify the "Spaces" page
     await xgenloginPage.verifyPageHeading("Spaces");
 
-    // Select the "Fitness" radio option
-    await xgenloginPage.selectRadioOption("Fitness");
+
+    //---------------------call the function if space exits---------------------
+
+    await xgenloginPage.creatSpaceIfNotPresent(jsonData);
+    // Select the "required Space button" radio option --we are passing the description--//
+    await xgenloginPage.closeTheSpaceModule();
+        await xgenloginPage.clickButton("Spaces");
+
+    let requiredSpaceButton = jsonData[0].spaceDescription;
+    await xgenloginPage.selectRadioOption(requiredSpaceButton);
 
     // Verify the welcome message
     await xgenloginPage.verifyWelcomeMessage(jsonData);

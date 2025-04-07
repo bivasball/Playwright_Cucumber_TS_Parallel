@@ -266,6 +266,60 @@ export default class PlaywrightWrapper {
         return flag;
     }
 
+    async getTheRowNumberFromModelPage_BAK(
+        modelname: string
+    ): Promise<number> {
+        console.log(
+            "Page Object Wrapper: Verifying that the Model name is displayed in the  tab list..."
+        );
+        let flag = 0;
+        await this.loadingWebPage();
+
+        // Get the number of rows displayed
+        await fixture.page.waitForSelector(
+            "//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div",
+            { state: "visible", timeout: TIMEOUT }
+        );
+        fixture.logger.info(
+            "Waiting for  Required Model item from the list to be visible"
+        );
+        const rows = fixture.page.locator(
+            "//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div"
+        );
+        const numberOfRowsDisplayed = await rows.count();
+        console.log("ROWS :-", numberOfRowsDisplayed);
+
+        // Iterate through each row to find the  name
+        for (let row = 1; row <= numberOfRowsDisplayed; row++) {
+            await this.loadingWebPage();
+            let modelnameElement = `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${row}]/div/div/div//span//p[contains(@class,'15tiehw')]`;
+
+            // Wait for the element to be available
+            await fixture.page.waitForSelector(modelnameElement, {
+                state: "visible",
+                timeout: TIMEOUT,
+            });
+
+            const modelnameFromUI = await fixture.page
+                .locator(modelnameElement)
+                .textContent();
+            console.log("Model name from ui :-", modelnameFromUI);
+            //fixture.logger.info("Model name from ui :-", modelnameFromUI);
+            let expectedmodelname = '_' + modelname;
+            //console.log("Expected Model name from jsondata :-", expectedmodelname);
+            //fixture.logger.info("Expected Model name from jsondata :-", expectedmodelname);
+            if (modelnameFromUI?.trim().includes(expectedmodelname)) {
+                console.log("This is true");
+                fixture.logger.info(`The required item is present in the row number: ${row}`);
+                flag = row;
+                break;
+            } else {
+                flag = 0;
+            }
+        }
+
+        return flag;
+    }
     async deleteTheSource(rownumber: number) {
         let sourceToBedeleted = `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${rownumber}]//span[@aria-label='Delete Source']/button`;
         console.log("Page Object Wrapper:Source to be deleted: ", sourceToBedeleted);
@@ -341,5 +395,28 @@ export default class PlaywrightWrapper {
 
     }
 
+    async verifyElementHasNoChildren(locator: string): Promise<boolean> {
+        fixture.logger.info(`Verifying that the element '${locator}' does not contain any child elements.`);
+        
+        // Locate the parent element
+        const parentElement = fixture.page.locator(locator);
+    
+        // Get the count of child elements
+        const childCount = await parentElement.locator('*').count();
+    
+        // Log the result
+        if (childCount === 0) {
+            fixture.logger.info(`The element '${locator}' does not contain any child elements.`);
+            return true;
+        } else {
+            fixture.logger.info(`The element '${locator}' contains ${childCount} child elements.`);
+            return false;
+        }
+    }
 
+
+    
+    
+    
 }
+

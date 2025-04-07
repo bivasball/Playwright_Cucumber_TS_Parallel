@@ -29,7 +29,17 @@ export default class xgenModelPage {
     getSourceNode() {
         return `//span[@aria-label='Source Node']//button`;
     }
+    getLookUpNode() {
+        return `//span[@aria-label='Lookup Node']//button`;
+    }
+    getJoinNode() {
+        return `//span[@aria-label='Join Node']//button`;
+    }
+
     getSourceNodeTreeExpand() {
+        return `[data-testid="TreeViewExpandIconIcon"]`;
+    }
+    getLookUpNodeTreeExpand() {
         return `[data-testid="TreeViewExpandIconIcon"]`;
     }
     getLeftNodeRightSideDot() {
@@ -42,33 +52,85 @@ export default class xgenModelPage {
     getSaveButton() {
         return `//li[text()='Save']`;
     }
-
-    getTitleOfLeftItem(sourceObject: string) {
-        return `//div[contains(@class,'MuiCardHeader-root')]//span[contains(text(),${sourceObject})]`;
+    getTitleOfLeftItem(sourceObject: string): string {
+        return `//div[contains(@class,'MuiCardHeader-root')]//span[contains(text(),'${sourceObject}')]`;
     }
-
     getColumnInRightSideForLeftItem() {
         return `//input[@value='S_CUSTOMER' and @id=':ral:']`;
     }
-
     getColumnsTab() {
         return `//button[text()='Columns' and @role='tab']`;
     }
     getCheckBoxOfFieldName(fieldName: string): string {
         return `//input[@value='${fieldName}']/ancestor::li//span/input[@type='checkbox']`;
     }
-
     getKeyboardDoubleArrowRightOutlinedIcon() {
         return `//*[@data-testid="KeyboardDoubleArrowRightOutlinedIcon"]/parent::button`;
     }
-
     getLeftCheckBoxOfModelNameColumns(fieldName: string): string {
         return `//li[contains(@class,"MuiListItem-root MuiListItem-dense")]//input[@value='${fieldName}']/ancestor::li/div/div[2]/span/input`;
     }
-
-
     getTitleOfSourceItemBox(sourceName: string): string {
         return `//div[contains(@class,'MuiCardHeader-root')]//p[contains(text(),'${sourceName}')]`;
+    }
+    getTitleOfJoin_1_ItemBox(join_1: string): string {
+        return `//div[contains(@class,'MuiCardHeader-root')]//p[contains(text(),'${join_1}')]`;
+    }
+    getStartedSuccessMessage() {
+        return `//p[contains(text(),'started successfully')]`;
+    }
+
+    getSourceOjbectRightdot(sourceObject: string): string {
+        return `//span[text()='S_${sourceObject}']//ancestor::div[contains(@class,'selectable draggable')] //div[@data-handleid='SRN' and @data-handlepos='right']`;
+    }
+    getLookUpOjbectRightdot(sourceObject: string): string {
+        return `//span[text()='L_${sourceObject}']//ancestor::div[contains(@class,'selectable draggable')] //div[@data-handleid='LKN' and @data-handlepos='right']`;
+    }
+    getJoin_OjbectLeftdot(joinID: string): string {
+        return `//p[text()='${joinID}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='JON' and @data-handlepos='left']`;
+    }
+    getJoin_OjbectRightdot(joinID: string): string {
+        return `//p[text()='${joinID}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='JON' and @data-handlepos='right']`;
+    }
+    getModelName_ObjectLeftdot(modelName: string): string {
+        return `//p[text()='XDL_${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='OTN' and @data-handlepos='left']`;
+    }
+
+    getJoin_1_Join_Tab() {
+        return `//button[text()='Join' and @role='tab']`;
+    }
+    getPlusConditionButtonIcon() {
+        return `//p[text()="Condition"]`;
+    }
+
+    getJoin_1_Join_Edit_Join() {
+        return `//p[text()='Edit Join']`;
+
+    }
+    getJoin_1_Join_Tab_Join_Type() {
+        return `//button[@type="button" and @value="LEFT OUTER JOIN"]`;
+
+    }
+    getJoin_1_Join_Tab_Join_Type_Condition_left() {
+        return `//div[contains(@class,"css-1dvuvi7")]/div[1]//button[@type="button" and @title="Open"]`;
+    }
+
+    getJoin_1_Join_Tab_Join_Type_Condition_left_Choose_Field() {
+        return `//div[contains(@class,"css-1dvuvi7")]/div[1]//input[@role="combobox" and @value="ORDERID"]`;
+    }
+    getJoin_1_Join_Tab_Join_Type_Condition_Right() {
+        return `//div[contains(@class,"css-1dvuvi7")]/div[3]//button[@type="button" and @title="Open"]`;
+    }
+    getJoin_1_Join_Tab_Join_Type_Condition_Right_Choose_Field() {
+        return `//div[contains(@class,"css-1dvuvi7")]/div[3]//input[@role="combobox" and @value="ORDERID"]`;
+    }
+
+    getApplyButton() {
+        return `//p[text()="Apply"]`;
+
+    }
+    getCheckBoxofAllFieldNameOfSourceObject() {
+        return `//div[contains(@class,"1cw00c7")]//input[contains(@class,"1m9pwf3") and @type="checkbox"]`;
     }
     //locator --end//
 
@@ -104,13 +166,16 @@ export default class xgenModelPage {
         let sourceObjectFromSourcenode = jsondata[0].sourceObjectFromSourceNode;
         // Wait for the "Source Node" button to be visible and click it
         await globalAction.waitAndClick(this.getSourceNode());
+
+
         // Wait for the "Tree View Expand Icon" to be visible and click it
         await globalAction.waitAndClick(this.getSourceNodeTreeExpand());
         // Wait for the "CUSTOMER" text to be visible and click it
-        await globalAction.waitAndClick(`text=${sourceObjectFromSourcenode}`);
+        await globalAction.waitAndClick(`//p[text()='${sourceObjectFromSourcenode}']`);
+
     }
 
-    async joinSourceObjectFromSourceNodeToModelName(jsondata: any) {
+    async joinSourceObjectFromSourceNodeToModelName() {
         // join left node with Right node
         await globalAction.dragAndDrop(this.getLeftNodeRightSideDot(), this.getRightNodeLeftSideDot());
     }
@@ -130,10 +195,15 @@ export default class xgenModelPage {
         // assert created successfully
         await playwrightWrapper.createdSuccesfullyMessage();
 
+    }
+
+    async closeTheModel() {
         // close the model page
         await playwrightWrapper.closeTheModel();
 
     }
+
+
     async clickSourceObject(sourceName: string) {
         //click
         await globalAction.waitAndClick(this.getTitleOfLeftItem(sourceName));
@@ -143,11 +213,26 @@ export default class xgenModelPage {
         await globalAction.checkCheckbox(this.getCheckBoxOfFieldName(fieldName));
     }
 
-    async exitFromSourceObject() {
+    async exitFromFocusedObject() {
         //Close the Right side
         await globalAction.waitAndClick(this.getKeyboardDoubleArrowRightOutlinedIcon());
     }
 
+    async verifyTheStatus_Valid() {
+        let statusMessageLoc = `//div[contains(@class,"css-opoah9")]//p[contains(@class,"css-1jrvat8")]`;
+        fixture.logger.info(`Locating the status message element using locator: ${statusMessageLoc}`);
+
+        let status = await globalAction.getTextContent(statusMessageLoc);
+        fixture.logger.info(`Status message retrieved: ${status}`);
+
+        console.log("Status is ======================", status);
+
+        await expect(fixture.page.locator(statusMessageLoc)).toContainText("Valid");
+        fixture.logger.info(`Verified that the status message contains the text: "Valid".`);
+
+        await playwrightWrapper.loadingWebPage();
+        fixture.logger.info("Page loading completed after verifying the status message.");
+    }
 
     async clickModelNameObject(modelName: string) {
         //click  on the Source Item Box
@@ -155,6 +240,13 @@ export default class xgenModelPage {
         await globalAction.waitAndClick(this.getColumnsTab());
 
     }
+    async clickJoin_1_Object(Join_1_Name: string) {
+        //click  on Join_1 Item Box
+        await globalAction.waitAndClick(this.getTitleOfSourceItemBox(Join_1_Name));
+        await globalAction.waitAndClick(this.getColumnsTab());
+
+    }
+
     async clickModelNameAndSelectTheRequiredColumnOneByOne(fieldName: string) {
         await globalAction.checkCheckbox(this.getLeftCheckBoxOfModelNameColumns(fieldName));
     }
@@ -190,11 +282,111 @@ export default class xgenModelPage {
         await playwrightWrapper.loadingWebPage();
         await globalAction.waitForElementHidden(this.getStartedSuccessMessage());
         await playwrightWrapper.loadingWebPage();
+
+    }
+
+    //------------------------------------//
+    async clickLookUpNodeSearchAndSelectSource(jsondata: any) {
+        let sourceObjectFromLookUpnodeP = jsondata[0].sourceObjectFromLookUpNode;
+        // Wait for the "Source Node" button to be visible and click it
+        await globalAction.waitAndClick(this.getLookUpNode());
+        // Wait for the "Tree View Expand Icon" to be visible and click it
+        await globalAction.waitAndClick(this.getLookUpNodeTreeExpand());
+        // Wait for the "CUSTOMER" text to be visible and click it
+        await globalAction.waitAndClick(`//p[text()='${sourceObjectFromLookUpnodeP}']`);
+    }
+
+    async clickJoinNode() {
+        await globalAction.waitAndClick(this.getJoinNode());
+    }
+    async joinSourceNodeToJoinNodeLeftSide(sourceOjectName: string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getSourceOjbectRightdot('ORDERS'), this.getJoin_OjbectLeftdot('JOIN_1'));
+    }
+    async joinLookNodeToJoinNodeLeftSide(sourceOjectName: string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getLookUpOjbectRightdot('ORDERITEMS'), this.getJoin_OjbectLeftdot('JOIN_1'));
+    }
+    async joinJoinNodeRightSideToModelName(sourceOjectName: string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getJoin_OjbectRightdot('JOIN_1'), this.getModelName_ObjectLeftdot('AUTOMATE_1SN_1LN'));
+    }
+
+    async clickFocusedObjectAndSelectAllTheColumns() {
+        await globalAction.click(this.getCheckBoxofAllFieldNameOfSourceObject());
+    }
+
+    async clickJoin_1_Join_Edit_Join_Join_Type_Condition() {
+
+        await globalAction.waitAndClick(this.getJoin_1_Join_Tab());
+        await globalAction.waitAndClick(this.getJoin_1_Join_Edit_Join());
+        await globalAction.waitAndClick(this.getJoin_1_Join_Tab_Join_Type());
+        await globalAction.click(this.getPlusConditionButtonIcon());
+
+        await globalAction.waitAndClick(this.getJoin_1_Join_Tab_Join_Type_Condition_left());
+        let fillinputleft = `//div[contains(@class,"css-1dvuvi7")]/div[1]//input[@spellcheck="false" and @role="combobox" ]`;
+        await globalAction.fillInput(fillinputleft, "ORDERID");
+        await globalAction.pressKey(fillinputleft, "Enter");
+
+
+
+
+        await globalAction.waitAndClick(this.getJoin_1_Join_Tab_Join_Type_Condition_Right());
+        let fillinputRight = `//div[contains(@class,"css-1dvuvi7")]/div[3]//input[@spellcheck="false" and @role="combobox" ]`;
+        await globalAction.fillInput(fillinputRight, "ORDERID");
+        await globalAction.pressKey(fillinputRight, "Enter");
+
+
+        await globalAction.waitAndClick(this.getApplyButton());
+        await playwrightWrapper.loadingWebPage();
+
+    }
+
+    async click_LookUpNodeSearchAndSelectSource(sourceObjectFromLookUpnodeP: string) {
+        fixture.logger.info(`The json data for sourceObjectFromLookup node : ${sourceObjectFromLookUpnodeP}`);
+       
+        // Wait for the "Source Node" button to be visible and click it
+        await globalAction.waitAndClick(this.getLookUpNode());
+        // Wait for the "Tree View Expand Icon" to be visible and click it
+        await globalAction.waitAndClick(this.getLookUpNodeTreeExpand());
+        // Wait for the "CUSTOMER" text to be visible and click it
+        await globalAction.waitAndClick(`//p[text()='${sourceObjectFromLookUpnodeP}']`);
+        await playwrightWrapper.loadingWebPage();
+    }
+    async clickStarNode() {
+        await globalAction.waitAndClick(this.getStarNode());
+    }
+    getStarNode() {
+        return `//span[@aria-label='Star Node']//button`;
+    }
+    async joinLookNodeToStarNodeLeftSide(lookupOjectNameRight: string, startOjbectLeftdot: string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getLookUpOjbectRightdot_St(lookupOjectNameRight), this.getStar_OjbectLeftdot(startOjbectLeftdot));
+    }
+    getStar_OjbectLeftdot(StarID: string): string {
+        return `//p[text()='${StarID}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='STN' and @data-handlepos='left']`;
+    }
+    async joinSourceNodeToStarNodeLeftSide(sourceOjectRightDot: string,startOjbectLeftdot: string) {
         
+        await globalAction.dragAndDrop(this.getSourceOjbectRightdot_St(sourceOjectRightDot), this.getStar_OjbectLeftdot(startOjbectLeftdot));
+    }
+    getSourceOjbectRightdot_St(sourceObject: string): string {
+        return `//span[text()='${sourceObject}']//ancestor::div[contains(@class,'selectable draggable')] //div[@data-handleid='SRN' and @data-handlepos='right']`;
+    }
+    getLookUpOjbectRightdot_St(sourceObject: string): string {
+        return `//span[text()='${sourceObject}']//ancestor::div[contains(@class,'selectable draggable')] //div[@data-handleid='LKN' and @data-handlepos='right']`;
     }
 
-    getStartedSuccessMessage(){
-        return `//p[contains(text(),'started successfully')]`;
+    async join_StarNodeRightSideToModelName(sourceStarOjectName: string,ModelObjectName:string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getStar_OjbectRightdot(sourceStarOjectName), this.getModelName_ObjectLeftdot_st(ModelObjectName));
     }
 
+    getStar_OjbectRightdot(starID: string): string {
+        return `//p[text()='${starID}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='STN' and @data-handlepos='right']`;
+    }
+
+    getModelName_ObjectLeftdot_st(modelName: string): string {
+        return `//p[text()='${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='OTN' and @data-handlepos='left']`;
+    }
 }

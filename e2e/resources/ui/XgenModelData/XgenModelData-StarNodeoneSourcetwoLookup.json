@@ -1,0 +1,10 @@
+[
+  {
+    "modelName": "AUTO_STARNODE111",
+    "modelDescription": "starnode with one source node and Two lookup node",
+    "sourceObjectFromSourceNode":"ORDERITEMS",
+    "sourceObjectFromLookUpNode1":"CUSTOMER",
+    "sourceObjectFromLookUpNode2":"CAMPAIGNS"
+
+  }
+]

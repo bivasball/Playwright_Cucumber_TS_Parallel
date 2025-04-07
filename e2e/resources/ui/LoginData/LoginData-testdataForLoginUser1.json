@@ -4,6 +4,8 @@
     "password": "12345678",
     "message": "Please login to a subscription.",
     "subscription": "TESTING",
-    "welcomeMessage":"Welcome, Bivas!"
+    "welcomeMessage":"Welcome, Bivas!",
+    "spaceName":"Automation",
+    "spaceDescription":"Fitness"
   }
 ]

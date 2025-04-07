@@ -2,6 +2,10 @@ import { expect} from "@playwright/test";
 import { fixture } from "@hooks/pageFixture";
 import  {TIMEOUT}  from "playwright.config";
 import PlaywrightWrapper from "@helper/wrapper/PlaywrightWrappers";
+import GlobalActions from "@helper/wrapper/GlobalActions";
+
+
+let globalaction = new GlobalActions();
 
 let playwrightWrapper = new PlaywrightWrapper();
 export default class xgenLoginPage {
@@ -130,18 +134,11 @@ export default class xgenLoginPage {
         fixture.logger.info(`Selecting radio option: ${radioOption}`);
 
         // Wait for the radio option to be visible
-        await fixture.page.waitForSelector("//*[text()='Fitness']/parent::div//input[@type='radio']", {
+        await fixture.page.waitForSelector(`//*[text()='${radioOption}']/parent::div//input[@type='radio']`, {
             state: "visible",
             timeout: TIMEOUT,
         });
-        await fixture.page.locator("//*[text()='Fitness']/parent::div//input[@type='radio']").check();
-        //wait for close icon to be visible
-        
-        fixture.logger.info(`waiting for close icon to be visible`);
-        await fixture.page.waitForSelector(`//button[@type='button' and @iconcolor='close']`, { state: "visible", timeout: TIMEOUT });
-        fixture.logger.info(`Clicking on the close icon`);
-        await fixture.page.locator(`//button[@type='button' and @iconcolor='close']`).click();
-        
+        await fixture.page.locator(`//*[text()='${radioOption}']/parent::div//input[@type='radio']`).check();
 
 
     }
@@ -171,4 +168,103 @@ export default class xgenLoginPage {
         await playwrightWrapper.loadingWebPage();
         fixture.logger.info(`Waiting for the logout process to complete`);
     }
+
+
+async creatSpaceIfNotPresent(jsonData: any) {
+
+    const spaceNamee = jsonData[0].spaceName;
+    const spaceDescrip = jsonData[0].spaceDescription;
+    console.log(`Checking if space is present: ${spaceNamee}`);
+    fixture.logger.info(`Checking if space is present: ${spaceNamee}`);
+    
+
+    // Check if the space Description is present
+    const isSpacePresent = await this.getTheNumberOfSpaceItemPresent(spaceDescrip);
+    console.log("isSpacePresent", isSpacePresent);
+
+    if (!isSpacePresent) {
+        console.log("Creating space as it is not present");
+        fixture.logger.info(`Creating space as it is not present`);
+        await this.creatSpace(spaceNamee,spaceDescrip);
+    } else {
+        console.log("Space already exists, no need to create it again");
+        fixture.logger.info(`Space already exists, no need to create it again`);
+    }
+
+
+}
+
+    async getTheNumberOfSpaceItemPresent(spaceName: string): Promise<boolean>{
+
+        let flag = false;
+        await playwrightWrapper.loadingWebPage();
+
+        // Get the number of rows displayed
+        await fixture.page.waitForSelector(
+            `//div[@role="radiogroup"]/div//p`,
+            { state: "visible", timeout: TIMEOUT }
+        );
+        const rows = fixture.page.locator(
+            `//div[@role="radiogroup"]/div//p`);
+            const numberOfRowsDisplayed = await rows.count();
+            console.log("number of spaces :-", numberOfRowsDisplayed);
+            // Iterate through each row to find the  name
+        for (let row = 1; row <= numberOfRowsDisplayed; row++) {
+            await playwrightWrapper.loadingWebPage();
+            let spacenameElement = `//div[@role="radiogroup"]/div[${row}]//p`;
+
+            // Wait for the element to be available
+            await fixture.page.waitForSelector(spacenameElement, {
+                state: "visible",
+                timeout: TIMEOUT,
+            });
+            const spacenameFromUI = await fixture.page
+            .locator(spacenameElement)
+            .textContent();
+        console.log("Model name from ui :-", spacenameFromUI);
+        //fixture.logger.info("Model name from ui :-", modelnameFromUI);
+        let expectedSpacename =  spaceName;
+        //console.log("Expected Model name from jsondata :-", expectedmodelname);
+        //fixture.logger.info("Expected Model name from jsondata :-", expectedmodelname);
+        if (spacenameFromUI?.trim() ===expectedSpacename) {
+            console.log("This is expect Space is present or true");
+            fixture.logger.info(`The required item is present in the row number: ${row}`);
+            flag = true;
+            break;
+        } else {
+            flag = false
+        }
+    }
+
+    return flag;
+
+
+        }
+
+        //if not present the create space.
+        async creatSpace(spaceNames: string, spaceDescriptions: string) {
+            console.log(`Creating space with name: ${spaceNames}`);
+
+            await globalaction.waitAndClick(`//p[text()='Space']/parent::button`);
+            await playwrightWrapper.loadingWebPage();
+            //wait for the create space page to load
+            await globalaction.typeWithDelay(`//input[@id="spacename" and @name="pacename"]`, spaceNames, 100);
+
+            await playwrightWrapper.loadingWebPage();
+            await globalaction.typeWithDelay(`//input[@id="spacedescription" and @name="spacedescription"]`, spaceDescriptions, 100);
+
+            await playwrightWrapper.loadingWebPage();
+            await globalaction.click(`//p[text()='Create']/parent::button`);
+            //await playwrightWrapper.loadingWebPage();
+
+            }
+
+
+    async closeTheSpaceModule() {
+        fixture.logger.info(`Clicking on the close icon`);
+        await fixture.page.locator(`//p[text()='Spaces']/parent::div/parent::div//button`).click();
+
+    }
+
+
 }

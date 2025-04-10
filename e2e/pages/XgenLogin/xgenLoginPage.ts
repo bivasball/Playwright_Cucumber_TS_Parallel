@@ -21,17 +21,17 @@ export default class xgenLoginPage {
             timeout: TIMEOUT,
         });
         fixture.logger.info("Verifying login page heading is visible");
-        await expect(fixture.page.getByRole('heading', { name: 'Log into your xGEN account' })).toBeVisible();
+        await expect(fixture.page.getByRole('heading', { name: 'Log into your xGEN account' })).toBeVisible({timeout: TIMEOUT});
 
         // Wait for the heading text to be visible
         await fixture.page.waitForSelector('h5', { state: "visible", timeout: TIMEOUT });
         fixture.logger.info("Verifying login page contains the correct heading text");
-        await expect(fixture.page.locator('h5')).toContainText('Log into your xGEN account');
+        await expect(fixture.page.locator('h5')).toContainText('Log into your xGEN account',{timeout: TIMEOUT});
 
         // Wait for the login form to be visible
         await fixture.page.waitForSelector('form', { state: "visible", timeout: TIMEOUT });
         fixture.logger.info("Verifying login form contains the text 'Login'");
-        await expect(fixture.page.locator('form')).toContainText('Login');
+        await expect(fixture.page.locator('form')).toContainText('Login',{timeout: TIMEOUT});
     }
 
     async login(jsonData: any) {
@@ -68,13 +68,13 @@ export default class xgenLoginPage {
 
         // Wait for the login message to be visible
         await fixture.page.waitForSelector(`text=${message}`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByText(message)).toBeVisible();
+        await expect(fixture.page.getByText(message)).toBeVisible({timeout: TIMEOUT});
 
         fixture.logger.info("Verifying login message is contained in the paragraph");
 
         // Wait for the paragraph containing the message to be visible
         await fixture.page.waitForSelector('role=paragraph', { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('paragraph')).toContainText(message);
+        await expect(fixture.page.getByRole('paragraph')).toContainText(message,{timeout: TIMEOUT});
     }
 
     async selectSubscription(jsonData: any) {
@@ -91,7 +91,7 @@ export default class xgenLoginPage {
 
         // Wait for the subscription option to be visible
         await fixture.page.waitForSelector(`role=option[name="${subscription}"]`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('option', { name: subscription })).toBeVisible();
+        await expect(fixture.page.getByRole('option', { name: subscription })).toBeVisible({timeout: TIMEOUT});
 
         fixture.logger.info(`Selecting subscription option: ${subscription}`);
         await fixture.page.getByRole('option', { name: subscription }).click();
@@ -106,7 +106,7 @@ export default class xgenLoginPage {
 
         // Wait for the button to be visible
         await fixture.page.waitForSelector(`role=button[name="${buttonName}"]`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('button', { name: buttonName })).toBeVisible();
+        await expect(fixture.page.getByRole('button', { name: buttonName })).toBeVisible({timeout: TIMEOUT});
     }
 
     async clickButton(buttonName: string) {
@@ -126,7 +126,7 @@ export default class xgenLoginPage {
 
         // Wait for the page heading to be visible
         await fixture.page.waitForSelector(`//p[text()='${pageName}']`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.locator(`//p[text()='${pageName}']`)).toBeVisible();
+        await expect(fixture.page.locator(`//p[text()='${pageName}']`)).toBeVisible({timeout: TIMEOUT});
     }
 
     async selectRadioOption(radioOption: string) {
@@ -151,7 +151,7 @@ export default class xgenLoginPage {
 
         // Wait for the welcome message to be visible
         await fixture.page.waitForSelector(`role=heading[name="${welcomeMessage}"]`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('heading', { name: welcomeMessage })).toBeVisible();
+        await expect(fixture.page.getByRole('heading', { name: welcomeMessage })).toBeVisible({timeout: TIMEOUT});
     }
 
     async logout() {

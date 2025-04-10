@@ -1,6 +1,8 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { getJsonDataUi } from "@helper/util/jsonFileReader";
 import xgenModelPage from "@pages/XgenModelPages/xgenModelPage";
+import { modifySampleDataParameterised } from "@helper/util/modifyTheJsonValue";
+//const { modifySampleDataParameterised } = require("@helper/util/modifyTheJsonValue");
 
 setDefaultTimeout(60 * 3 * 1000);
 let xgenmodelP = new xgenModelPage();
@@ -43,7 +45,32 @@ async function createLinearModel(jsonfilename: string) {
     await xgenmodelP.closeTheModel();
 };
 
+
+//----------VIEW-----------//
+Given(`user should be able to create a linear data model for Load Mode Standard View,using data {string}`, createLinearModel_View);
+async function createLinearModel_View(jsonfilename: string) {
+    console.log(`Step executed with data from json file: ${jsonfilename}`);
+    const jsonData = getJsonDataUi(jsonfilename);
+    
+    await xgenmodelP.addSelectViewRadioButton();
+    await xgenmodelP.EnterModelNameAndDescription(jsonData);
+
+    await xgenmodelP.clickSourceNodeSearchAndSelectSource(jsonData);
+    await xgenmodelP.joinSourceObjectFromSourceNodeToModelName_Xil();
+
+    await xgenmodelP.clickSourceObject(jsonData[0].sourceObjectFromSourceNode);
+    await xgenmodelP.clickSourceObjectAndSelectTheRequiredColumnOneByOne('city');
+    await xgenmodelP.clickSourceObjectAndSelectTheRequiredColumnOneByOne('state');
+    await xgenmodelP.exitFromFocusedObject();
+
+
+    await xgenmodelP.createOrSave();
+    await xgenmodelP.closeTheModel();
+};
+
+
 Given(`user should be able to execute the model for Load Mode Full Load {string}`, executeTheModel);
+Given(`user should be able to execute the Star Node model for Load Mode Full Load {string}`, executeTheModel);
 async function executeTheModel(jsonfilename: string) {
     console.log(`Step executed with data from json file: ${jsonfilename}`);
     const jsonData = getJsonDataUi(jsonfilename);
@@ -105,7 +132,7 @@ async function createsStarNodeWithOneSourceAndTwoLookup(jsonfilename: string) {
 
     await xgenmodelP.addSelectTableRadioButtonEnterModelNameAndDescription(jsonData);
 
-    //Source Node
+    //Source Node S_ORDERITEMS
     await xgenmodelP.clickSourceNodeSearchAndSelectSource(jsonData);
     await xgenmodelP.clickStarNode();
     await xgenmodelP.joinSourceNodeToStarNodeLeftSide('S_ORDERITEMS','STAR_1');
@@ -113,7 +140,7 @@ async function createsStarNodeWithOneSourceAndTwoLookup(jsonfilename: string) {
     await xgenmodelP.clickFocusedObjectAndSelectAllTheColumns();
     await xgenmodelP.exitFromFocusedObject();
 
-    //look up Node -CUSTOMER
+    //look up Node L-CUSTOMER
     let lookupNode_Object1 = jsonData[0].sourceObjectFromLookUpNode1;
     await xgenmodelP.click_LookUpNodeSearchAndSelectSource(lookupNode_Object1);
 
@@ -122,19 +149,53 @@ async function createsStarNodeWithOneSourceAndTwoLookup(jsonfilename: string) {
     await xgenmodelP.clickFocusedObjectAndSelectAllTheColumns();
     await xgenmodelP.exitFromFocusedObject();
 
-    //look up Node -CAMPAIGNS
+    //look up Node L-CAMPAIGNS
     let lookupNode_Object2 = jsonData[0].sourceObjectFromLookUpNode2;
     await xgenmodelP.click_LookUpNodeSearchAndSelectSource(lookupNode_Object2);
 
     await xgenmodelP.joinLookNodeToStarNodeLeftSide('L_CAMPAIGNS','STAR_1');
-    await xgenmodelP.clickSourceObject(lookupNode_Object2);
+    await xgenmodelP.clickSourceObject_Third(lookupNode_Object2);
     await xgenmodelP.clickFocusedObjectAndSelectAllTheColumns();
     await xgenmodelP.exitFromFocusedObject();
 
     //STAR_1 node
     let modelNameDisplayed = `XDL_${modelname}`;
     await xgenmodelP.join_StarNodeRightSideToModelName("STAR_1",modelNameDisplayed);
+    await xgenmodelP.clickStar_1_Object("STAR_1");
+    await xgenmodelP.clickFocusedObjectAndSelectAllTheColumns();
+    await xgenmodelP.clickStar_join_tab();
+    await xgenmodelP.clickStar_EditJoin();
+    await xgenmodelP.exitFromFocusedObject();
 
+    //Model Name
+    await xgenmodelP.clickModelNameObject(modelNameDisplayed);
+    await xgenmodelP.clickModelNameAndSelectTheRequiredColumnOneByOne('price');
+    await xgenmodelP.clickModelNameAndSelectTheRequiredColumnOneByOne('itemid');
+    await xgenmodelP.exitFromFocusedObject();
 
+    await xgenmodelP.createOrSave();
+    await xgenmodelP.verifyTheStatus_Valid();
+    await xgenmodelP.closeTheModel();
 
 }
+
+//------------------UNIQUE DATA creation --------------------//
+
+
+Given(`user sets up unique data for View and navigates to the Model page {string}`, setUpUniqueData_modifyTheJsonValue);
+async function setUpUniqueData_modifyTheJsonValue(jsonfilename: string) {
+    //The keyName -the value of which will be replaced by a  counter value //
+    var keyName = `modelName`;
+    modifySampleDataParameterised(jsonfilename,keyName);
+    await xgenmodelP.navigateToModelPage();
+
+};
+
+Given(`user setup unique data and navigate to the Model page {string}`, setUpUniqueDataForStar1_modifyTheJsonValue);
+async function setUpUniqueDataForStar1_modifyTheJsonValue(jsonfilename: string) {
+    //The keyName -the value of which will be replaced by a  counter value //
+    var keyName = `modelName`;
+    modifySampleDataParameterised(jsonfilename,keyName);
+    await xgenmodelP.navigateToModelPage();
+
+};

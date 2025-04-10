@@ -1,0 +1,7 @@
+[
+  {
+    "modelName": "VIEW_AUTOMATE",
+    "modelDescription": "View Testing the model with automation",
+    "sourceObjectFromSourceNode":"CUSTOMER"
+  }
+]

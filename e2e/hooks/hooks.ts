@@ -6,6 +6,7 @@ import { getEnv } from "../helper/env/env";
 import { createLogger } from "winston";
 import { options } from "../helper/util/logger";
 import  {TIMEOUT}  from "playwright.config";
+import defineConfig from "playwright.config";
 const fs = require("fs-extra");
 
 let browser: Browser;
@@ -21,13 +22,19 @@ BeforeAll(async function () {
 
 // It will trigger for not auth scenarios
 Before({ tags: "not @auth" }, async function ({ pickle }) {
+    const videoConfig = defineConfig.use.video as { mode: string, size: { width: number, height: number } };
+
+    console.log(`Video Mode: ${videoConfig.mode}`);
+    console.log(`Video Size: Width = ${videoConfig.size.width}, Height = ${videoConfig.size.height}`);
+
+
     const scenarioName = pickle.name + pickle.id;
 
     // Check if running in local mode
     const isLocal = process.env.npm_config_RUN_MODE === "local";
 
     context = await browser.newContext({
-        recordVideo: isLocal ? { dir: "test-results/videos" } : undefined, // Enable video recording only in local mode
+        recordVideo: isLocal ? { dir: "test-results/videos",size: videoConfig.size } : undefined, // Enable video recording only in local mode
     });
 
     await context.tracing.start({

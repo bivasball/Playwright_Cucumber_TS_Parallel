@@ -1,4 +1,4 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from "@playwright/test";
 
 export const TIMEOUT = 60_000; // Set the global timeout value (60 seconds)
 
@@ -7,6 +7,11 @@ export default defineConfig({
   use: {
     actionTimeout: TIMEOUT, // Timeout for individual actions
     navigationTimeout: 50_000, // Timeout for navigation actions
+    video: {
+      mode: "on",
+      //size: { width: 640, height: 480 },
+      size: { width: 1280, height: 720 }
+    },
   },
   expect: {
     timeout: 10_000,

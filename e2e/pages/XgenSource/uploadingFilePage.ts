@@ -9,7 +9,7 @@ let playwrightWrapper = new PlaywrightWrapper();
 export default class uploadingFilePage {
     async clickonUploadFileButton() {
         console.log("===Navigate to Connect page===");
-        await expect(fixture.page.locator("#root")).toContainText("Upload File");
+        await expect(fixture.page.locator("#root")).toContainText("Upload File",{timeout: TIMEOUT});
         await fixture.page.getByRole("button", { name: "Upload File" }).click();
         await playwrightWrapper.loadingWebPage();
     }
@@ -32,7 +32,7 @@ export default class uploadingFilePage {
     async uploadfiles(jsonData: any) {
 
         console.log("===Click on the Upload button===");
-        await expect(fixture.page.locator("#root")).toContainText("Upload File");
+        await expect(fixture.page.locator("#root")).toContainText("Upload File",{timeout: TIMEOUT});
         await fixture.page.getByRole("button", { name: "Upload File" }).click();
         await playwrightWrapper.loadingWebPage();
 
@@ -89,7 +89,7 @@ export default class uploadingFilePage {
             timeout: TIMEOUT,
         });
         fixture.logger.info("Waiting for 'File Upload' dialog to be visible...");
-        await expect(fixture.page.getByRole("dialog")).toContainText("File Upload");
+        await expect(fixture.page.getByRole("dialog")).toContainText("File Upload",{timeout: TIMEOUT});
         fixture.logger.info("Verified 'File Upload' dialog is visible.");
 
         // Verify labels
@@ -99,7 +99,7 @@ export default class uploadingFilePage {
         });
         fixture.logger.info("Waiting for 'Source Name *' label to be visible...");
         await expect(fixture.page.locator("#srcname-label")).toContainText(
-            "Source Name *"
+            "Source Name *",{timeout: TIMEOUT}
         );
         fixture.logger.info("Verified 'Source Name *' label is visible.");
 
@@ -111,7 +111,7 @@ export default class uploadingFilePage {
             "Waiting for 'Source Description *' label to be visible..."
         );
         await expect(fixture.page.locator("#srcdesc-label")).toContainText(
-            "Source Description *"
+            "Source Description *",{timeout: TIMEOUT}
         );
         fixture.logger.info("Verified 'Source Description *' label is visible.");
 
@@ -145,7 +145,7 @@ export default class uploadingFilePage {
             "Waiting for file upload confirmation in the dialog..."
         );
         await expect(fixture.page.getByRole("dialog")).toContainText(
-            `Name: ${fileNames}`
+            `Name: ${fileNames}`,{timeout: TIMEOUT}
         );
         fixture.logger.info(
             `Verified uploaded file name in the dialog: ${fileNames}`
@@ -170,9 +170,9 @@ export default class uploadingFilePage {
             "Waiting for the source name to appear on the board..."
         );
         await playwrightWrapper.loadingWebPage();
-        await expect(fixture.page.locator("#root")).toContainText(sourceName);
+        await expect(fixture.page.locator("#root")).toContainText(sourceName,{timeout: TIMEOUT});
         fixture.logger.info(
-            `The filename entered is present on the board: ${sourceName}`
+            `The filename entered is present on the board: ${sourceName}`,{timeout: TIMEOUT}
         );
         await playwrightWrapper.loadingWebPage();
     }

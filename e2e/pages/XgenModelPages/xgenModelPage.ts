@@ -2,6 +2,7 @@ import { fixture } from "@hooks/pageFixture";
 import PlaywrightWrapper from "@helper/wrapper/PlaywrightWrappers";
 import GlobalActions from "@helper/wrapper/GlobalActions";
 import { expect } from "@playwright/test";
+import { TIMEOUT } from "playwright.config";
 
 
 let playwrightWrapper = new PlaywrightWrapper();
@@ -19,6 +20,9 @@ export default class xgenModelPage {
     }
     getTableRadioButton() {
         return `//input[@type='radio' and @value='DLM']`;
+    }
+    getViewRadioButton() {
+        return `//input[@type='radio' and @value='ILM']`;
     }
     getModelName() {
         return `role=textbox[name="Model Name"]`;
@@ -47,6 +51,9 @@ export default class xgenModelPage {
     }
     getRightNodeLeftSideDot() {
         return `//div[@data-handleid='OTN' and @data-nodeid='OTN_NODE' and @data-handlepos='left']`;
+    }
+    getRightNodeLeftSideDot_Xil() {
+        return `//div[@data-handleid='SEN' and @data-nodeid='SEN_NODE' and @data-handlepos='left']`;
     }
 
     getSaveButton() {
@@ -179,7 +186,10 @@ export default class xgenModelPage {
         // join left node with Right node
         await globalAction.dragAndDrop(this.getLeftNodeRightSideDot(), this.getRightNodeLeftSideDot());
     }
-
+    async joinSourceObjectFromSourceNodeToModelName_Xil() {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getLeftNodeRightSideDot(), this.getRightNodeLeftSideDot_Xil());
+    }
     async createOrSave() {
 
         // Click on the "Create" button
@@ -209,6 +219,11 @@ export default class xgenModelPage {
         await globalAction.waitAndClick(this.getTitleOfLeftItem(sourceName));
         await globalAction.waitAndClick(this.getColumnsTab());
     }
+    async clickSourceObject_Third(sourceName: string) {
+        //click
+        await globalAction.click(`//span[text()='${sourceName}']`);
+        await globalAction.waitAndClick(this.getColumnsTab());
+    }
     async clickSourceObjectAndSelectTheRequiredColumnOneByOne(fieldName: string) {
         await globalAction.checkCheckbox(this.getCheckBoxOfFieldName(fieldName));
     }
@@ -227,7 +242,7 @@ export default class xgenModelPage {
 
         console.log("Status is ======================", status);
 
-        await expect(fixture.page.locator(statusMessageLoc)).toContainText("Valid");
+        await expect(fixture.page.locator(statusMessageLoc)).toContainText("Valid",{timeout: TIMEOUT});
         fixture.logger.info(`Verified that the status message contains the text: "Valid".`);
 
         await playwrightWrapper.loadingWebPage();
@@ -247,6 +262,12 @@ export default class xgenModelPage {
 
     }
 
+    async clickStar_1_Object(Join_1_Name: string) {
+        //click  on Join_1 Item Box
+        await globalAction.waitAndClick(this.getTitleOfSourceItemBox(Join_1_Name));
+        await globalAction.waitAndClick(this.getColumnsTab());
+
+    }
     async clickModelNameAndSelectTheRequiredColumnOneByOne(fieldName: string) {
         await globalAction.checkCheckbox(this.getLeftCheckBoxOfModelNameColumns(fieldName));
     }
@@ -277,7 +298,7 @@ export default class xgenModelPage {
             await playwrightWrapper.executeModelFullLoad(presentOrNotRow);
         }
         // Verify the success message text
-        await expect(fixture.page.locator(this.getStartedSuccessMessage())).toContainText("started successfully");
+        await expect(fixture.page.locator(this.getStartedSuccessMessage())).toContainText("started successfully",{timeout: TIMEOUT});
         fixture.logger.info(`Verified the success message: 'Model  _${modelname}, Model data load started successfully..`);
         await playwrightWrapper.loadingWebPage();
         await globalAction.waitForElementHidden(this.getStartedSuccessMessage());
@@ -388,5 +409,65 @@ export default class xgenModelPage {
 
     getModelName_ObjectLeftdot_st(modelName: string): string {
         return `//p[text()='${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='OTN' and @data-handlepos='left']`;
+    }
+
+
+    async addSelectViewRadioButton() {
+       
+
+        // Wait for the "Add" link to be visible and click it
+        await globalAction.waitAndClick(this.getTheAddOrPlusIcon());
+
+        // Wait for the "View" radio button to be visible and check it
+        await globalAction.checkCheckbox(this.getViewRadioButton());
+
+        
+    }
+
+
+    async EnterModelNameAndDescription(jsondata: any) {
+        let modelname = jsondata[0].modelName;
+        let modelDesc = jsondata[0].modelDescription;
+        // Wait for the "Model Name" textbox to be visible and fill it
+        await globalAction.waitAndClick(this.getModelName());
+        await globalAction.typeWithDelay(this.getModelName(), modelname);
+
+        // Wait for the "Model Desc" textbox to be visible and fill it
+        await globalAction.waitAndClick(this.getModelDesc());
+        await globalAction.typeWithDelay(this.getModelDesc(), modelDesc);
+    }
+
+    async clickStar_join_tab(){
+        fixture.logger.info(`Clicking on Star join tab`);
+        await globalAction.click(`//button[text()="Star Join"]`);
+
+
+    }
+
+    async clickStar_EditJoin() {
+        //click on Edit
+        fixture.logger.info(`Clicking on edit `);
+        await globalAction.click(`//button[@type="button" and @iconcolor="edit"]`);
+
+        //1st row order items
+        fixture.logger.info(`Filling the 1st row order item 's_orderitems' with 'ORDERID'`);
+        await globalAction.typeWithDelay(`(//input[@aria-autocomplete])[2]`, `ORDERID`);
+        await globalAction.pressKey('(//input[@aria-autocomplete])[2]', 'Enter');
+        //1st row l_customer
+        fixture.logger.info(`Filling the 2nd row order item 'l_customer' with 'EMP_ID'`);
+        await globalAction.typeWithDelay(`(//input[@aria-autocomplete])[3]`, `CUSTOMERID`);
+        await globalAction.pressKey('(//input[@aria-autocomplete])[3]', 'Enter');
+        //3rd  row s_orderitems
+        fixture.logger.info(`Filling the 2nd row order item 's_orderitems' with 'CURRENCY'`);
+        await globalAction.typeWithDelay(`(//input[@aria-autocomplete])[4]`, `CURRENCY`);
+        await globalAction.pressKey('(//input[@aria-autocomplete])[4]', 'Enter');
+        //4th  row l_campaigns
+        fixture.logger.info(`Filling the 2nd row order item 'l_campaigns' with 'TARGETAUDIENCE`);
+        await globalAction.typeWithDelay(`(//input[@aria-autocomplete])[5]`, `TARGETAUDIENCE`);
+        await globalAction.pressKey('(//input[@aria-autocomplete])[5]', 'Enter');
+
+        //click Apply button
+        await globalAction.click(`//button[@type="button" and @iconcolor="confirm"]`);
+
     }
 }

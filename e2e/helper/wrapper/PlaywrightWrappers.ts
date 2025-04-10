@@ -237,7 +237,7 @@ export default class PlaywrightWrapper {
         // Iterate through each row to find the  name
         for (let row = 1; row <= numberOfRowsDisplayed; row++) {
             await this.loadingWebPage();
-            let modelnameElement = `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${row}]/div/div/div//span//p[contains(@class,'15tiehw')]`;
+            let modelnameElement = `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${row}]/div/div/div//span//p[starts-with(text(),"X")]`;
 
             // Wait for the element to be available
             await fixture.page.waitForSelector(modelnameElement, {
@@ -252,7 +252,8 @@ export default class PlaywrightWrapper {
             //fixture.logger.info("Model name from ui :-", modelnameFromUI);
             let expectedmodelname = '_' + modelname;
             //console.log("Expected Model name from jsondata :-", expectedmodelname);
-            //fixture.logger.info("Expected Model name from jsondata :-", expectedmodelname);
+            //console.log("Expected Model name from jsondata :-", expectedmodelname);
+           // fixture.logger.info("Expected Model name from jsondata :-", expectedmodelname);
             if (modelnameFromUI?.trim().includes(expectedmodelname)) {
                 console.log("This is true");
                 fixture.logger.info(`The required item is present in the row number: ${row}`);
@@ -292,7 +293,7 @@ export default class PlaywrightWrapper {
         // Iterate through each row to find the  name
         for (let row = 1; row <= numberOfRowsDisplayed; row++) {
             await this.loadingWebPage();
-            let modelnameElement = `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${row}]/div/div/div//span//p[contains(@class,'15tiehw')]`;
+            let modelnameElement = `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${row}]/div/div/div//span//p[starts-with(text(),"X")]`;
 
             // Wait for the element to be available
             await fixture.page.waitForSelector(modelnameElement, {

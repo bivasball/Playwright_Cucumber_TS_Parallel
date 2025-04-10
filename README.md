@@ -22,6 +22,9 @@ npm run  testUat -- --RUN_MODE=local --BROWSER=chrome  --TAGS="@xgen and @e2e an
 
 ## to run all the three at once by tags --
 npm run testUat -- --RUN_MODE=local --BROWSER=chrome --TAGS="@xgen and @e2e and (@test_001 or @test_002 or @test_003)"
+
+# video resolution is configurable , placed in playwright.config.ts, 
+size: { width: 1280, height: 720 }
  ===============================================================
 
 # How to View the Trace?Generate the Trace File:

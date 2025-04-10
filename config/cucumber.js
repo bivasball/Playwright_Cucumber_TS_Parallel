@@ -8,7 +8,8 @@ module.exports = {
             "e2e/test/features/XgenLoginFeature/*.feature",
             "e2e/test/features/XgenSourceFeatures/*.feature",
             "e2e/test/features/XgenSyncFeatures/*.feature",
-            "e2e/test/features/XgenModelFeature/*.feature"
+            "e2e/test/features/XgenModelFeature/*.feature",
+            
 
         ],
         publishQuiet: true,

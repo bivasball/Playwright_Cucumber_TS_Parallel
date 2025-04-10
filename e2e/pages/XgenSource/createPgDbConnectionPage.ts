@@ -205,7 +205,7 @@ export default class createPgDbConnectionPage {
         //fixture.logger.info("Waiting for 'Validate' button to be visible...");
         //await fixture.page.locator("//p[text()='Validate']/parent::button").click();
         //fixture.logger.info("Clicked on 'Validate' button.");
-        //await expect(fixture.page.getByRole("alert")).toContainText("successfully");
+        //await expect(fixture.page.getByRole("alert")).toContainText("successfully",{timeout: TIMEOUT});
 
         // Wait for "Create" button and click it
         await fixture.page.waitForSelector('role=button[name="Create"]', {
@@ -224,7 +224,7 @@ export default class createPgDbConnectionPage {
         await playwrightWrapper.loadingWebPage();
         await expect(
             fixture.page.locator(`//p[contains(text(),'created successfully')]`)
-        ).toContainText("created successfully");
+        ).toContainText("created successfully",{timeout: TIMEOUT});
     }
 
     async editTheSourceReEnterThePaswordAndSaveThenValidate(jsonData: any) {
@@ -284,7 +284,7 @@ export default class createPgDbConnectionPage {
             fixture.logger.info("Waiting for `updated successfully` to be visible.");
             await expect(
                 fixture.page.locator(`//p[contains(text(),'updated successfully')]`)
-            ).toContainText("updated successfully");
+            ).toContainText("updated successfully",{timeout: TIMEOUT});
 
             // Wait for the "close" button to be visible and click i
             await fixture.page.getByLabel("close").click();
@@ -298,7 +298,7 @@ export default class createPgDbConnectionPage {
             );
             await expect(
                 fixture.page.locator(`//p[contains(text(),'Successful')]`)
-            ).toContainText("Source validation Successful.");
+            ).toContainText("Source validation Successful.",{timeout: TIMEOUT});
             //type="button" iconcolor="close"
             //closing the validation pop up by click on cross icon
             let crossicon = `//div[contains(@class,'MuiCardActions-root')]//button[@type='button' and  @iconcolor='close']`;

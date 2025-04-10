@@ -107,8 +107,8 @@ export default class xgenSyncPage {
         fixture.logger.info("Waiting for the success message to be visible...");
 
         // Verify the success message text
-        await expect(fixture.page.locator(`//p[contains(text(),'created successfully')]`)).toContainText("created successfully");
-        fixture.logger.info(`Verified the success message: 'Sync XDF_${syncNamedata} created successfully.`);
+        await expect(fixture.page.locator(`//p[contains(text(),'created successfully')]`)).toContainText("created successfully",{timeout: TIMEOUT});
+        fixture.logger.info(`Verified the success message: 'Sync XDF_${syncNamedata} created successfully.`,);
 
 
     }

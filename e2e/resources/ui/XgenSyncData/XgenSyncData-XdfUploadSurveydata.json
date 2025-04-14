@@ -1,0 +1,12 @@
+
+[
+    {
+      "syncName": "SURVEY_TEST_UPDFILE",
+      "SyncDescription": "survey data load testing",
+      "selectSource":"Survey testing by automation",
+      "selectDestination":"Testing DW",
+      "EntityName":"SURVEY_TEST",
+      "TableName":"Survey_Results"
+      
+    }
+  ]

@@ -10,7 +10,10 @@ function updateCounter() {
     if (fs.existsSync(COUNTER_FILE)) {
         const data = fs.readFileSync(COUNTER_FILE, 'utf8');
         const parsedData = JSON.parse(data);
-        counter = parseInt(parsedData.count, 10) + 1;
+        //counter = parseInt(parsedData.count, 10) + 1;
+        //The % 1000 ensures that when the counter hits 1000, it resets to 0.
+        //|| 1 ensures that if the counter ever becomes 0 (after modulus operation), it resets to 1.
+        counter = (parseInt(parsedData.count, 10) + 1) % 1000 || 1;
     }
 
     // Save updated count to file

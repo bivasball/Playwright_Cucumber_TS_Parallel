@@ -13,7 +13,9 @@
 6.1 npm install tsconfig-paths --save-dev
 6.2 npm install cross-env --save-dev
 
-7. 
+### to record elements in playwright ###
+npx playwright codegen https://xgenuat.uxli.com
+
 ### to run in Headless mode of Chrome, no video recording.
 npm run testUat --BROWSER=chromeHeadless --TAGS="@xgen and @e2e and @test_001"
 

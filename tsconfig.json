@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "lib": [
-            "es2021"
+            "es2021","dom"
         ],
         "typeRoots": [
             "./node_modules/@types",
@@ -24,10 +24,14 @@
             ]
         },
         "allowJs": true, // Allow importing JavaScript files
-        "checkJs": false // Disable type checking for JavaScript files
+        "checkJs": false, // Disable type checking for JavaScript files
+        "outDir": "./dist" // Specify output directory for compiled files
     },
     "include": [
         "e2e/**/*.ts", // Include all TypeScript files in the "e2e" directory
         "playwright.config.ts" // Include the Playwright configuration file
+    ],
+    "exclude": [
+        "e2e/helper/util" // Exclude the entire "e2e/helper/util" directory
     ]
 }

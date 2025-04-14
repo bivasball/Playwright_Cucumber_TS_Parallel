@@ -78,6 +78,16 @@ async function executeTheModel(jsonfilename: string) {
 
 };
 
+Given(`user should be able to execute the Star Node model for Load Mode Full Load and see the Data Preview {string}`, executeTheModelAndSeeDataPreview);
+async function executeTheModelAndSeeDataPreview(jsonfilename: string) {
+    console.log(`Step executed with data from json file: ${jsonfilename}`);
+    const jsonData = getJsonDataUi(jsonfilename);
+    await xgenmodelP.runAndDataPreview(jsonData);
+    await xgenmodelP.verifyThatTheDataPreviewContainsData();
+    
+    await xgenmodelP.closeTheModel();
+
+};
 
 //-----------------------//---------------------//
 
@@ -175,7 +185,7 @@ async function createsStarNodeWithOneSourceAndTwoLookup(jsonfilename: string) {
 
     await xgenmodelP.createOrSave();
     await xgenmodelP.verifyTheStatus_Valid();
-    await xgenmodelP.closeTheModel();
+   
 
 }
 

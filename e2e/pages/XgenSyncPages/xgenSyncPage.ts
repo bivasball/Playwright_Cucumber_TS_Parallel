@@ -45,6 +45,8 @@ export default class xgenSyncPage {
         let descriptionData = jsonData[0].SyncDescription;
         let selectSourceData = jsonData[0].selectSource;
         let selectDestinationData = jsonData[0].selectDestination;
+        let selectEntityName = jsonData[0].EntityName;
+        let selectTableName = jsonData[0].TableName;
 
 
         // Click on the "Add" link
@@ -92,7 +94,7 @@ export default class xgenSyncPage {
         fixture.logger.info("Checked 'FieldsEntitySync Mode' checkbox.");
 
         // Select the conversion rate
-        await this.checkThePrimaryKeysOfAnEntity('leadconversion', 'conversion_rate');
+        await this.checkThePrimaryKeysOfAnEntity(selectEntityName,selectTableName);
 
 
         // Click the "Create" button

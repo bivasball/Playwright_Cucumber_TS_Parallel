@@ -139,6 +139,34 @@ export default class xgenModelPage {
     getCheckBoxofAllFieldNameOfSourceObject() {
         return `//div[contains(@class,"1cw00c7")]//input[contains(@class,"1m9pwf3") and @type="checkbox"]`;
     }
+    getStar_OjbectRightdot(starID: string): string {
+        return `//p[text()='${starID}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='STN' and @data-handlepos='right']`;
+    }
+
+    getModelName_ObjectLeftdot_st(modelName: string): string {
+        return `//p[text()='${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='OTN' and @data-handlepos='left']`;
+    }
+    getStarNode() {
+        return `//span[@aria-label='Star Node']//button`;
+    }
+    async joinLookNodeToStarNodeLeftSide(lookupOjectNameRight: string, startOjbectLeftdot: string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getLookUpOjbectRightdot_St(lookupOjectNameRight), this.getStar_OjbectLeftdot(startOjbectLeftdot));
+    }
+    getStar_OjbectLeftdot(StarID: string): string {
+        return `//p[text()='${StarID}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='STN' and @data-handlepos='left']`;
+    }
+    async joinSourceNodeToStarNodeLeftSide(sourceOjectRightDot: string, startOjbectLeftdot: string) {
+
+        await globalAction.dragAndDrop(this.getSourceOjbectRightdot_St(sourceOjectRightDot), this.getStar_OjbectLeftdot(startOjbectLeftdot));
+    }
+    getSourceOjbectRightdot_St(sourceObject: string): string {
+        return `//span[text()='${sourceObject}']//ancestor::div[contains(@class,'selectable draggable')] //div[@data-handleid='SRN' and @data-handlepos='right']`;
+    }
+    getLookUpOjbectRightdot_St(sourceObject: string): string {
+        return `//span[text()='${sourceObject}']//ancestor::div[contains(@class,'selectable draggable')] //div[@data-handleid='LKN' and @data-handlepos='right']`;
+    }
+
     //locator --end//
 
 
@@ -377,40 +405,14 @@ export default class xgenModelPage {
     async clickStarNode() {
         await globalAction.waitAndClick(this.getStarNode());
     }
-    getStarNode() {
-        return `//span[@aria-label='Star Node']//button`;
-    }
-    async joinLookNodeToStarNodeLeftSide(lookupOjectNameRight: string, startOjbectLeftdot: string) {
-        // join left node with Right node
-        await globalAction.dragAndDrop(this.getLookUpOjbectRightdot_St(lookupOjectNameRight), this.getStar_OjbectLeftdot(startOjbectLeftdot));
-    }
-    getStar_OjbectLeftdot(StarID: string): string {
-        return `//p[text()='${StarID}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='STN' and @data-handlepos='left']`;
-    }
-    async joinSourceNodeToStarNodeLeftSide(sourceOjectRightDot: string,startOjbectLeftdot: string) {
-        
-        await globalAction.dragAndDrop(this.getSourceOjbectRightdot_St(sourceOjectRightDot), this.getStar_OjbectLeftdot(startOjbectLeftdot));
-    }
-    getSourceOjbectRightdot_St(sourceObject: string): string {
-        return `//span[text()='${sourceObject}']//ancestor::div[contains(@class,'selectable draggable')] //div[@data-handleid='SRN' and @data-handlepos='right']`;
-    }
-    getLookUpOjbectRightdot_St(sourceObject: string): string {
-        return `//span[text()='${sourceObject}']//ancestor::div[contains(@class,'selectable draggable')] //div[@data-handleid='LKN' and @data-handlepos='right']`;
-    }
+    
 
     async join_StarNodeRightSideToModelName(sourceStarOjectName: string,ModelObjectName:string) {
         // join left node with Right node
         await globalAction.dragAndDrop(this.getStar_OjbectRightdot(sourceStarOjectName), this.getModelName_ObjectLeftdot_st(ModelObjectName));
     }
 
-    getStar_OjbectRightdot(starID: string): string {
-        return `//p[text()='${starID}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='STN' and @data-handlepos='right']`;
-    }
-
-    getModelName_ObjectLeftdot_st(modelName: string): string {
-        return `//p[text()='${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='OTN' and @data-handlepos='left']`;
-    }
-
+  
 
     async addSelectViewRadioButton() {
        
@@ -441,7 +443,6 @@ export default class xgenModelPage {
         fixture.logger.info(`Clicking on Star join tab`);
         await globalAction.click(`//button[text()="Star Join"]`);
 
-
     }
 
     async clickStar_EditJoin() {
@@ -470,4 +471,48 @@ export default class xgenModelPage {
         await globalAction.click(`//button[@type="button" and @iconcolor="confirm"]`);
 
     }
+
+    async runAndDataPreview(jsondata: any) {
+        let modelname = jsondata[0].modelName;
+        // Run button
+        await globalAction.waitAndClick(`//p[text()="Run"]/parent::button`);
+        // validate the message
+        // Verify the success message text
+        await expect(fixture.page.locator(this.getStartedSuccessMessage())).toContainText("started successfully", { timeout: TIMEOUT });
+        fixture.logger.info(`Verified the success message: 'Model  _${modelname}, Model data load started successfully..`);
+        await playwrightWrapper.loadingWebPage();
+        await globalAction.waitForElementHidden(this.getStartedSuccessMessage());
+        await playwrightWrapper.loadingWebPage();
+
+        //click on data preview
+        await globalAction.waitAndClick(`//span[@aria-label="Data Preview"]/button`);
+
+        await expect(fixture.page.locator(`//h2`)).toContainText("Preview Data for:", { timeout: TIMEOUT });
+        fixture.logger.info(`Verified the header ', Preview Data for:`);
+        await playwrightWrapper.loadingWebPage();
+
+    }
+
+    async verifyThatTheDataPreviewContainsData(){
+        //verify that the data preview contains ROWS
+        let thelocator = `//div[class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]/*`;
+        //await globalAction.waitForElementVisible(thelocator);
+        const rows = fixture.page.locator(thelocator);
+
+        const numberOfRowsDisplayed = await rows.count();
+        console.log("ROWS displayed in the Data preview window :-", numberOfRowsDisplayed);
+        fixture.logger.info("ROWS displayed in the Data preview window :-", numberOfRowsDisplayed);
+        if (numberOfRowsDisplayed > 0) {
+            console.log("Expectation passed: Rows are displayed.");
+            fixture.logger.info("Expectation passed: Rows are displayed.");
+        } else {
+            console.log("Expectation failed: No rows displayed.");
+            fixture.logger.info("Expectation passed: Rows are displayed.");
+        }
+
+        //pop up window close
+        await globalAction.waitAndClick(`//div[contains(@class,"css-b07ifn")]//p[text()="Close"]/parent::button`);
+
+    }
+
 }

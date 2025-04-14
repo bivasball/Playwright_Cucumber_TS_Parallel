@@ -56,6 +56,8 @@ export default class xgenLoginPage {
         // Wait for the login button to be visible
         await fixture.page.waitForSelector('role=button[name="Login"]', { state: "visible", timeout: TIMEOUT });
         await fixture.page.getByRole('button', { name: 'Login' }).click();
+        console.log(`======using the Highlighter in every Click =========`);
+        await playwrightWrapper.injectMouseHighlighter();
         await playwrightWrapper.loadingWebPage();
         fixture.logger.info("Waiting for the login process to complete");
     }
@@ -158,8 +160,8 @@ export default class xgenLoginPage {
         fixture.logger.info(`Click on the name`);
 
         // Wait for the "BB" button to be visible
-        await fixture.page.waitForSelector('role=button[name="BB"]', { state: "visible", timeout: TIMEOUT });
-        await fixture.page.getByRole('button', { name: 'BB' }).click();
+        await fixture.page.waitForSelector(`//div[@class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1i1u6fl"]`, { state: "visible", timeout: TIMEOUT });
+        await fixture.page.locator(`//div[@class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1i1u6fl"]`).click();
         fixture.logger.info(`Click on the logout button`);
 
         // Wait for the "Logout" button to be visible

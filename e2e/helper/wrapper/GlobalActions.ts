@@ -196,4 +196,19 @@ export default class GlobalActions {
         await fixture.page.waitForLoadState("networkidle", { timeout: TIMEOUT });
     }
 
+    async scrollHorizontally(locator: string, deltaX: number, deltaY: number = 0) {
+        // Locate the horizontal scrollbar
+        const slider = fixture.page.locator(locator);
+        await slider.scrollIntoViewIfNeeded(); // Ensure the element is visible
+        fixture.logger.info(`Scrolling horizontally by: ${deltaX} pixels`);
+        await fixture.page.mouse.wheel(deltaX, deltaY);
+    }
+    async  holdKeyFor(key: string, duration: number): Promise<void> {
+        fixture.logger.info(`Pressing and holding key "${key}" for ${duration} milliseconds.`);
+        await fixture.page.keyboard.down(key);
+        await fixture.page.waitForTimeout(duration);
+        await fixture.page.keyboard.up(key);
+    }
+
+
 }

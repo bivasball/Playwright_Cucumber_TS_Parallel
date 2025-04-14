@@ -3,10 +3,16 @@ const path = require('path');
 const { updateCounter } = require('./counter');
 
 function modifyFunction(currentValue) {
-    let countValue = updateCounter().toString().padStart(4, '0');
+    let countValue = getRandomLetter()+updateCounter().toString().padStart(3, '0');
     console.log("the value ----::",countValue);
     let updateVal = removeLastSegment(currentValue)+"_"+countValue;
     return updateVal; 
+}
+
+function getRandomLetter() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const randAlphabet = letters.charAt(Math.floor(Math.random() * letters.length));
+    return randAlphabet;
 }
 
 function removeLastSegment(str) {

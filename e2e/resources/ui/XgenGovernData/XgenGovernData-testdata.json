@@ -1,0 +1,16 @@
+[
+  {
+    "modelName": "TESTING_AUTO_116",
+    "modelDescription": "Testing the model with automation 116",
+    "sourceObjectFromSourceNode": "CUSTOMER",
+    "SetupTags": "setup_Auto123",
+    "SetupClassifications": "rmclass_Auto123",
+    "SetupDomains": "rmdomain_Auto123",
+    "OverviewTag": "setup_Auto123",
+    "OverviewClassification": "Confidential",
+    "OverviewDomain": "rmdomain",
+    "OverviewOwner": "Bivas Ball",
+    "DQName": "dqrulename",
+    "DqDescription": "dqruledesc"
+  }
+]

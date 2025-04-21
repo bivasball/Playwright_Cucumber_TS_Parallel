@@ -209,6 +209,11 @@ export default class GlobalActions {
         await fixture.page.waitForTimeout(duration);
         await fixture.page.keyboard.up(key);
     }
-
+    
+    async scrollVerticallyWithoutAnyLocator(deltaX: number=0, deltaY: number) {
+        // Locate the horizontal scrollbar        
+        fixture.logger.info(`Scrolling horizontally by: ${deltaX} pixels`);
+        await fixture.page.mouse.wheel(deltaX, deltaY);
+    }
 
 }

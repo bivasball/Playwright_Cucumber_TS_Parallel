@@ -1,10 +1,13 @@
+# Node dependencies
 node_modules/
-/test-results/
-test-results/
-/test-results
-/playwright-report/
-/playwright/.cache/
-cucumber-report.html
 
-test-results/cucumber-report.html
-test-results/cucumber-report.json
+# Test results and reports
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Cucumber reports
+cucumber-report.*
+test-results/cucumber-report.*
+test-results/cucumber-report-api.*
+

@@ -1,7 +1,9 @@
 [
   {
-    "sampleData": "hello_0016",
-    "sampleData1": "giraffe_toy_abc_29",
-    "sampleData2": "mama_567456"
+    "DataModelFromDropDown":"XDL_CUSTOMER",
+    "OverviewTag": "updtest",
+    "OverviewClassification": "Confidential",
+    "OverviewDomain": "rmdomain",
+    "OverviewOwner":"Bivas Ball"
   }
 ]

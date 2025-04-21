@@ -1,6 +1,7 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import createPgDbConnectionPage from "@pages/XgenSource/createPgDbConnectionPage";
 import { getJsonDataUi } from "@helper/util/jsonFileReader";
+import { modifySampleDataParameterised } from "@helper/util/modifyTheJsonValue";
 
 
 setDefaultTimeout(60 * 1000 * 2 );
@@ -26,3 +27,13 @@ Then('user edit the source with password by click on save and validate the sourc
     const jsonData = getJsonDataUi(jsonfilename);
     await createPgDbConnection.editTheSourceReEnterThePaswordAndSaveThenValidate(jsonData);
 }
+
+Given(`user navigate to the Connect page and setup unique source name {string}`, setUpUniqueDataFor1);
+async function setUpUniqueDataFor1(jsonfilename: string) {
+    //The keyName -the value of which will be replaced by a  counter value //
+    var keyName = `sourcename`;
+    modifySampleDataParameterised(jsonfilename,keyName);
+    await createPgDbConnection.navigateToLoginPageforPgDB();
+
+};
+

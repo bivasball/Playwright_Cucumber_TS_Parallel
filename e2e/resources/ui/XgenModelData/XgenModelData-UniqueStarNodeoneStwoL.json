@@ -1,6 +1,6 @@
 [
   {
-    "modelName": "STAR_AUTO_0040",
+    "modelName": "STAR_AUTO_Z055",
     "modelDescription": "starnode with one source node and Two lookup node",
     "sourceObjectFromSourceNode": "ORDERITEMS",
     "sourceObjectFromLookUpNode1": "CUSTOMER",

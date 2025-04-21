@@ -3,9 +3,11 @@ import { fixture } from "@hooks/pageFixture";
 import PlaywrightWrapper from "@helper/wrapper/PlaywrightWrappers";
 import { TIMEOUT } from "playwright.config";
 import JobMonitor from '@helper/wrapper/JobMonitor';
+import GlobalActions from "@helper/wrapper/GlobalActions";
 
 let playwrightWrapper = new PlaywrightWrapper();
 let jobMonitor = new JobMonitor();
+let globalaction = new GlobalActions();
 
 export default class xgenSyncPage {
 
@@ -61,7 +63,7 @@ export default class xgenSyncPage {
         await fixture.page.getByRole('textbox', { name: 'Sync Name' }).click();
         fixture.logger.info("Clicked on 'Sync Name' textbox.");
         await fixture.page.locator(`//input[@placeholder='sync name']`).type(syncNamedata, { delay: 100 });
-        fixture.logger.info("Filled 'Sync Name' textbox with 'PG_SALES_DATA_TESTINg'.");
+        fixture.logger.info(`Filled 'Sync Name' textbox with ${syncNamedata}`);
 
         // Fill the "Description" textbox
         await fixture.page.waitForSelector('role=textbox[name="Description"]', { state: "visible", timeout: TIMEOUT });
@@ -76,7 +78,8 @@ export default class xgenSyncPage {
         fixture.logger.info("Waiting for 'Source' dropdown to be visible...");
         await fixture.page.locator('#selected_source').click();
         fixture.logger.info("Clicked on 'Source' dropdown.");
-        await fixture.page.getByText(selectSourceData).click();
+
+        await globalaction.waitAndClick(`(//span[text()="${selectSourceData}"])[1]`);
         fixture.logger.info(`Selected '${selectSourceData}'`);
 
         // Select the destination

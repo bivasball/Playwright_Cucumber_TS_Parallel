@@ -9,7 +9,9 @@ module.exports = {
             "e2e/test/features/XgenSourceFeatures/*.feature",
             "e2e/test/features/XgenSyncFeatures/*.feature",
             "e2e/test/features/XgenModelFeature/*.feature",
-            "e2e/test/features/XgenPipelineFeature/*.feature"
+            "e2e/test/features/XgenPipelineFeature/*.feature",
+            "e2e/test/features/XgenGovernFeature/*.feature",
+            "e2e/test/features/XgenSettingsFeature/*.feature"
 
         ],
         publishQuiet: true,
@@ -20,7 +22,9 @@ module.exports = {
             "e2e/test/steps/XgenSourceSteps/*.ts",
             "e2e/test/steps/XgenSyncSteps/*.ts",
             "e2e/test/steps/XgenModelSteps/*.ts",
-            "e2e/test/steps/XgenPipelineSteps/*.ts"
+            "e2e/test/steps/XgenPipelineSteps/*.ts",
+            "e2e/test/steps/XgenGovernSteps/*.ts",
+            "e2e/test/steps/XgenSettingsSteps/*.ts"
 
         ],
         requireModule: [
@@ -48,7 +52,9 @@ module.exports = {
             "e2e/test/steps/XgenSourceSteps/*.ts",
             "e2e/test/steps/XgenSyncSteps/*.ts",
             "e2e/test/steps/XgenModelSteps/*.ts",
-            "e2e/test/steps/XgenPipelineSteps/*.ts"
+            "e2e/test/steps/XgenPipelineSteps/*.ts",
+            "e2e/test/steps/XgenGovernSteps/*.ts",
+            "e2e/test/steps/XgenSettingsSteps/*.ts"
         ],
         requireModule: [
             "ts-node/register",

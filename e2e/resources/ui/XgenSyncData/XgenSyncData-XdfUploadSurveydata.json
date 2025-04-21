@@ -5,7 +5,7 @@
       "SyncDescription": "survey data load testing",
       "selectSource":"Survey testing by automation",
       "selectDestination":"Testing DW",
-      "EntityName":"SURVEY_TEST",
+      "EntityName":"survey_test",
       "TableName":"Survey_Results"
       
     }

@@ -1,21 +1,22 @@
 {
-    "cucumberautocomplete.steps": [
-        "e2e/test/steps/**/*.ts"
-    ],
-    "cucumberautocomplete.syncfeatures": "e2e/test/features/**/*.feature",
-    "cucumberautocomplete.strictGherkinCompletion": true,
-    "cucumberautocomplete.smartSnippets": true,
-    "cucumberautocomplete.stepsInvariants": true,
-    "cucumberautocomplete.skipDocStringsFormat": true,
-    "cucumberautocomplete.formatConfOverride": {
-        "And": 3,
-        "But": "relative",
-    },
-    "cucumberautocomplete.onTypeFormat": true,
-    "editor.quickSuggestions": {
-        "comments": false,
-        "strings": true,
-        "other": true
-    },
-    "cucumberautocomplete.pureTextSteps": true
+  "cucumberautocomplete.steps": [
+    "e2e/test/steps/**/*.ts",
+    "api/step-definitions/*.ts"
+  ],
+  "cucumberautocomplete.syncfeatures": "e2e/test/features/**/*.feature,api/feature-files/*.feature",
+  "cucumberautocomplete.strictGherkinCompletion": true,
+  "cucumberautocomplete.smartSnippets": true,
+  "cucumberautocomplete.stepsInvariants": true,
+  "cucumberautocomplete.skipDocStringsFormat": true,
+  "cucumberautocomplete.formatConfOverride": {
+    "And": 3,
+    "But": "relative"
+  },
+  "cucumberautocomplete.onTypeFormat": true,
+  "editor.quickSuggestions": {
+    "comments": false,
+    "strings": true,
+    "other": true
+  },
+  "cucumberautocomplete.pureTextSteps": true
 }

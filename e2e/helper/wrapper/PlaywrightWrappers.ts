@@ -207,16 +207,12 @@ export default class PlaywrightWrapper {
         timeout: TIMEOUT,
       });
 
-      const sourceNameFromUI = await fixture.page
-        .locator(sourceNameElement)
-        .textContent();
+      const sourceNameFromUI = await fixture.page.locator(sourceNameElement).textContent();
       console.log("source name from ui :-", sourceNameFromUI);
       fixture.logger.info("source name from ui :-", sourceNameFromUI);
       let expectedSourceName = "XDF_" + sourceName;
       console.log("Expected source name from jsondata :-", expectedSourceName);
-      fixture.logger.info(
-        "Expected source name from jsondata :-",
-        expectedSourceName
+      fixture.logger.info("Expected source name from jsondata :-", expectedSourceName
       );
       if (sourceNameFromUI?.trim() === expectedSourceName) {
         console.log("This is true");
@@ -364,7 +360,15 @@ export default class PlaywrightWrapper {
       )
       .click();
     fixture.logger.info("Clicked on the confirm button to delete the source.");
+
+
+    // Verify success alert
     fixture.logger.info("Waiting for success alert to be visible...");
+    //await this.loadingWebPage();
+    await expect(fixture.page.locator(`//p[contains(@class,"css-16kpwfw")]`)).toContainText("deleted successfully", { timeout: TIMEOUT });
+    await globalaction.waitForElementHidden(`//p[contains(@class,"css-16kpwfw")]`);
+    await this.loadingWebPage();
+
   }
 
   async deleteTheSync(rownumber: number) {
@@ -454,45 +458,45 @@ export default class PlaywrightWrapper {
     }
   }
 
-    // Inject JavaScript for the mouse highlighter
-    async injectMouseHighlighter(): Promise<void> {
-        await fixture.page.evaluate(() => {
-            const highlight = document.createElement("div");
-            highlight.id = "mouse-highlighter";
-            Object.assign(highlight.style, {
-                width: "15px",
-                height: "15px",
-                backgroundColor: "yellow",
-                border: "2px solid red",
-                borderRadius: "50%",
-                position: "absolute",
-                zIndex: "9999",
-                pointerEvents: "none",
-                display: "none", // Initially hidden
-                transition: "opacity 0.3s ease-in-out",
-            });
-            document.body.appendChild(highlight);
-        });
+  // Inject JavaScript for the mouse highlighter
+  async injectMouseHighlighter(): Promise<void> {
+    await fixture.page.evaluate(() => {
+      const highlight = document.createElement("div");
+      highlight.id = "mouse-highlighter";
+      Object.assign(highlight.style, {
+        width: "15px",
+        height: "15px",
+        backgroundColor: "yellow",
+        border: "2px solid red",
+        borderRadius: "50%",
+        position: "absolute",
+        zIndex: "9999",
+        pointerEvents: "none",
+        display: "none", // Initially hidden
+        transition: "opacity 0.3s ease-in-out",
+      });
+      document.body.appendChild(highlight);
+    });
 
-        // Function to show the highlighter at the click position
-        await fixture.page.evaluate(() => {
-            document.addEventListener("click", (event) => {
-                const highlighter = document.getElementById("mouse-highlighter");
-                if (highlighter) {
-                    highlighter.style.left = `${event.clientX - 7}px`; // Center it
-                    highlighter.style.top = `${event.clientY - 7}px`;
-                    highlighter.style.display = "block";
-                    highlighter.style.opacity = "1";
-                    setTimeout(() => {
-                        highlighter.style.opacity = "0";
-                    }, 300); // Fade effect
-                    setTimeout(() => {
-                        highlighter.style.display = "none";
-                    }, 600); // Hide it
-                }
-            });
-        });
-    }
+    // Function to show the highlighter at the click position
+    await fixture.page.evaluate(() => {
+      document.addEventListener("click", (event) => {
+        const highlighter = document.getElementById("mouse-highlighter");
+        if (highlighter) {
+          highlighter.style.left = `${event.clientX - 7}px`; // Center it
+          highlighter.style.top = `${event.clientY - 7}px`;
+          highlighter.style.display = "block";
+          highlighter.style.opacity = "1";
+          setTimeout(() => {
+            highlighter.style.opacity = "0";
+          }, 300); // Fade effect
+          setTimeout(() => {
+            highlighter.style.display = "none";
+          }, 600); // Hide it
+        }
+      });
+    });
+  }
 
   async sleepForSometime(interval: number) {
     // Wait for the interval 
@@ -504,7 +508,7 @@ export default class PlaywrightWrapper {
   anonymousSleep = async (interval: number) => {
     console.log(`======Anonymous sleep ==========`)
     await this.sleepForSometime(interval);
-};
+  };
 
   async getTheRowNumberFromPipelinePage(pipename: string): Promise<number> {
     console.log(
@@ -543,7 +547,7 @@ export default class PlaywrightWrapper {
         .textContent();
       console.log("pipe name from ui :-", pipenameFromUI);
       //fixture.logger.info("pipe name from ui :-", pipenameFromUI);
-      let expectedpipename =  pipename;
+      let expectedpipename = pipename;
       //console.log("Expected pipe name from jsondata :-", expectedpipename);
       //console.log("Expected pipe name from jsondata :-", expectedpipename);
       // fixture.logger.info("Expected pipe name from jsondata :-", expectedpipename);
@@ -588,19 +592,198 @@ export default class PlaywrightWrapper {
   getTheMonitorPipelineButton(rownumber: number): string {
     return `//div[contains(@class,'MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-3')]/div[${rownumber}]/div/div[3]//span[@aria-label="Monitor Pipeline"]/a`;
   }
- async clickOnMonitorPipeline(rownumber:number){
-  await globalaction.waitAndClick(this.getTheMonitorPipelineButton(rownumber));
+  async clickOnMonitorPipeline(rownumber: number) {
+    await globalaction.waitAndClick(this.getTheMonitorPipelineButton(rownumber));
 
- }
+  }
 
- async closeThePipeline() {
-  await fixture.page
-    .locator(`//button[@iconcolor='close' ]//p[text()='Close']`)
-    .click();
-  fixture.logger.info("Clicked on 'Close' button,to close the pipeline page");
-  await this.loadingWebPage();
-  await this.loadingWebPage();
+  async closeThePipeline() {
+    await fixture.page
+      .locator(`//button[@iconcolor='close' ]//p[text()='Close']`)
+      .click();
+    fixture.logger.info("Clicked on 'Close' button,to close the pipeline page");
+    await this.loadingWebPage();
+    await this.loadingWebPage();
+  }
+
+
+  async moveTheElementToSomeCoordinates(locateTheelement: string, xaxis: number, yaxis: number) {
+    const locator = fixture.page.locator(locateTheelement);
+    const boxBefore = await locator.boundingBox();
+    fixture.logger.info(`Before Move - X: ${boxBefore?.x}, Y: ${boxBefore?.y}`);
+
+    // Move element by updating its style
+    await locator.evaluate((element: HTMLElement, args: { x: number; y: number }) => {
+      /*
+      // Add smooth transition effect
+      element.style.transition = 'transform 2s ease-in-out';
+      element.style.transform = `translate(${args.x}px, ${args.y}px)`;
+      */
+      element.style.transition = 'transform 2s ease-in-out';
+      element.style.position = "absolute"; // Ensure absolute positioning
+      element.style.left = `${args.x}px`;
+      element.style.top = `${args.y}px`;
+
+
+      return element;
+    }, { x: xaxis, y: yaxis });
+
+    const boxAfter = await locator.boundingBox();
+    fixture.logger.info(`After Move - X: ${boxAfter?.x}, Y: ${boxAfter?.y}`);
+    // Logging the movement
+    fixture.logger.info(`Element '${locateTheelement}' moved by X: ${xaxis}px, Y: ${yaxis}px`);
+    console.log(`Element '${locateTheelement}' moved by X: ${xaxis}px, Y: ${yaxis}px`);
+    await fixture.page.waitForTimeout(2000);
+
+    //Repaint the Element (Without Reloading the Page)
+    await locator.evaluate((element) => {
+      element.style.display = "none"; // Hide it temporarily   
+      (element as HTMLElement).offsetHeight; // Trigger reflow
+      element.style.display = "block"; // Show it again
+  });
+
+  //If nothing else works, removing and reinserting the element forces a full repaint:
+    await locator.evaluate((element) => {
+      const parent = element.parentElement;
+      if (parent) {
+        parent.removeChild(element);
+        parent.appendChild(element);
+      }
+    });
+  await fixture.page.waitForTimeout(2000);
+  }
+
+  async moveTheElementToSomeCoordinatesWithClickHoldRelease(locateTheelement: string, xaxis: number, yaxis: number) {
+    const locator = fixture.page.locator(locateTheelement);
+    const boxBefore = await locator.boundingBox();
+    fixture.logger.info(`Before Move - X: ${boxBefore?.x}, Y: ${boxBefore?.y}`);
+
+    if (boxBefore) {
+        // Move mouse to the element
+        await fixture.page.mouse.move(boxBefore.x + boxBefore.width / 2, boxBefore.y + boxBefore.height / 2);
+        
+        // Click and hold the element
+        await fixture.page.mouse.down();
+
+        // Slowly move the element by dragging
+        await fixture.page.mouse.move(boxBefore.x + xaxis, boxBefore.y + yaxis, { steps: 30 }); // Smooth movement
+
+        // Release the mouse click
+        await fixture.page.mouse.up();
+
+        await fixture.page.waitForTimeout(2000);
+
+        const boxAfter = await locator.boundingBox();
+        fixture.logger.info(`After Move - X: ${boxAfter?.x}, Y: ${boxAfter?.y}`);
+
+        // Logging the movement
+        fixture.logger.info(`Element '${locateTheelement}' moved by X: ${xaxis}px, Y: ${yaxis}px`);
+        console.log(`Element '${locateTheelement}' moved by X: ${xaxis}px, Y: ${yaxis}px`);
+
+        // Repaint the element (Without Reloading the Page)
+        await locator.evaluate((element) => {
+            element.style.display = "none"; // Hide it temporarily   
+            (element as HTMLElement).offsetHeight; // Trigger reflow
+            element.style.display = "block"; // Show it again
+        });
+
+        // If nothing else works, removing and reinserting the element forces a full repaint:
+        await locator.evaluate((element) => {
+            const parent = element.parentElement;
+            if (parent) {
+                parent.removeChild(element);
+                parent.appendChild(element);
+            }
+        });
+
+        await fixture.page.waitForTimeout(2000);
+    }
 }
+
+
+
+async moveElementWithSmoothDraggingAndRepaint(locateTheelement: string, xaxis: number, yaxis: number) {
+  const locator = fixture.page.locator(locateTheelement);
+  const boxBefore = await locator.boundingBox();
+  fixture.logger.info(`Before Move - X: ${boxBefore?.x}, Y: ${boxBefore?.y}`);
+
+  if (boxBefore) {
+    // Move element via styling
+    await locator.evaluate((element: HTMLElement, args: { xChange: number; yChange: number }) => {
+      const currentX = element.getBoundingClientRect().left;
+      const currentY = element.getBoundingClientRect().top;
+  
+      element.style.position = "absolute";
+      element.style.left = `${currentX + args.xChange}px`;
+      element.style.top = `${currentY + args.yChange}px`;
+  }, { xChange: xaxis, yChange: yaxis });
+  
+
+    await fixture.page.waitForTimeout(500); // Short delay before proceeding with mouse drag
+
+    
+
+    await fixture.page.waitForTimeout(2000);
+
+    const boxAfter = await locator.boundingBox();
+    fixture.logger.info(`After Move - X: ${boxAfter?.x}, Y: ${boxAfter?.y}`);
+
+    // Logging the movement
+    fixture.logger.info(
+      `Element '${locateTheelement}' moved by X: ${xaxis}px, Y: ${yaxis}px`
+    );
+    console.log(
+      `Element '${locateTheelement}' moved by X: ${xaxis}px, Y: ${yaxis}px`
+    );
+
+    // Repaint the element (Without Reloading the Page)
+    await locator.evaluate((element) => {
+      element.style.display = "none"; // Hide it temporarily
+      (element as HTMLElement).offsetHeight; // Trigger reflow
+      element.style.display = "block"; // Show it again
+    });
+
+    // If nothing else works, removing and reinserting the element forces a full repaint:
+    await locator.evaluate((element) => {
+      const parent = element.parentElement;
+      if (parent) {
+        parent.removeChild(element);
+        parent.appendChild(element);
+      }
+    });
+
+    await fixture.page.waitForTimeout(2000);
+  }
+}
+
+
+  async getTheRowNumberIfTheRequireTextIsPresent(
+    parentWebElement: string,
+    webElementPart: string,
+    expectedItem: string
+  ): Promise<number> {
+    await this.loadingWebPage();
+    await fixture.page.waitForSelector(parentWebElement, { state: "visible", timeout: TIMEOUT });
+    fixture.logger.info("Waiting for the required item to be visible");
+    const rows = fixture.page.locator(parentWebElement);
+    const numberOfRowsDisplayed = await rows.count();
+    for (let row = 1; row <= numberOfRowsDisplayed; row++) {
+      await this.loadingWebPage();
+      const requirednameElement = `${parentWebElement}[${row}]${webElementPart}`;
+      const locator = fixture.page.locator(requirednameElement);
+      await locator.waitFor({ state: "visible", timeout: TIMEOUT });
+      const nameFromUI = await locator.textContent();
+      console.log(`Row value from UI: ${nameFromUI}`);
+
+      if (nameFromUI?.trim().includes(expectedItem)) {
+        fixture.logger.info(`The required item is present in row number: ${row}`);
+        return row;
+      }
+    }
+    return 0;
+  }
+
+
 
 }
 

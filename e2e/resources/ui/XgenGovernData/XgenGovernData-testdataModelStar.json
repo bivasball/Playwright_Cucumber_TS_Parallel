@@ -1,0 +1,16 @@
+[
+  {
+    "modelName": "STAR_AUTO_W056",
+    "modelDescription": "Testing the model with automation 116",
+    "sourceObjectFromSourceNode": "CUSTOMER",
+    "SetupTags": "setup_Auto123",
+    "SetupClassifications": "rmclass_Auto123",
+    "SetupDomains": "rmdomain_Auto123",
+    "OverviewTag": "setup_Auto123",
+    "OverviewClassification": "Confidential",
+    "OverviewDomain": "rmdomain",
+    "OverviewOwner": "Automation user1",
+    "DQName": "dqrulename",
+    "DqDescription": "dqruledesc"
+  }
+]

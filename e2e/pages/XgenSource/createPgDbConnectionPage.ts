@@ -2,8 +2,12 @@ import { expect} from "@playwright/test";
 import { fixture } from "@hooks/pageFixture";
 import PlaywrightWrapper from "@helper/wrapper/PlaywrightWrappers";
 import { TIMEOUT } from "playwright.config";
+import GlobalActions from "@helper/wrapper/GlobalActions";
+
+
 
 let playwrightWrapper = new PlaywrightWrapper();
+let globalActions = new GlobalActions();
 
 export default class createPgDbConnectionPage {
     async navigateToLoginPageforPgDB() {
@@ -201,11 +205,15 @@ export default class createPgDbConnectionPage {
             }
         );
 
-        //---------validate button during creation not working---------//
-        //fixture.logger.info("Waiting for 'Validate' button to be visible...");
-        //await fixture.page.locator("//p[text()='Validate']/parent::button").click();
-        //fixture.logger.info("Clicked on 'Validate' button.");
-        //await expect(fixture.page.getByRole("alert")).toContainText("successfully",{timeout: TIMEOUT});
+        //---------validate button---------//
+        fixture.logger.info("Waiting for 'Validate' button to be visible...");
+        await fixture.page.locator("//p[text()='Validate']/parent::button").click();
+        fixture.logger.info("Clicked on 'Validate' button.");
+        await playwrightWrapper.loadingWebPage();
+        await expect(
+            fixture.page.locator(`//p[contains(@class,"css-16kpwfw")]`)
+        ).toContainText("Source validation Successful", { timeout: TIMEOUT });
+        await globalActions.waitForElementHidden(`//p[contains(@class,"css-16kpwfw")]`);
 
         // Wait for "Create" button and click it
         await fixture.page.waitForSelector('role=button[name="Create"]', {
@@ -225,6 +233,7 @@ export default class createPgDbConnectionPage {
         await expect(
             fixture.page.locator(`//p[contains(text(),'created successfully')]`)
         ).toContainText("created successfully",{timeout: TIMEOUT});
+        await globalActions.waitForElementHidden(`//p[contains(text(),'created successfully')]`);
     }
 
     async editTheSourceReEnterThePaswordAndSaveThenValidate(jsonData: any) {

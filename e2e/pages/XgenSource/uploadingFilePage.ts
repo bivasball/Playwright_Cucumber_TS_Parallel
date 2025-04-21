@@ -3,8 +3,11 @@ import { fixture } from "@hooks/pageFixture";
 import * as path from "path";
 import PlaywrightWrapper from "@helper/wrapper/PlaywrightWrappers";
 import { TIMEOUT } from "playwright.config";
+import GlobalActions from "@helper/wrapper/GlobalActions";
+
 
 let playwrightWrapper = new PlaywrightWrapper();
+let globalActions = new GlobalActions();
 
 export default class uploadingFilePage {
     async clickonUploadFileButton() {
@@ -160,20 +163,15 @@ export default class uploadingFilePage {
         await fixture.page.getByRole("button", { name: "Save" }).click();
         fixture.logger.info("Clicked on 'Save' button.");
 
-        // Verify the source name is displayed on the board
-        await playwrightWrapper.loadingWebPage();
-        await fixture.page.waitForSelector("#root", {
-            state: "visible",
-            timeout: TIMEOUT,
-        });
-        fixture.logger.info(
-            "Waiting for the source name to appear on the board..."
-        );
-        await playwrightWrapper.loadingWebPage();
-        await expect(fixture.page.locator("#root")).toContainText(sourceName,{timeout: TIMEOUT});
-        fixture.logger.info(
-            `The filename entered is present on the board: ${sourceName}`,{timeout: TIMEOUT}
-        );
+        
+
+        // Verify success alert
+                fixture.logger.info("Waiting for success alert to be visible...");
+                await playwrightWrapper.loadingWebPage();
+                await expect(
+                    fixture.page.locator(`//p[contains(text(),'created successfully')]`)
+                ).toContainText("created successfully",{timeout: TIMEOUT});
+                await globalActions.waitForElementHidden(`//p[contains(text(),'created successfully')]`);
         await playwrightWrapper.loadingWebPage();
     }
 }

@@ -23,5 +23,5 @@ Feature: Create Connection on Sync page
             And User logout from the application "Logout"
         Examples:
             | loginData                       | data                            |
-            | LoginData-testdataForLoginUser1 | XgenSyncData-XdfUploadSurveydata|           
+            | LoginData-testdataForLoginUser1 | XgenSyncData-XdfUploadSurveydata|
 

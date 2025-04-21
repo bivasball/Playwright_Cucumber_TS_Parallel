@@ -7,6 +7,7 @@ import { createLogger } from "winston";
 import { options } from "../helper/util/logger";
 import  {TIMEOUT}  from "playwright.config";
 import defineConfig from "playwright.config";
+import { manageLogs } from "../helper/util/logManager";
 const fs = require("fs-extra");
 
 let browser: Browser;
@@ -118,6 +119,8 @@ After(async function ({ pickle, result }) {
 
 AfterAll(async function () {
     await browser.close();
+    console.log("Cleaning up old log files...");
+    manageLogs();
 });
 
 function getStorageState(user: string): string | { cookies: { name: string; value: string; domain: string; path: string; expires: number; httpOnly: boolean; secure: boolean; sameSite: "Strict" | "Lax" | "None"; }[]; origins: { origin: string; localStorage: { name: string; value: string; }[]; }[]; } {

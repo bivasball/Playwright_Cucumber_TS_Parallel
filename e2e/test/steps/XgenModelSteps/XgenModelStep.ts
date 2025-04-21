@@ -1,11 +1,13 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { getJsonDataUi } from "@helper/util/jsonFileReader";
 import xgenModelPage from "@pages/XgenModelPages/xgenModelPage";
+import xgenModelPageXYaxis from "@pages/XgenModelPages/xgenModelPage_XYaxis";
 import { modifySampleDataParameterised } from "@helper/util/modifyTheJsonValue";
 //const { modifySampleDataParameterised } = require("@helper/util/modifyTheJsonValue");
 
-setDefaultTimeout(60 * 3 * 1000);
+setDefaultTimeout(60 * 5 * 1000);
 let xgenmodelP = new xgenModelPage();
+let xgenmodelXYaxis = new xgenModelPageXYaxis();
 
 Given(`user navigate to the Model page`, modelPageStep);
 async function modelPageStep() {
@@ -185,6 +187,68 @@ async function createsStarNodeWithOneSourceAndTwoLookup(jsonfilename: string) {
 
     await xgenmodelP.createOrSave();
     await xgenmodelP.verifyTheStatus_Valid();
+   
+
+}
+
+//-----------------------/STAR NODE/- XY-axis Movement--------------------//
+Given(`user should be able to create a Star Node data model, taking one from Source Node and one from Lookup Node, moving node along xyAxis {string}`,{ timeout: 5*60*1000 }, createsStarNodeWithOneSourceAndTwoLookupXY);
+async function createsStarNodeWithOneSourceAndTwoLookupXY(jsonfilename: string) {
+    console.log(`Step executed with data from json file: ${jsonfilename}`);
+    const jsonData = getJsonDataUi(jsonfilename);
+    const modelname = jsonData[0].modelName;
+    let sourceName = jsonData[0].sourceObjectFromSourceNode;
+
+    await xgenmodelXYaxis.addSelectTableRadioButtonEnterModelNameAndDescription(jsonData);
+
+    //Source Node S_ORDERITEMS
+    await xgenmodelXYaxis.clickSourceNodeSearchAndSelectSource(jsonData);
+    await xgenmodelXYaxis.moveTheSourceNodeAlongXY('S_ORDERITEMS',0,-3);
+    await xgenmodelXYaxis.clickStarNode();
+    
+    await xgenmodelXYaxis.joinSourceNodeToStarNodeLeftSide('S_ORDERITEMS','STAR_1');
+    await xgenmodelXYaxis.clickSourceObject(jsonData[0].sourceObjectFromSourceNode);
+    await xgenmodelXYaxis.clickFocusedObjectAndSelectAllTheColumns();
+    await xgenmodelXYaxis.exitFromFocusedObject();
+
+    //look up Node L-CUSTOMER
+    let lookupNode_Object1 = jsonData[0].sourceObjectFromLookUpNode1;
+    await xgenmodelXYaxis.click_LookUpNodeSearchAndSelectSource(lookupNode_Object1);   
+
+    await xgenmodelXYaxis.joinLookNodeToStarNodeLeftSide('L_CUSTOMER','STAR_1');
+    await xgenmodelXYaxis.clickSourceObject(lookupNode_Object1);
+    await xgenmodelXYaxis.clickFocusedObjectAndSelectAllTheColumns();
+    await xgenmodelXYaxis.exitFromFocusedObject();
+
+    //look up Node L-CAMPAIGNS
+    let lookupNode_Object2 = jsonData[0].sourceObjectFromLookUpNode2;
+    await xgenmodelXYaxis.click_LookUpNodeSearchAndSelectSource(lookupNode_Object2);
+    await xgenmodelXYaxis.moveTheLookupNodeAlongXY('L_CAMPAIGNS',0,10);
+
+    await xgenmodelXYaxis.joinLookNodeToStarNodeLeftSide('L_CAMPAIGNS','STAR_1');
+    await xgenmodelXYaxis.clickSourceObject_Third(lookupNode_Object2);
+    await xgenmodelXYaxis.clickFocusedObjectAndSelectAllTheColumns();
+    await xgenmodelXYaxis.exitFromFocusedObject();
+
+    //STAR_1 node
+    let modelNameDisplayed = `XDL_${modelname}`;
+    await xgenmodelXYaxis.join_StarNodeRightSideToModelName("STAR_1",modelNameDisplayed);
+    await xgenmodelXYaxis.clickStar_1_Object("STAR_1");
+    await xgenmodelXYaxis.clickFocusedObjectAndSelectAllTheColumns();
+    await xgenmodelXYaxis.clickStar_join_tab();
+    await xgenmodelXYaxis.clickStar_EditJoin();
+    await xgenmodelXYaxis.exitFromFocusedObject();
+
+    //Model Name
+    await xgenmodelXYaxis.moveTheModelNameNodeAlongXY(modelNameDisplayed,15,0);
+    await xgenmodelXYaxis.clickModelNameObject(modelNameDisplayed);
+    
+    await xgenmodelXYaxis.clickModelNameAndSelectTheRequiredColumnOneByOne('price');
+    await xgenmodelXYaxis.clickModelNameAndSelectTheRequiredColumnOneByOne('itemid');
+    await xgenmodelXYaxis.exitFromFocusedObject();
+
+    await xgenmodelXYaxis.createOrSave();
+    await xgenmodelXYaxis.verifyTheStatus_Valid();
    
 
 }

@@ -1,21 +1,23 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
-import { fixture } from "../../../hooks/pageFixture";
-import xgenLoginPage from "../../../pages/XgenLogin/xgenLoginPage";
 import { getJsonDataUi } from "../../../helper/util/jsonFileReader";
-import SamplepageOne from "@pages/SamplePage/SamplepageOne";
+import SamplePageOne from "@pages/SamplePage/SamplepageOne";
 
 setDefaultTimeout(60 * 1000 * 2);
-let samplepageOb = new SamplepageOne();
+let samplePageOb = new SamplePageOne();
 
 When('the user click on Govern page {string}',sampleFunction);
-async function sampleFunction(jsonfilename: string) {
-  const jsonData = getJsonDataUi(jsonfilename);
+async function sampleFunction(jsonFilename: string) {
+  const jsonData = getJsonDataUi(jsonFilename);
   console.log(JSON.stringify(jsonData));
 
-  console.log(`Inside the step defination for sample`);
-  fixture.logger.info(`Inside the step defination for sample`);
-  await samplepageOb.navigateOfGovernPage(jsonData);
-   
-    
+  await samplePageOb.navigateToGovernPage();
+  await samplePageOb.clickOnDataModel();
+  await samplePageOb.selectDataModelsFromDropDown(jsonData[0].DataModelFromDropDown);
+  await samplePageOb.clickOnOverviewTab();
+  await samplePageOb.addTagIfNotPresent(jsonData[0].OverviewTag);
+  await samplePageOb.addClassificationIfNotPresent(jsonData[0].OverviewClassification);
+  await samplePageOb.addDomainIfNotPresent(jsonData[0].OverviewDomain);
+  await samplePageOb.addOwnerIfNotPresent(jsonData[0].OverviewOwner);
+
   }
 ;

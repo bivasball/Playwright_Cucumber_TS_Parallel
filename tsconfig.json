@@ -25,7 +25,8 @@
         },
         "allowJs": true, // Allow importing JavaScript files
         "checkJs": false, // Disable type checking for JavaScript files
-        "outDir": "./dist" // Specify output directory for compiled files
+        "outDir": "./dist", // Specify output directory for compiled files
+        "esModuleInterop": true
     },
     "include": [
         "e2e/**/*.ts", // Include all TypeScript files in the "e2e" directory

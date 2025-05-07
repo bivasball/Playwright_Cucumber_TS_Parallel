@@ -1,0 +1,8 @@
+[
+    {
+      "modelName": "AUTOMATE_VW_1SPN",
+      "modelDescription": "automation with one source node and one lookup node",
+      "sourceObjectFromSourceNode":"ORDERS",
+      "sourceObjectFromLookUpNode":"ORDERITEMS"
+    }
+  ]

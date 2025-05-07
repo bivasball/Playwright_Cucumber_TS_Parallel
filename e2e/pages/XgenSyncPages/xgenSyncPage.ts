@@ -242,4 +242,82 @@ export default class xgenSyncPage {
     };
 
 
+    //-----------spilit into smaller methods --------------//
+
+
+    async clickAddLink() {
+        await fixture.page.waitForSelector('role=link[name="Add"]', { state: "visible", timeout: TIMEOUT });
+        fixture.logger.info("Waiting for 'Add' link to be visible...");
+        await fixture.page.getByRole('link', { name: 'Add' }).click();
+        fixture.logger.info("Clicked on 'Add' link.");
+    }
+    
+    async fillSyncDetails(syncNamedata: string, descriptionData: string) {
+        await fixture.page.waitForSelector('role=textbox[name="Sync Name"]', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.getByRole('textbox', { name: 'Sync Name' }).click();
+        await fixture.page.locator(`//input[@placeholder='sync name']`).type(syncNamedata, { delay: 100 });
+    
+        await fixture.page.waitForSelector('role=textbox[name="Description"]', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.getByRole('textbox', { name: 'Description' }).click();
+        await fixture.page.getByRole('textbox', { name: 'Description' }).type(descriptionData, { delay: 100 });
+    
+        fixture.logger.info(`Filled 'Sync Name' and 'Description' fields.`);
+    }
+    
+    async selectSource(selectSourceData: string) {
+        await fixture.page.waitForSelector('#selected_source', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.locator('#selected_source').click();
+        await globalaction.waitAndClick(`(//span[text()="${selectSourceData}"])[1]`);
+        fixture.logger.info(`Selected source: '${selectSourceData}'`);
+    }
+    
+    async selectDestination(selectDestinationData: string) {
+        await fixture.page.locator(`//div[@id='selected_destination']`).click();
+        await fixture.page.getByText(selectDestinationData).click();
+        await playwrightWrapper.loadingWebPage();
+        fixture.logger.info(`Selected destination: '${selectDestinationData}'`);
+    }
+    
+    async enableSyncMode() {
+        await fixture.page.waitForSelector('span', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.locator('span').filter({ hasText: 'FieldsEntitySync Mode (Src |' }).getByRole('checkbox').check();
+        fixture.logger.info("Checked 'FieldsEntitySync Mode' checkbox.");
+    }
+    
+    async createSync() {
+        await fixture.page.waitForSelector('role=button[name="Create"]', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.getByRole('button', { name: 'Create' }).click();
+        await playwrightWrapper.loadingWebPage();
+        fixture.logger.info("Clicked on 'Create' button.");
+    }
+    
+    async verifySuccess(syncNamedata: string) {
+        await fixture.page.waitForSelector(`//p[contains(text(),'created successfully')]`, { state: "visible", timeout: TIMEOUT });
+        await expect(fixture.page.locator(`//p[contains(text(),'created successfully')]`)).toContainText("created successfully", { timeout: TIMEOUT });
+        fixture.logger.info(`Verified success message: 'Sync XDF_${syncNamedata} created successfully.'`);
+        fixture.logger.info("Waiting for success message to be hidden.");
+        await globalaction.waitForElementHidden(`//p[contains(text(),'created successfully')]`);
+        
+    }
+
+
+async enableTheEntityBySlidingTheMuiSwitch(entity:string){
+await globalaction.waitAndClick(this.getEntityMuiSwitch(entity));
+}
+
+async checkTheBoxOfPrimaryKey(entityName:string,primaryKey:string){
+    await globalaction.click(this.getExpandDropDownListOfPrimaryKey(entityName));
+    await globalaction.waitAndClick(this.getPrimaryKeyCheckbox(primaryKey));
+}
+getEntityMuiSwitch(entity:string):string{
+    return `//span[text()="${entity}"]/ancestor::div[@class="MuiBox-root css-1klfsl3"]/div/div/span//input/parent::span`;
+}
+
+getExpandDropDownListOfPrimaryKey(entity:string):string{
+return `//span[text()="${entity}"]/ancestor::div[@class="MuiBox-root css-1klfsl3"]//div[@aria-haspopup="listbox"]`;
+}
+
+getPrimaryKeyCheckbox(checkboxValue:string):string{
+    return `//li[@data-value="${checkboxValue}"]/div/span`;
+}
 }

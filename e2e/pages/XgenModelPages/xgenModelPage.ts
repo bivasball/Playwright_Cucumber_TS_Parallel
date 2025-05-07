@@ -102,6 +102,9 @@ export default class xgenModelPage {
     getModelName_ObjectLeftdot(modelName: string): string {
         return `//p[text()='XDL_${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='OTN' and @data-handlepos='left']`;
     }
+    getModelNameVw_ObjectLeftdot(modelName: string): string {
+        return `//p[text()='XIL_${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='SEN' and @data-handlepos='left']`;
+    }
 
     getJoin_1_Join_Tab() {
         return `//button[text()='Join' and @role='tab']`;
@@ -145,6 +148,9 @@ export default class xgenModelPage {
 
     getModelName_ObjectLeftdot_st(modelName: string): string {
         return `//p[text()='${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='OTN' and @data-handlepos='left']`;
+    }
+    getModelName_OjectLeftdot_st(modelName: string): string {
+        return `//p[text()='${modelName}']//ancestor::div[contains(@class,'selectable draggable')]//div[@data-handleid='SEN' and @data-handlepos='left']`;
     }
     getStarNode() {
         return `//span[@aria-label='Star Node']//button`;
@@ -197,6 +203,22 @@ export default class xgenModelPage {
         await globalAction.typeWithDelay(this.getModelDesc(), modelDesc);
     }
 
+    async addSelectRadioButtonEnterModelNameAndDescription(jsondata: any) {
+        let modelname = jsondata[0].modelName;
+        let modelDesc = jsondata[0].modelDescription;
+
+        // Wait for the "Add" link to be visible and click it
+        await globalAction.waitAndClick(this.getTheAddOrPlusIcon());
+
+        // Wait for the "Model Name" textbox to be visible and fill it
+        await globalAction.waitAndClick(this.getModelName());
+        await globalAction.typeWithDelay(this.getModelName(), modelname);
+
+        // Wait for the "Model Desc" textbox to be visible and fill it
+        await globalAction.waitAndClick(this.getModelDesc());
+        await globalAction.typeWithDelay(this.getModelDesc(), modelDesc);
+    }
+
     async clickSourceNodeSearchAndSelectSource(jsondata: any) {
         let sourceObjectFromSourcenode = jsondata[0].sourceObjectFromSourceNode;
         // Wait for the "Source Node" button to be visible and click it
@@ -207,6 +229,18 @@ export default class xgenModelPage {
         await globalAction.waitAndClick(this.getSourceNodeTreeExpand());
         // Wait for the "CUSTOMER" text to be visible and click it
         await globalAction.waitAndClick(`//p[text()='${sourceObjectFromSourcenode}']`);
+
+    }
+
+    async clickSourceNodeSearchAndSelect_Source(sourceNode: string) {      
+        // Wait for the "Source Node" button to be visible and click it
+        await globalAction.waitAndClick(this.getSourceNode());
+
+
+        // Wait for the "Tree View Expand Icon" to be visible and click it
+        await globalAction.waitAndClick(this.getSourceNodeTreeExpand());
+        // Wait for the "CUSTOMER" text to be visible and click it
+        await globalAction.waitAndClick(`//p[text()='${sourceNode}']`);
 
     }
 
@@ -358,7 +392,11 @@ export default class xgenModelPage {
     }
     async joinJoinNodeRightSideToModelName(sourceOjectName: string) {
         // join left node with Right node
-        await globalAction.dragAndDrop(this.getJoin_OjbectRightdot('JOIN_1'), this.getModelName_ObjectLeftdot('AUTOMATE_1SN_1LN'));
+        await globalAction.dragAndDrop(this.getJoin_OjbectRightdot('JOIN_1'), this.getModelName_ObjectLeftdot(sourceOjectName));
+    }
+    async joinJoinNodeRightSideToModelNameview(sourceOjectName: string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getJoin_OjbectRightdot('JOIN_1'), this.getModelNameVw_ObjectLeftdot(sourceOjectName));
     }
 
     async clickFocusedObjectAndSelectAllTheColumns() {
@@ -369,8 +407,8 @@ export default class xgenModelPage {
 
         await globalAction.waitAndClick(this.getJoin_1_Join_Tab());
         await globalAction.waitAndClick(this.getJoin_1_Join_Edit_Join());
-        await globalAction.waitAndClick(this.getJoin_1_Join_Tab_Join_Type());
-        await globalAction.click(this.getPlusConditionButtonIcon());
+        await globalAction.click(this.getJoin_1_Join_Tab_Join_Type());
+        await globalAction.waitAndClick(this.getPlusConditionButtonIcon());
 
         await globalAction.waitAndClick(this.getJoin_1_Join_Tab_Join_Type_Condition_left());
         let fillinputleft = `//div[contains(@class,"css-1dvuvi7")]/div[1]//input[@spellcheck="false" and @role="combobox" ]`;
@@ -410,6 +448,10 @@ export default class xgenModelPage {
     async join_StarNodeRightSideToModelName(sourceStarOjectName: string,ModelObjectName:string) {
         // join left node with Right node
         await globalAction.dragAndDrop(this.getStar_OjbectRightdot(sourceStarOjectName), this.getModelName_ObjectLeftdot_st(ModelObjectName));
+    }
+    async join_StarNodeRightSideToModelVwName(sourceStarOjectName: string,ModelObjectName:string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getStar_OjbectRightdot(sourceStarOjectName), this.getModelName_OjectLeftdot_st(ModelObjectName));
     }
 
   
@@ -514,5 +556,26 @@ export default class xgenModelPage {
         await globalAction.waitAndClick(`//div[contains(@class,"css-b07ifn")]//p[text()="Close"]/parent::button`);
 
     }
+
+    async clickStar_EditJoin_ChainedCase() {
+        //click on Edit
+        fixture.logger.info(`Clicking on edit `);
+        await globalAction.click(`//button[@type="button" and @iconcolor="edit"]`);
+
+        //1st row 
+        fixture.logger.info(`Filling the 1st row  item 's_customers' with 'CITY'`);
+        await globalAction.typeWithDelay(`(//input[@aria-autocomplete])[2]`, `CITY`);
+        await globalAction.pressKey('(//input[@aria-autocomplete])[2]', 'Enter');
+        //1st row 
+        fixture.logger.info(`Filling the 1st row  item 'l_categories' with 'DESCRIPTION'`);
+        await globalAction.typeWithDelay(`(//input[@aria-autocomplete])[3]`, `DESCRIPTION`);
+        await globalAction.pressKey('(//input[@aria-autocomplete])[3]', 'Enter');
+        
+
+        //click Apply button
+        await globalAction.click(`//button[@type="button" and @iconcolor="confirm"]`);
+
+    }
+
 
 }

@@ -1,0 +1,8 @@
+[
+  {
+    "syncName": "PG_SALES_AUTO115",
+    "SyncDescription": "sales data load testing",
+    "selectSource":"PostgreSQL Database connection for testing",
+    "selectDestination":"Testing DW"
+  }
+]

@@ -1,39 +1,35 @@
 {
   "cookies": [
     {
-      "name": "ARRAffinity",
-      "value": "227011b2e2632fdca027bd8016fbc746e32106ec420672f296549087fbefe89f",
-      "domain": ".bookcart.azurewebsites.net",
+      "name": "access_token_cookie",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0NjQyNTY5OSwianRpIjoiMjdmY2QwMDEtZjE3OS00MmEwLWI1YjUtMTA4ODkwNjE0NGIzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImF1dG9tYXRpb24xQHNwYWNlcy5jb20iLCJuYmYiOjE3NDY0MjU2OTksImNzcmYiOiI1MmNmZmI2ZS0wMGNhLTRhMTgtODRiNy03ZjI5YzNmMDZmOGIiLCJleHAiOjE3NDY0MzEwOTl9.cf0Pq_2aFH-UewFN3DmlY1uqjPzD9-2W8ZVaBynqnuQ",
+      "domain": "xgenuat.uxli.com",
       "path": "/",
       "expires": -1,
       "httpOnly": true,
-      "secure": true,
+      "secure": false,
       "sameSite": "Lax"
     },
     {
-      "name": "ARRAffinitySameSite",
-      "value": "227011b2e2632fdca027bd8016fbc746e32106ec420672f296549087fbefe89f",
-      "domain": ".bookcart.azurewebsites.net",
+      "name": "csrf_access_token",
+      "value": "52cffb6e-00ca-4a18-84b7-7f29c3f06f8b",
+      "domain": "xgenuat.uxli.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "session",
+      "value": "eyJzZXNzaW9uX2lkIjoiYzc1MzVjOWQtNDA0ZS00MDdjLWEwMTEtMDExMjBmMTYwMTVkIn0.aBhXYw.nhVqRFHXAHfDWTs2GB1ZzhGaEeM",
+      "domain": "xgenuat.uxli.com",
       "path": "/",
       "expires": -1,
       "httpOnly": true,
-      "secure": true,
-      "sameSite": "None"
+      "secure": false,
+      "sameSite": "Lax"
     }
   ],
-  "origins": [
-    {
-      "origin": "https://bookcart.azurewebsites.net",
-      "localStorage": [
-        {
-          "name": "authToken",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvcnRvbmlrYyIsInVzZXJpZCI6IjkwMCIsInVzZXJUeXBlSWQiOiIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiMiIsImp0aSI6IjA5YmVkZGRkLWYwNTctNGIwNi04NTRmLWU0MjU0YzhkY2I3OCIsImV4cCI6MTY4ODIwNjM0OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNjQvIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNjQvIn0.IANkh0F6ClWtLpWdZl316io58sKdEhppbLU0EOMH-38"
-        },
-        {
-          "name": "userId",
-          "value": "900"
-        }
-      ]
-    }
-  ]
+  "origins": []
 }

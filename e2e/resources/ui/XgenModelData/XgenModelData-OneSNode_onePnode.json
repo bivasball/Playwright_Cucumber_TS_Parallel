@@ -1,6 +1,6 @@
 [
   {
-    "modelName": "AUTOMATE_1SN_1LN",
+    "modelName": "AUTOMATE_1SN_1MN",
     "modelDescription": "automation with one source node and one lookup node",
     "sourceObjectFromSourceNode":"ORDERS",
     "sourceObjectFromLookUpNode":"ORDERITEMS"

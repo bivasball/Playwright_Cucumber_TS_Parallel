@@ -11,7 +11,11 @@ module.exports = {
             "e2e/test/features/XgenModelFeature/*.feature",
             "e2e/test/features/XgenPipelineFeature/*.feature",
             "e2e/test/features/XgenGovernFeature/*.feature",
-            "e2e/test/features/XgenSettingsFeature/*.feature"
+            "e2e/test/features/XgenSettingsFeature/*.feature",
+            "e2e/test/features/Chained_Features/*.feature",
+            "e2e/test/features/XgenInputFeature/*.feature",
+            "e2e/test/features/Xgen_Analyse/*.feature",
+            "e2e/test/features/XgenCustomRolesUsersFeature/*.feature"
 
         ],
         publishQuiet: true,
@@ -24,7 +28,11 @@ module.exports = {
             "e2e/test/steps/XgenModelSteps/*.ts",
             "e2e/test/steps/XgenPipelineSteps/*.ts",
             "e2e/test/steps/XgenGovernSteps/*.ts",
-            "e2e/test/steps/XgenSettingsSteps/*.ts"
+            "e2e/test/steps/XgenSettingsSteps/*.ts",
+            "e2e/test/steps/XgenInputSteps/*.ts",
+            "e2e/test/steps/Xgen_Analyse_Steps/*.ts",
+            "e2e/test/steps/XgenCustomRolesUsersSteps/*.ts",
+
 
         ],
         requireModule: [
@@ -54,7 +62,10 @@ module.exports = {
             "e2e/test/steps/XgenModelSteps/*.ts",
             "e2e/test/steps/XgenPipelineSteps/*.ts",
             "e2e/test/steps/XgenGovernSteps/*.ts",
-            "e2e/test/steps/XgenSettingsSteps/*.ts"
+            "e2e/test/steps/XgenSettingsSteps/*.ts",
+            "e2e/test/steps/XgenInputSteps/*.ts",
+            "e2e/test/steps/Xgen_Analyse_Steps/*.ts",
+            "e2e/test/steps/XgenCustomRolesUsersSteps/*.ts"
         ],
         requireModule: [
             "ts-node/register",

@@ -26,6 +26,7 @@ export default class createPgDbConnectionPage {
         console.log(
             `The data from the jsonData file is: ${JSON.stringify(jsonData)}`
         );
+        await playwrightWrapper.anonymousSleep(2000);
         // Verify the source name in the Connect Sources tab list and return the row number if not found then it is zero
         let presentornot =
             await playwrightWrapper.verifySourceNameDisplayedInConnectSourcesTabList(

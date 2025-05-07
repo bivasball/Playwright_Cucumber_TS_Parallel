@@ -37,3 +37,13 @@ async function setUpUniqueDataFor1(jsonfilename: string) {
 
 };
 
+Given(`User navigate to the Connect page and setup unique source name and unique description {string}`, setUpUniqueSourceNameAndUniqueDescription);
+async function setUpUniqueSourceNameAndUniqueDescription(jsonfilename: string) {
+    //The keyName -the value of which will be replaced by a  counter value //
+    var keyName = `sourcename`;
+    modifySampleDataParameterised(jsonfilename,keyName);
+    var keyDescription = `SourceDescription`;
+    modifySampleDataParameterised(jsonfilename,keyDescription);
+    await createPgDbConnection.navigateToLoginPageforPgDB();
+
+};

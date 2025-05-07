@@ -1,6 +1,6 @@
 [
   {
-    "sourcename": "PGDB_AUTO_P005",
+    "sourcename": "PGDB_AUTO_S056",
     "SourceDescription": "PostgreSQL Database connection for testing",
     "hostname": "xgen-dev.ckvh7cnonk8s.us-east-1.rds.amazonaws.com",
     "databaseName": "f1race",

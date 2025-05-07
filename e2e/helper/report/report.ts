@@ -2,8 +2,8 @@ const report = require("multiple-cucumber-html-reporter");
 
 report.generate({
     jsonDir: "test-results",
-    reportPath: "test-results/reports/",
-    reportName: "Playwright Automation Report",
+    reportPath: "test-results/PW-reports-e2e/",
+    reportName: "Playwright UI Automation Report",
     pageTitle: "Uxli Xgen Automation test report",
     displayDuration: false,
     metadata: {
@@ -20,7 +20,7 @@ report.generate({
     customData: {
         title: "Test Info",
         data: [
-            { label: "Project", value: "Xgen Application" },
+            { label: "Project", value: "Xgen UI Application" },
             { label: "Release", value: "1.0" },
             { label: "Cycle", value: "E2E" }
         ],

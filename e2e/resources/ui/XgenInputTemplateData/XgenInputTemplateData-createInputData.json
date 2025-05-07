@@ -1,0 +1,9 @@
+[
+    {
+      "datainputName": "AUTO_DATA_INPUT_TEST",
+      "inputDescription": "automate the template for the user",
+      "fieldName":"ID",
+      "allowedValues":"sales,hr,marketing",
+      "fieldName2":"EMPLOYEE"
+    }
+  ]

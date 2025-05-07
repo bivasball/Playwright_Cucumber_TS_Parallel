@@ -1,6 +1,6 @@
-import { expect} from "@playwright/test";
+import { expect } from "@playwright/test";
 import { fixture } from "@hooks/pageFixture";
-import  {TIMEOUT}  from "playwright.config";
+import { TIMEOUT } from "playwright.config";
 import PlaywrightWrapper from "@helper/wrapper/PlaywrightWrappers";
 import GlobalActions from "@helper/wrapper/GlobalActions";
 
@@ -9,7 +9,27 @@ let globalaction = new GlobalActions();
 
 let playwrightWrapper = new PlaywrightWrapper();
 export default class xgenLoginPage {
-    
+
+    //---------locator---st-------//
+
+    getThreeDots(rowNum: number): string {
+        return `//div[@role="radiogroup"]/div[${rowNum}]/div[2]/button`;
+    }
+    getManageSpace(): string {
+        return `(//div[@class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation8 MuiPopover-paper css-1p1crav"])[1]//p[text()="Manage Space"]/parent::div/parent::div`;
+    }
+
+    getDeleteButton(): string {
+        return `//p[text()="Delete"]/parent::button`;
+    }
+    getPopUpConfirm(): string {
+        return `//p[text()="Confirm"]/parent::button`;
+    }
+
+
+
+    //---------locator----end------//
+
     async navigateToLoginPage() {
         console.log(`BASEURL is : ${process.env.BASEURL}`);
         fixture.logger.info(`Navigating to login page with BASEURL: ${process.env.BASEURL}`);
@@ -21,17 +41,17 @@ export default class xgenLoginPage {
             timeout: TIMEOUT,
         });
         fixture.logger.info("Verifying login page heading is visible");
-        await expect(fixture.page.getByRole('heading', { name: 'Log into your xGEN account' })).toBeVisible({timeout: TIMEOUT});
+        await expect(fixture.page.getByRole('heading', { name: 'Log into your xGEN account' })).toBeVisible({ timeout: TIMEOUT });
 
         // Wait for the heading text to be visible
         await fixture.page.waitForSelector('h5', { state: "visible", timeout: TIMEOUT });
         fixture.logger.info("Verifying login page contains the correct heading text");
-        await expect(fixture.page.locator('h5')).toContainText('Log into your xGEN account',{timeout: TIMEOUT});
+        await expect(fixture.page.locator('h5')).toContainText('Log into your xGEN account', { timeout: TIMEOUT });
 
         // Wait for the login form to be visible
         await fixture.page.waitForSelector('form', { state: "visible", timeout: TIMEOUT });
         fixture.logger.info("Verifying login form contains the text 'Login'");
-        await expect(fixture.page.locator('form')).toContainText('Login',{timeout: TIMEOUT});
+        await expect(fixture.page.locator('form')).toContainText('Login', { timeout: TIMEOUT });
     }
 
     async login(jsonData: any) {
@@ -70,13 +90,13 @@ export default class xgenLoginPage {
 
         // Wait for the login message to be visible
         await fixture.page.waitForSelector(`text=${message}`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByText(message)).toBeVisible({timeout: TIMEOUT});
+        await expect(fixture.page.getByText(message)).toBeVisible({ timeout: TIMEOUT });
 
         fixture.logger.info("Verifying login message is contained in the paragraph");
 
         // Wait for the paragraph containing the message to be visible
         await fixture.page.waitForSelector('role=paragraph', { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('paragraph')).toContainText(message,{timeout: TIMEOUT});
+        await expect(fixture.page.getByRole('paragraph')).toContainText(message, { timeout: TIMEOUT });
     }
 
     async selectSubscription(jsonData: any) {
@@ -93,7 +113,7 @@ export default class xgenLoginPage {
 
         // Wait for the subscription option to be visible
         await fixture.page.waitForSelector(`role=option[name="${subscription}"]`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('option', { name: subscription })).toBeVisible({timeout: TIMEOUT});
+        await expect(fixture.page.getByRole('option', { name: subscription })).toBeVisible({ timeout: TIMEOUT });
 
         fixture.logger.info(`Selecting subscription option: ${subscription}`);
         await fixture.page.getByRole('option', { name: subscription }).click();
@@ -108,7 +128,7 @@ export default class xgenLoginPage {
 
         // Wait for the button to be visible
         await fixture.page.waitForSelector(`role=button[name="${buttonName}"]`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('button', { name: buttonName })).toBeVisible({timeout: TIMEOUT});
+        await expect(fixture.page.getByRole('button', { name: buttonName })).toBeVisible({ timeout: TIMEOUT });
     }
 
     async clickButton(buttonName: string) {
@@ -128,7 +148,7 @@ export default class xgenLoginPage {
 
         // Wait for the page heading to be visible
         await fixture.page.waitForSelector(`//p[text()='${pageName}']`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.locator(`//p[text()='${pageName}']`)).toBeVisible({timeout: TIMEOUT});
+        await expect(fixture.page.locator(`//p[text()='${pageName}']`)).toBeVisible({ timeout: TIMEOUT });
     }
 
     async selectRadioOption(radioOption: string) {
@@ -153,7 +173,7 @@ export default class xgenLoginPage {
 
         // Wait for the welcome message to be visible
         await fixture.page.waitForSelector(`role=heading[name="${welcomeMessage}"]`, { state: "visible", timeout: TIMEOUT });
-        await expect(fixture.page.getByRole('heading', { name: welcomeMessage })).toBeVisible({timeout: TIMEOUT});
+        await expect(fixture.page.getByRole('heading', { name: welcomeMessage })).toBeVisible({ timeout: TIMEOUT });
     }
 
     async logout() {
@@ -172,33 +192,33 @@ export default class xgenLoginPage {
     }
 
 
-async creatSpaceIfNotPresent(jsonData: any) {
+    async creatSpaceIfNotPresent(jsonData: any) {
 
-    const spaceNamee = jsonData[0].spaceName;
-    const spaceDescrip = jsonData[0].spaceDescription;
-    console.log(`Checking if space is present: ${spaceNamee}`);
-    fixture.logger.info(`Checking if space is present: ${spaceNamee}`);
-    
+        const spaceNamee = jsonData[0].spaceName;
+        const spaceDescrip = jsonData[0].spaceDescription;
+        console.log(`Checking if space is present: ${spaceNamee}`);
+        fixture.logger.info(`Checking if space is present: ${spaceNamee}`);
 
-    // Check if the space Description is present
-    const isSpacePresent = await this.getTheNumberOfSpaceItemPresent(spaceDescrip);
-    console.log("isSpacePresent", isSpacePresent);
 
-    if (!isSpacePresent) {
-        console.log("Creating space as it is not present");
-        fixture.logger.info(`Creating space as it is not present`);
-        await this.creatSpace(spaceNamee,spaceDescrip);
-    } else {
-        console.log("Space already exists, no need to create it again");
-        fixture.logger.info(`Space already exists, no need to create it again`);
+        // Check if the space Description is present
+        const isSpacePresent = await this.getTheNumberOfSpaceItemPresent(spaceDescrip);
+        console.log("isSpacePresent", isSpacePresent);
+
+        if (!isSpacePresent) {
+            console.log("Creating space as it is not present");
+            fixture.logger.info(`Creating space as it is not present`);
+            await this.creatSpace(spaceNamee, spaceDescrip);
+        } else {
+            console.log("Space already exists, no need to create it again");
+            fixture.logger.info(`Space already exists, no need to create it again`);
+        }
+
+
     }
 
+    async getTheNumberOfSpaceItemPresent(spaceName: string): Promise<number> {
 
-}
-
-    async getTheNumberOfSpaceItemPresent(spaceName: string): Promise<boolean>{
-
-        let flag = false;
+        let flag = 0;
         await playwrightWrapper.loadingWebPage();
 
         // Get the number of rows displayed
@@ -208,9 +228,9 @@ async creatSpaceIfNotPresent(jsonData: any) {
         );
         const rows = fixture.page.locator(
             `//div[@role="radiogroup"]/div//p`);
-            const numberOfRowsDisplayed = await rows.count();
-            console.log("number of spaces :-", numberOfRowsDisplayed);
-            // Iterate through each row to find the  name
+        const numberOfRowsDisplayed = await rows.count();
+        console.log("number of spaces :-", numberOfRowsDisplayed);
+        // Iterate through each row to find the  name
         for (let row = 1; row <= numberOfRowsDisplayed; row++) {
             await playwrightWrapper.loadingWebPage();
             let spacenameElement = `//div[@role="radiogroup"]/div[${row}]//p`;
@@ -221,45 +241,45 @@ async creatSpaceIfNotPresent(jsonData: any) {
                 timeout: TIMEOUT,
             });
             const spacenameFromUI = await fixture.page
-            .locator(spacenameElement)
-            .textContent();
-        console.log("Model name from ui :-", spacenameFromUI);
-        //fixture.logger.info("Model name from ui :-", modelnameFromUI);
-        let expectedSpacename =  spaceName;
-        //console.log("Expected Model name from jsondata :-", expectedmodelname);
-        //fixture.logger.info("Expected Model name from jsondata :-", expectedmodelname);
-        if (spacenameFromUI?.trim() ===expectedSpacename) {
-            console.log("This is expect Space is present or true");
-            fixture.logger.info(`The required item is present in the row number: ${row}`);
-            flag = true;
-            break;
-        } else {
-            flag = false
+                .locator(spacenameElement)
+                .textContent();
+            console.log("Model name from ui :-", spacenameFromUI);
+            //fixture.logger.info("Model name from ui :-", modelnameFromUI);
+            let expectedSpacename = spaceName;
+            //console.log("Expected Model name from jsondata :-", expectedmodelname);
+            //fixture.logger.info("Expected Model name from jsondata :-", expectedmodelname);
+            if (spacenameFromUI?.trim() === expectedSpacename) {
+                console.log("This is expect Space is present or true");
+                fixture.logger.info(`The required item is present in the row number: ${row}`);
+                flag = row;
+                break;
+            } else {
+                flag = 0;
+            }
         }
+
+        return flag;
+
+
     }
 
-    return flag;
+    //if not present the create space.
+    async creatSpace(spaceNames: string, spaceDescriptions: string) {
+        console.log(`Creating space with name: ${spaceNames}`);
 
+        await globalaction.waitAndClick(`//p[text()='Space']/parent::button`);
+        await playwrightWrapper.loadingWebPage();
+        //wait for the create space page to load
+        await globalaction.typeWithDelay(`//input[@id="spacename" and @name="pacename"]`, spaceNames, 100);
 
-        }
+        await playwrightWrapper.loadingWebPage();
+        await globalaction.typeWithDelay(`//input[@id="spacedescription" and @name="spacedescription"]`, spaceDescriptions, 100);
 
-        //if not present the create space.
-        async creatSpace(spaceNames: string, spaceDescriptions: string) {
-            console.log(`Creating space with name: ${spaceNames}`);
+        await playwrightWrapper.loadingWebPage();
+        await globalaction.click(`//p[text()='Create']/parent::button`);
+        //await playwrightWrapper.loadingWebPage();
 
-            await globalaction.waitAndClick(`//p[text()='Space']/parent::button`);
-            await playwrightWrapper.loadingWebPage();
-            //wait for the create space page to load
-            await globalaction.typeWithDelay(`//input[@id="spacename" and @name="pacename"]`, spaceNames, 100);
-
-            await playwrightWrapper.loadingWebPage();
-            await globalaction.typeWithDelay(`//input[@id="spacedescription" and @name="spacedescription"]`, spaceDescriptions, 100);
-
-            await playwrightWrapper.loadingWebPage();
-            await globalaction.click(`//p[text()='Create']/parent::button`);
-            //await playwrightWrapper.loadingWebPage();
-
-            }
+    }
 
 
     async closeTheSpaceModule() {
@@ -267,6 +287,254 @@ async creatSpaceIfNotPresent(jsonData: any) {
         await fixture.page.locator(`//p[text()='Spaces']/parent::div/parent::div//button`).click();
 
     }
+
+
+    async deleteSpaceIfPresent(jsonData: any) {
+
+        const spaceNamee = jsonData[0].spaceName;
+        const spaceDescrip = jsonData[0].spaceDescription;
+        console.log(`Checking if space is present: ${spaceNamee}`);
+        fixture.logger.info(`Checking if space is present: ${spaceNamee}`);
+
+
+        // Check if the space Description is present
+        const isSpacePresent = await this.getTheNumberOfSpaceItemPresent(spaceDescrip);
+        console.log("isSpacePresent", isSpacePresent);
+
+        if (isSpacePresent) {
+            console.log("Deleting the Space");
+            fixture.logger.info(`Deleting the Space`);
+            await this.deleteSpace(isSpacePresent);
+        } else {
+            console.log("The required Space is not present to Delete");
+            fixture.logger.info(`The required Space is not present to Delete`);
+        }
+
+
+    }
+
+
+    async deleteSpace(rowNum: number) {
+        console.log(`Deleting the space `);
+        await globalaction.waitAndClick(this.getThreeDots(rowNum));
+        await globalaction.keyBoard('Tab'); // Tab press
+        await playwrightWrapper.anonymousSleep(200);
+        await globalaction.keyBoard('Tab'); // Tab press
+        await playwrightWrapper.anonymousSleep(200);
+        await globalaction.keyBoard('Enter');
+        await playwrightWrapper.anonymousSleep(1000);
+
+        await globalaction.waitAndClick(this.getDeleteButton());
+        await globalaction.waitAndClick(this.getPopUpConfirm());
+        await playwrightWrapper.loadingWebPage();
+    }
+
+    async createUniqueSpaceIfNotPresentKeepingBothNameAndDescriptionSame(jsonData: any) {
+
+        // keeping both Space Name and Description same for now--//
+        const spaceNamee = jsonData[0].spaceName;
+        const spaceDescrip = jsonData[0].spaceName;
+        console.log(`Checking if space is present: ${spaceNamee}`);
+        fixture.logger.info(`Checking if space is present: ${spaceNamee}`);
+
+
+        // Check if the space Description is present
+        const isSpacePresent = await this.getTheNumberOfSpaceItemPresent(spaceDescrip);
+        console.log("isSpacePresent", isSpacePresent);
+
+        if (!isSpacePresent) {
+            console.log("Creating space as it is not present");
+            fixture.logger.info(`Creating space as it is not present`);
+            await this.creatSpace(spaceNamee, spaceDescrip);
+        } else {
+            console.log("Space already exists, no need to create it again");
+            fixture.logger.info(`Space already exists, no need to create it again`);
+        }
+
+
+    }
+
+    async deleteTheUniqueCreatedSpaceIfPresent(jsonData: any) {
+        //Keeping space name and Description same,so we are assigning the space name to space Description//
+        const spaceNamee = jsonData[0].spaceName;
+        const spaceDescrip = jsonData[0].spaceName;
+        console.log(`Checking if space is present: ${spaceNamee}`);
+        fixture.logger.info(`Checking if space is present: ${spaceNamee}`);
+
+
+        // Check if the space Description is present
+        const isSpacePresent = await this.getTheNumberOfSpaceItemPresent(spaceDescrip);
+        console.log("isSpacePresent", isSpacePresent);
+
+        if (isSpacePresent) {
+            console.log("Deleting the Space");
+            fixture.logger.info(`Deleting the Space`);
+            await this.deleteSpace(isSpacePresent);
+        } else {
+            console.log("The required Space is not present to Delete");
+            fixture.logger.info(`The required Space is not present to Delete`);
+        }
+
+
+    }
+
+    async navigateHomePage() {
+        console.log(`BASEURL is : ${process.env.BASEURL}`);
+        fixture.logger.info(`Navigating to login page with BASEURL: ${process.env.BASEURL}`);
+        await fixture.page.goto(process.env.BASEURL);
+
+    }
+
+    async verifyRolesAndUsers() {
+        await playwrightWrapper.loadingWebPage();
+        await globalaction.waitAndClick(`//span[text()="Settings"]`);
+        await globalaction.waitAndClick(`//h6[text()="Roles"]`);
+        await playwrightWrapper.loadingWebPage();
+        await playwrightWrapper.anonymousSleep(5000);
+
+
+    }
+    async cleanUpTheRoles(RolesName: string) {
+        // Verify the Roles name in the  tab list and return the row number, if not found then it is zero
+        let presentOrNotRow =
+            await playwrightWrapper.getTheRowNumberFromRolesPage(RolesName);
+        console.log("Present or not, if present the row number is ==========", presentOrNotRow);
+        if (presentOrNotRow !== 0) {
+            console.log("Deleting the Roles as per the request.");
+            await playwrightWrapper.deleteTheRolesItemFromRolesPage(presentOrNotRow);
+        } else {
+            console.log("The Roles is not present to delete.");
+        }
+
+        await playwrightWrapper.anonymousSleep(5000);
+    }
+
+    async newUserlogin(usrname: string, pswrd: string) {
+        const username = usrname;
+        const password = pswrd;
+
+        console.log(`Logging in with username: ${username}`);
+        fixture.logger.info(`Filling in username: ${username}`);
+
+        // Wait for the username textbox to be visible
+        await fixture.page.waitForSelector('role=textbox[name="Username"]', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.getByRole('textbox', { name: 'Username' }).fill(username);
+
+        fixture.logger.info("Filling in password");
+
+        // Wait for the password textbox to be visible
+        await fixture.page.waitForSelector('role=textbox[name="Password"]', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.getByRole('textbox', { name: 'Password' }).fill(password);
+
+        fixture.logger.info("Clicking on the login button");
+
+        // Wait for the login button to be visible
+        await fixture.page.waitForSelector('role=button[name="Login"]', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.getByRole('button', { name: 'Login' }).click();
+        console.log(`======using the Highlighter in every Click =========`);
+        await playwrightWrapper.injectMouseHighlighter();
+        await playwrightWrapper.loadingWebPage();
+        fixture.logger.info("Waiting for the login process to complete");
+    }
+
+    async newUserChangePassword(pswrd: string) {
+        await globalaction.typeWithDelay(`//input[@name="password"]`, pswrd, 100);
+        await globalaction.typeWithDelay(`//input[@name="confirmpassword"]`, pswrd, 100);
+
+        await globalaction.waitAndClick(`//button[@iconcolor="save"]`);
+        await globalaction.waitForElementHidden(`//*[contains(text(),'new password')]`);
+        await playwrightWrapper.loadingWebPage();
+
+    }
+
+
+    async newuser_selectSubscription(subs: string) {
+        const subscription = subs;
+
+        console.log(`Selecting subscription: ${subscription}`);
+        fixture.logger.info(`Clicking on the subscription dropdown`);
+
+        // Wait for the subscription dropdown to be visible
+        await fixture.page.waitForSelector('label', { state: "visible", timeout: TIMEOUT });
+        await fixture.page.getByLabel('', { exact: true }).click();
+
+        fixture.logger.info(`Verifying subscription option '${subscription}' is visible`);
+
+        // Wait for the subscription option to be visible
+        await fixture.page.waitForSelector(`role=option[name="${subscription}"]`, { state: "visible", timeout: TIMEOUT });
+        await expect(fixture.page.getByRole('option', { name: subscription })).toBeVisible({ timeout: TIMEOUT });
+
+        fixture.logger.info(`Selecting subscription option: ${subscription}`);
+        await fixture.page.getByRole('option', { name: subscription }).click();
+
+        await playwrightWrapper.loadingWebPage();
+        fixture.logger.info("Waiting for the subscription selection process to complete");
+    }
+
+    async clickonTheSpaces() {
+        await globalaction.waitAndClick(`//span[text()='Spaces']/parent::div`);
+        await playwrightWrapper.loadingWebPage();
+    }
+
+    async verifyTheNumberOfSpaceItemDisabled() {
+
+        await playwrightWrapper.loadingWebPage();
+
+        // Get the number of rows present
+        await fixture.page.waitForSelector(
+            `//div[@role="radiogroup"]/div//p`,
+            { state: "visible", timeout: TIMEOUT }
+        );
+        const rows = fixture.page.locator(
+            `//div[@role="radiogroup"]/div//p`);
+        const numberOfRows = Number(await rows.count());
+        console.log("Total number of spaces :", numberOfRows);
+        fixture.logger.info("Total number of spaces :"+ numberOfRows);
+        // Get the number of disableRows present
+        await fixture.page.waitForSelector(
+            `//div[@role="radiogroup"]/div//p`,
+            { state: "visible", timeout: TIMEOUT }
+        );
+        const disableRows = fixture.page.locator(
+            `//div[@role="radiogroup"]/div//p/preceding-sibling::span[contains(@class,"Mui-disabled")]`);
+        const numberOfdisableRows = Number(await disableRows.count());
+        console.log("Total number of disable spaces :", numberOfdisableRows);
+        fixture.logger.info("Total number of disable spaces :"+ numberOfdisableRows);
+        expect(numberOfRows).toEqual(numberOfdisableRows);
+
+    }
+
+ async userAbleToView(moduleName:string){
+    let theclassAttribute = `//span[text()="${moduleName}"]/ancestor::div[3]`;
+    let theclassAttributeValue =  await globalaction.getAttributeValue(theclassAttribute, "class");
+    if (!theclassAttributeValue.includes("Mui-disabled")) {
+        console.log(`The ${moduleName} is Visible and clickable`);
+        fixture.logger.info(`The ${moduleName} is  Visible and clickable`);
+        expect(theclassAttributeValue.toString()).not.toContain("Mui-disabled");
+    }
+    else {
+        console.log(`The ${moduleName} is not Visible and clickable`);
+        fixture.logger.info(`The ${moduleName} is not Visible and clickable`);
+    }
+
+ }
+async userNot_AbleToView(moduleName:string){
+    let theclassAttribute = `//span[text()="${moduleName}"]/ancestor::div[3]`;
+    let theclassAttributeValue =  await globalaction.getAttributeValue(theclassAttribute, "class");
+    if (theclassAttributeValue.includes("Mui-disabled")) {
+        console.log(`The ${moduleName} is not Visible and not clickable`);
+        fixture.logger.info(`The ${moduleName} is not Visible and not clickable`);
+        expect(theclassAttributeValue.toString()).toContain("Mui-disabled");
+    }
+    else {
+        console.log(`The ${moduleName} is Visible and clickable`);
+        fixture.logger.info(`The ${moduleName} is Visible and clickable`);
+    }
+
+    
+ }
+
+
 
 
 }

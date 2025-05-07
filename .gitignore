@@ -11,3 +11,5 @@ cucumber-report.*
 test-results/cucumber-report.*
 test-results/cucumber-report-api.*
 
+.VSCodeCounter/.VSCodeCounterCountRealtime
+.VSCodeCounter/*

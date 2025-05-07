@@ -8,6 +8,9 @@ import { options } from "../helper/util/logger";
 import  {TIMEOUT}  from "playwright.config";
 import defineConfig from "playwright.config";
 import { manageLogs } from "../helper/util/logManager";
+import path from 'path';
+
+const  adminsessionStoragePath = path.resolve('e2e', 'helper', 'auth', 'admin.json');
 const fs = require("fs-extra");
 
 let browser: Browser;
@@ -58,6 +61,7 @@ Before({ tags: "not @auth" }, async function ({ pickle }) {
 // It will trigger for auth scenarios
 Before({ tags: '@auth' }, async function ({ pickle }) {
     const scenarioName = pickle.name + pickle.id;
+    console.log(`The pickle name is ::`,pickle.name);
 
     // Check if running in local mode
     const isLocal = process.env.npm_config_RUN_MODE === "local";
@@ -66,7 +70,7 @@ Before({ tags: '@auth' }, async function ({ pickle }) {
         storageState: getStorageState(pickle.name),
         recordVideo: isLocal ? { dir: "test-results/videos" } : undefined, // Enable video recording only in local mode
     });
-
+    console.log(`===================`,context.storageState);
     // Start tracing only if in local mode
     if (isLocal) {
         await context.tracing.start({
@@ -124,8 +128,13 @@ AfterAll(async function () {
 });
 
 function getStorageState(user: string): string | { cookies: { name: string; value: string; domain: string; path: string; expires: number; httpOnly: boolean; secure: boolean; sameSite: "Strict" | "Lax" | "None"; }[]; origins: { origin: string; localStorage: { name: string; value: string; }[]; }[]; } {
-    if (user.endsWith("admin"))
-        return "e2e/helper/auth/admin.json";
-    else if (user.endsWith("lead"))
+    if (user.endsWith("admin")) {
+        console.log("Admin user detected, using admin storage state.");
+        //return "e2e/helper/auth/admin.json";
+        return adminsessionStoragePath;
+    }
+    else if (user.endsWith("lead")) {
         return "e2e/helper/auth/lead.json";
+    }
+
 }

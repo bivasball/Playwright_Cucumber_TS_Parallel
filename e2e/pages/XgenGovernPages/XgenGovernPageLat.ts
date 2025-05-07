@@ -68,24 +68,113 @@ export default class xgenGovernPageLat {
     }
 
 
-    getSearchDataAssets():string{
-        return  `//input[@placeholder="Search data assets..."]`;
+    getSearchDataAssets(): string {
+        return `//input[@placeholder="Search data assets..."]`;
     }
-    getSearchDataAssetsFirstRowResult():string{
-        return  ` (//div[text()="Data Models"]/ancestor::li//h6)[1]`;
+    getSearchDataAssetsFirstRowResult(): string {
+        return ` (//div[text()="Data Models"]/ancestor::li//h6)[1]`;
     }
 
     getPreviewTab() {
         return `//button[text()="Preview"]`;
     }
+    getRunStatusMessage(dqName:string): string {
+        return `//div[@data-id="${dqName}"]//div[9]/span/div/span[contains(@class,"MuiChip-labelSmall ")]`;
+    }
+
+    getRunButton(): string {
+        return `//p[text()='Run']/parent::button`;
+    }
+
+    getSaveSuccessMessage(): string {
+        return `//p[contains(@class,"css-16kpwfw")]`;
+    }
+    getRefreshDataButton(): string {
+        return `//p[text()="Refresh Data"]/parent::button[@iconcolor="refresh"]`;
+    }
+
+    getTheRecodsCountInPreviewTab(): string {
+        return `//label[text()="Records:"]/following-sibling::label`;
+    }
+
+    getQualityTab(): string {
+        return `//button[text()="Quality"]`;
+    }
+    getQualityTabAddButton(): string {
+        return `//p[text()="Add"]/parent::button`;
+    }
+
+    getDqRulesPopupInputName(): string {
+        return `//label[text()="Name"]/parent::div//input`;
+    }
+
+    getDqRulesPopupInputDescription(): string {
+        return `//label[text()="Description"]/parent::div//input`;
+    }
+
+    getDqRulesPopupColumn(): string {
+        return `//button[text()="column"]`;
+    }
+
+
+    getFieldsInput(): string {
+        return `//label[text()="Fields"]/parent::div//input`;
+    }
+
+    getRuleCategoryInput(): string {
+        return `//label[text()="Rule Category"]/parent::div//input`;
+    }
+
+
+
+    getRuleNameInput(): string {
+        return `//label[text()="Rule Name"]/parent::div//input`;
+    }
+
+    getDeleteRuleButton(dataRule: string): string {
+        return `//div[@data-id="${dataRule}"]//div[@class="MuiBox-root css-1hrua5"]/span[@aria-label="Delete Rule"]/button`;
+    }
+
+
+    getDeleteRuleButtonByRowNum(rowNum: number): string{
+        return `//div[contains(@class,"MuiBox-root css-1likwc4")]/div[2]//div[contains(@class,"virtualScrollerRenderZone")]/div[${rowNum}]//div/span[@aria-label="Delete Rule"]/button`;
+    }
+
+    ///-----------------//
+    Selectcolumn() {
+        return `//button[text()="column"]`;
+    }
+
+    SelectField() {
+        return `//input[@type='text' and contains(@class, 'MuiAutocomplete-input') and @value='orderid']
+        `;
+    }
+    SelectRuleCategory() {
+        return `//input[@type='text' and @value='consistency' and contains(@class, 'MuiAutocomplete-input')]
+        `;
+    }
+    RuleName() {
+        return `//input[@type='text' and @value='Check for Column Presence' and contains(@class, 'MuiAutocomplete-input')]
+        `;
+    }
+    getApplyButton() {
+        return ` //button[ @iconcolor="confirm"]`;
+    }
+    getCloseButton() {
+        return `//button[ @iconcolor="confirm"]/following-sibling::button//p[text()="Close"]/parent::button`;
+    }
+    getSaveButton() {
+        return `//p[text()='Save']/parent::button`;
+    }
+
     //locator-----end//
 
     async navigateToGovernPage() {
         await globalAction.waitAndClick(`//span[text()="Govern"]`);
     }
 
-    async searchAndSelectFromDataModel(inputForSearch:string) {
-        await globalAction.fillInput(this.getSearchDataAssets(),inputForSearch);
+    async searchAndSelectFromDataModel(inputForSearch: string) {
+        await globalAction.fillInput(this.getSearchDataAssets(), inputForSearch);
         await playwrightWrapper.loadingWebPage();
         await globalAction.waitAndClick(this.getSearchDataAssetsFirstRowResult());
         await playwrightWrapper.loadingWebPage();
@@ -103,6 +192,25 @@ export default class xgenGovernPageLat {
         await globalAction.waitAndClick(`//button[text()="Overview"]`);
     }
 
+    async deleteTagIfPresent(TagName: string) {
+        let parentLocator = `//div[contains(@class,"css-pao3g5")]/div`;
+        let partLocator = `//span[contains(@class,"css-qw7o17")]`;
+        let ifTagIfPresentTheRowNum = await playwrightWrapper.getTheRowNumberIfTheRequireTextIsPresent(parentLocator, partLocator, TagName);
+        console.log(`====================`, ifTagIfPresentTheRowNum);
+        if (!ifTagIfPresentTheRowNum) {
+            console.log("No need for deletion as it is not present");
+            fixture.logger.info(`No need for deletion as it is not present`);
+            
+        } else {
+            console.log("Tag already exists, Need to delete the existing");
+            fixture.logger.info(`Tag already exists, Need to delete the existing`);
+            await globalAction.click(this.getTagsPlusIconButton());
+            await globalAction.click(this.getSelectTagFromThePopup(TagName));
+
+        }
+
+    }
+
 
     async addTagIfNotPresent(TagName: string) {
         let parentLocator = `//div[contains(@class,"css-pao3g5")]/div`;
@@ -113,7 +221,7 @@ export default class xgenGovernPageLat {
             console.log("Creating Tag as it is not present");
             fixture.logger.info(`Creating Tag as it is not present`);
             await globalAction.click(this.getTagsPlusIconButton());
-            
+
             await globalAction.click(this.getSelectTagFromThePopup(TagName));
 
 
@@ -218,123 +326,155 @@ export default class xgenGovernPageLat {
         }
     }
 
-async viewDataInPreviewTab(){
+    async viewDataInPreviewTab() {
 
-    await globalAction.click(this.getPreviewTab());
-    await globalAction.click(this.getRefreshDataButton());
-    let thecount = await globalAction.getTextContent(this.getTheRecodsCountInPreviewTab());
+        await globalAction.click(this.getPreviewTab());
+        await globalAction.click(this.getRefreshDataButton());
+        let thecount = await globalAction.getTextContent(this.getTheRecodsCountInPreviewTab());
 
-    if(!thecount){
-        console.log("The is greater than 1");
+        if (!thecount) {
+            console.log("The is greater than 1");
             fixture.logger.info(`The is greater than 1`);
-    }else{
-        console.log("It does not have any data");
-        fixture.logger.info(`It does not have any data`);
+        } else {
+            console.log("It does not have any data");
+            fixture.logger.info(`It does not have any data`);
+
+        }
+
+
+
+
+    }
+
+    async deleteDataQualityRulesIfExist(DataRuleName: string) {
+        await globalAction.waitAndClick(this.getQualityTab())
+        await playwrightWrapper.anonymousSleep(5000);
+
+        const runAndAddButtonIsPresent = fixture.page.locator('//div[contains(@class,"MuiBox-root css-1likwc4")]/div[2]');
+        if (await runAndAddButtonIsPresent.count() > 0) {
+            console.log('Run and Add button is present');
+            await this.verifyIfTheQualityRuleIfPresentThenDelete(DataRuleName);
+        } else {
+            console.log('Run and Add button is not present, delete option is not visible');
+        }
+
+    }
+
+    async verifyIfTheQualityRuleIfPresentThenDelete(DataRuleName: string) {
+        let parentLocator = `//div[contains(@class,"MuiBox-root css-1likwc4")]/div[2]//div[contains(@class,"virtualScrollerRenderZone")]/div`;
+        let partLocator = `//div[@data-field="name"]/span`;
+        let ifDataRuleIfPresentTheRowNum = await playwrightWrapper.getTheRowNumberIfTheRequireTextIsPresent(parentLocator, partLocator, DataRuleName);
+        console.log(`====================`, ifDataRuleIfPresentTheRowNum);
+        if (ifDataRuleIfPresentTheRowNum > 0) {
+            console.log("DataRule already exists, Need to Delete jj");
+            fixture.logger.info(`DataRule already exists, Need to Delete`);
+            //await globalAction.waitAndClick(this.getQualityTab())
+            //await globalAction.waitForElementAttached(this.getDeleteRuleButton(DataRuleName));
+            //await globalAction.clickForce(this.getDeleteRuleButton(DataRuleName));
+            //await globalAction.click(this.getDeleteRuleButton(DataRuleName));
+          
+            await globalAction.waitAndClick(this.getDeleteRuleButtonByRowNum(ifDataRuleIfPresentTheRowNum));
+            console.log(`Clicked on Datarule delete button`);
+            fixture.logger.info(`Clicked on Datarule delete button`);
+            await playwrightWrapper.loadingWebPage();
+            await globalAction.waitAndClick(this.getSaveButton());
+            await playwrightWrapper.anonymousSleep(5000);
+            await playwrightWrapper.anonymousSleep(5000);
+            console.log(`Clicked on Save button`);
+            fixture.logger.info(`Clicked on Save button`);
+            await globalAction.waitForElementHidden(this.getSaveSuccessMessage());
+        } else {
+
+            console.log("DataRule is not present,nothing to delete");
+            fixture.logger.info(`DataRule is not present,nothing to delete`);
+        }
+
 
     }
 
 
 
 
-}
-async addDataQualityRules(){
-    await globalAction.waitAndClick(this.getQualityTab());
-    await globalAction.waitAndClick(this.getQualityTabAddButton());
-    await globalAction.fillInput(this.getDqRulesPopupInputName(),"test Rules");
-    await globalAction.fillInput(this.getDqRulesPopupInputDescription(),"test rules that need to be tested by automation");
+    async addDataQualityRules(jsonData: any) {
+        let dqName = jsonData[0].DQName;
+        let dqDesc = jsonData[0].DqDescription;
+        let fieldInput = jsonData[0].FieldsInput;
+        let ruleCat = jsonData[0].RuleCategoryInput;
+        let rule_name = jsonData[0].Rule_Name;
 
-    await globalAction.click(this.getDqRulesPopupColumn());
-    await globalAction.waitAndClick(this.Selectcolumn());
-    await globalAction.fillInput(this.getFieldsInput(),"itemid");
-    await globalAction.pressKey(this.getFieldsInput(),'ArrowDown');
-    await globalAction.pressKey(this.getFieldsInput(),'Enter');
+        await globalAction.waitAndClick(this.getQualityTab());
+        await playwrightWrapper.anonymousSleep(5000);
+        await globalAction.waitAndClick(this.getQualityTabAddButton());
+        await globalAction.fillInput(this.getDqRulesPopupInputName(), dqName);
+        await globalAction.fillInput(this.getDqRulesPopupInputDescription(), dqDesc);
+
+        await globalAction.click(this.getDqRulesPopupColumn());
+        await globalAction.waitAndClick(this.Selectcolumn());
+       // await globalAction.fillInput(this.getFieldsInput(), "itemid");//job fail
+
+        await globalAction.fillInput(this.getFieldsInput(), fieldInput); //job success
+        await globalAction.pressKey(this.getFieldsInput(), 'ArrowDown');
+        await globalAction.pressKey(this.getFieldsInput(), 'Enter');
 
 
-    await globalAction.fillInput(this.getRuleCategoryInput(),"completeness");
-    await globalAction.pressKey(this.getRuleCategoryInput(),'ArrowDown');
-    await globalAction.pressKey(this.getRuleCategoryInput(),'Enter');
-    
-    await globalAction.fillInput(this.getRuleNameInput(),"Verify Unique Values in Column");
-    await globalAction.pressKey(this.getRuleNameInput(),'ArrowDown');
-    await globalAction.pressKey(this.getRuleNameInput(),'Enter');
+        await globalAction.fillInput(this.getRuleCategoryInput(), ruleCat);
+        await globalAction.pressKey(this.getRuleCategoryInput(), 'ArrowDown');
+        await globalAction.pressKey(this.getRuleCategoryInput(), 'Enter');
+
+        await globalAction.fillInput(this.getRuleNameInput(), rule_name);
+        await globalAction.pressKey(this.getRuleNameInput(), 'ArrowDown');
+        await globalAction.pressKey(this.getRuleNameInput(), 'Enter');
 
 
-        await globalAction.waitAndClick(this.Apply());
-        await globalAction.waitAndClick(this.close());
-        await globalAction.waitAndClick(this.save());
+        await globalAction.waitAndClick(this.getApplyButton());
+
+        await playwrightWrapper.loadingWebPage();
+        await globalAction.waitAndClick(this.getSaveButton());
+        await globalAction.waitForElementHidden(this.getSaveSuccessMessage());
+        await playwrightWrapper.loadingWebPage();
+        await globalAction.click(this.getRunButton());
+        await playwrightWrapper.anonymousSleep(5000);
         await playwrightWrapper.loadingWebPage();
 
+        await globalAction.click(this.getRunButton());
+        await playwrightWrapper.anonymousSleep(5000);
+        await playwrightWrapper.loadingWebPage();
+
+        let succesMessage = await globalAction.getTextContent(this.getRunStatusMessage(dqName));
+        console.log(`The status of the job is :`, succesMessage);
+        fixture.logger.info(`The status of the job is :${succesMessage}` );
+
+    }
+
+async addNotesToTheDataModel(jsonData: any){
+    await globalAction.waitAndClick(this.getNotesTab());
+    await globalAction.waitAndClick(this.getPencilEditButton());
+    await globalAction.clearInput(this.getTextAreaInput_CSS());
+    await globalAction.typeWithDelay(this.getTextAreaInput_CSS(),"Automation testing is done for notes scenarios ",100);
+    await globalAction.click(this.getPencilSaveButton());
+    await playwrightWrapper.loadingWebPage();
 
 
 
+
 }
 
-getRefreshDataButton():string{
-    return `//p[text()="Refresh Data"]/parent::button[@iconcolor="refresh"]`;
+getNotesTab():string{
+    return `//button[text()="Notes"]`;
+}
+getPencilEditButton():string{
+    return `//label[text()="Notes:"]/parent::div/button`;
 }
 
-getTheRecodsCountInPreviewTab():string{
-    return `//label[text()="Records:"]/following-sibling::label`;
+getTextAreaInput():string{
+    return `//label[text()="Notes"]/parent::div//textarea[contains(@style,"height: 300px")]`;
+}
+getTextAreaInput_CSS():string{
+    return `label:text("Notes") + div textarea[style*="height: 300px"]`;
 }
 
-getQualityTab():string {
-    return `//button[text()="Quality"]`;
-}
-getQualityTabAddButton():string{
-    return `//p[text()="Add"]/parent::button`;
-}
-
-getDqRulesPopupInputName():string{
-    return `//label[text()="Name"]/parent::div//input`;
-}
-
-getDqRulesPopupInputDescription():string{
-    return `//label[text()="Description"]/parent::div//input`;
-}
-
-getDqRulesPopupColumn():string{
-    return `//button[text()="column"]`;
-}
-
-
-getFieldsInput():string{
-    return `//label[text()="Fields"]/parent::div//input`;
-}
-
-getRuleCategoryInput():string{
-    return `//label[text()="Rule Category"]/parent::div//input`;
-}
-
-
-
-getRuleNameInput():string{
-    return `//label[text()="Rule Name"]/parent::div//input`;
-}
-///-----------------//
-Selectcolumn() {
-    return `//button[text()="column"]`;
-}
-
-SelectField() {
-    return `//input[@type='text' and contains(@class, 'MuiAutocomplete-input') and @value='orderid']
-    `;
-}
-SelectRuleCategory() {
-    return `//input[@type='text' and @value='consistency' and contains(@class, 'MuiAutocomplete-input')]
-    `;
-}
-RuleName() {
-    return `//input[@type='text' and @value='Check for Column Presence' and contains(@class, 'MuiAutocomplete-input')]
-    `;
-}
-Apply() {
-    return ` //button[ @iconcolor="confirm"]`;
-}
-close() {
-    return `//button[ @iconcolor="confirm"]/following-sibling::button//p[text()="Close"]`;
-}
-save() {
-    return `//p[text()='Save']`;
+getPencilSaveButton():string{
+    return `//button[@iconcolor="save"]`;
 }
 
 }

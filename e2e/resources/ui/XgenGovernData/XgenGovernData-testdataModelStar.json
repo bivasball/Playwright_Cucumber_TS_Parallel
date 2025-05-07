@@ -6,11 +6,12 @@
     "SetupTags": "setup_Auto123",
     "SetupClassifications": "rmclass_Auto123",
     "SetupDomains": "rmdomain_Auto123",
-    "OverviewTag": "setup_Auto123",
-    "OverviewClassification": "Confidential",
-    "OverviewDomain": "rmdomain",
     "OverviewOwner": "Automation user1",
-    "DQName": "dqrulename",
-    "DqDescription": "dqruledesc"
+    "DQName": "DQRULE_AUTO",
+    "DqDescription": "dqrule desc- this is for automation",
+    "FieldsInput":"campaignid",
+    "RuleCategoryInput":"completeness",
+    "Rule_Name":"Verify Unique Values in Column"
+
   }
 ]

@@ -1,0 +1,9 @@
+[
+  {
+    "datainputName": "INPUT_AUTO_U119",
+    "inputDescription": "automate the unik template for the user",
+    "fieldName": "ID",
+    "allowedValues": "sales,hr,marketing",
+    "fieldName2": "EMPLOYEE"
+  }
+]

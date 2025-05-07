@@ -1,0 +1,22 @@
+[
+  {
+    "sourcename": "SOURCE_PG_AUTO_F121",
+    "SourceDescription": "PG_SQL_description_K122",
+    "hostname": "xgen-dev.ckvh7cnonk8s.us-east-1.rds.amazonaws.com",
+    "databaseName": "f1race",
+    "schemas": "sales",
+    "usernameForPG": "sa",
+    "passwordForPG": "Spider20",
+    "SSLModes": "disable",
+    "SSH Tunnel Modes": "No tunnel",
+    "JDBCURLParameters": "",
+    "UpdateMethods": "Scan changes with user defined cursor",
+    "Below_istheDatafor_The_sync": "======================",
+    "syncName": "SYNC_PG_AUTO_M123",
+    "SyncDescription": "SYNC_DESCRIPTION_AUTO_I124",
+    "selectDestination": "Testing DW",
+    "Below_data_willbe_for_MODEL": "======================",
+    "modelName": "STAR_AUTO_A125",
+    "modelDescription": "starnode with one source node and One lookup node"
+  }
+]

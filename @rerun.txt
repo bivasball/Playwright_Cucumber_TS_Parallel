@@ -1,1 +1,1 @@
-e2e\test\features\XgenGovernFeature\XgenGovern.feature:25
+e2e\test\features\XgenModelFeature\XgenModel_View.feature:52

@@ -1,0 +1,12 @@
+[
+  {
+    "firstName": "Test",
+    "lastName": "Automation",
+    "email": "test_auto@spaces.com",
+    "password": "12345689",
+    "subscriptionDropdown": "TESTING",
+    "Below-role-name": "=====to be used in role creation and select in user creation=====",
+    "roleName": "AUTO_ROLE_001",
+    "roleDesc": "Automate the roles for users"
+  }
+]

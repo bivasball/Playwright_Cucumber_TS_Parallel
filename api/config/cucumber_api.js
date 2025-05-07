@@ -4,12 +4,12 @@ module.exports = {
         formatOptions: {
             snippetInterface: "async-await",
         },
-        paths: ["api/feature-files/*.feature"],
+        paths: ["api/feature-files/Sample/*.feature"],
         publishQuiet: true,
         dryRun: false,
         require: [
             "api/hooks/hooks_api.ts",
-            "api/step-definitions/*.ts"
+            "api/step-definitions/Sample/*.ts"
         ],
         requireModule: ["ts-node/register", "tsconfig-paths/register"],
         format: [

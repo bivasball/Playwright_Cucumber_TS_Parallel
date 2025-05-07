@@ -1,0 +1,19 @@
+[
+  {
+    "sourcename": "SOURCE_PG_AUTO_D109",
+    "SourceDescription": "PG_SQL_description_T110",
+    "hostname": "xgen-dev.ckvh7cnonk8s.us-east-1.rds.amazonaws.com",
+    "databaseName": "f1race",
+    "schemas": "sales",
+    "usernameForPG": "sa",
+    "passwordForPG": "Spider20",
+    "SSLModes": "disable",
+    "SSH Tunnel Modes": "No tunnel",
+    "JDBCURLParameters": "",
+    "UpdateMethods": "Scan changes with user defined cursor",
+    "Below_istheDatafor_Thesync": "======================",
+    "syncName": "SYNC_PG_AUTO_T111",
+    "SyncDescription": "SYNC_DESCIPTION_AUTO_R112",
+    "selectDestination": "Testing DW"
+  }
+]

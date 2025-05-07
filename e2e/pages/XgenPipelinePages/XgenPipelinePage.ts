@@ -204,7 +204,9 @@ export default class XgenPipelinePage {
         console.log("Present or not, if present the row number is ==========", presentOrNotRow);
         if (presentOrNotRow !== 0) {
             console.log("Executing the job");
+            
             await playwrightWrapper.clickOnMonitorPipeline(presentOrNotRow);
+            
             // Call the Monitor function //
             const duration = 30 * 60 * 1000; // 30 minutes
             const interval = 20 * 1000; // 20 seconds
@@ -246,5 +248,81 @@ export default class XgenPipelinePage {
         return `//p[text()='Close']/parent::a`;
 
     }
+
+    async clickOnDataSyncConnections() {
+        await globalAction.waitAndClick(this.getDataSyncConnectionsButton());
+        await playwrightWrapper.loadingWebPage();
+     
+    }
+    async clickOnSourceCollapseIcon(sourceName: string) {
+        await globalAction.waitAndClick(this.getSourceCollapseIcon(sourceName));
+        await playwrightWrapper.loadingWebPage();
+
+    }
+    async clickSyncDropDownFromSourceCollapseIcon(syncName: string) {
+        await globalAction.waitAndClick(this.getSyncDropDownFromSourceCollapseIcon(syncName));
+        await playwrightWrapper.loadingWebPage();
+
+    }
+
+
+    async joinStartFlag_To_SyncData() {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getRightStartFlagIcon(), this.getSyncLeftSideDot());
+    }
+
+    async clickOnDataModels() {
+        await globalAction.waitAndClick(this.getModelData());
+
+    }
+
+    async clickOnDataModelCollapseIcon(sourceName: string) {
+        await globalAction.waitAndClick(this.getDataModelCollapseIcon(sourceName));
+        await playwrightWrapper.loadingWebPage();
+
+    }
+    async clickDataModelDropDownFromSourceCollapseIcon(syncName: string) {
+        await globalAction.waitAndClick(this.getDataModelDropDownFromSourceCollapseIcon(syncName));
+        await playwrightWrapper.loadingWebPage();
+
+    }
+    async joinSyncData_ModelData(syncName:string,modelName:string) {
+        // join left node with Right node
+        await globalAction.dragAndDrop(this.getLeftNode_SyncDot(syncName), this.getRightNode_ModelDot(modelName));
+    }
+
+    getRightStartFlagIcon() {
+        return `//div[@data-handleid='STRT' and @data-nodeid='STRT_1' and @data-handlepos='right']`;
+    }  
+
+
+    getSyncLeftSideDot() {
+        return `//div[@data-handleid='CONN' and @data-handlepos='left']`;
+    }
+getDataSyncConnectionsButton() {
+        return `//span[@aria-label="Data Sync Connections"]/button`;
+    }
+ getSourceCollapseIcon(sourceName:string):string{
+        return `//p[text()="${sourceName}"]`;
+ }
+ getSyncDropDownFromSourceCollapseIcon(syncName:string):string{
+    return `//p[text()="${syncName}"]`;
+}
+
+
+getDataModelCollapseIcon(sourceName:string):string{
+    const originalString = sourceName;
+    const lowerCaseString = originalString.toLowerCase();
+    return `//div[text()="${lowerCaseString}"]`;
+}
+getDataModelDropDownFromSourceCollapseIcon(syncName:string):string{
+return `//p[text()="${syncName}"]`;
+}
+getLeftNode_SyncDot(syncName:string) {
+    return `//div[contains(@data-nodeid,"${syncName}") and @data-handlepos='right']`;
+}
+getRightNode_ModelDot(modelName:string) {
+    return `//div[contains(@data-nodeid,"${modelName}") and @data-handlepos='left']`;
+}
 
 }

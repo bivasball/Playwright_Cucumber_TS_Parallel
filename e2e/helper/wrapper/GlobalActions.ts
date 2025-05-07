@@ -9,7 +9,11 @@ export default class GlobalActions {
         const element = fixture.page.locator(locator);
         await element.click({ timeout: TIMEOUT });
     }
-
+    async clickForce(locator: string) {
+        fixture.logger.info(`Clicking on element by force: ${locator}`);
+        const element = fixture.page.locator(locator);
+        await element.click({ force: true, timeout: TIMEOUT });
+    }
     async waitAndClick(locator: string) {
         fixture.logger.info(`Waiting for element to be visible and clicking: ${locator}`);
         const element = fixture.page.locator(locator);
@@ -96,7 +100,10 @@ export default class GlobalActions {
         fixture.logger.info(`Waiting for element to be hidden: ${locator}`);
         await fixture.page.locator(locator).waitFor({ state: "hidden", timeout: TIMEOUT });
     }
-
+    async waitForElementAttached(locator: string) {
+        fixture.logger.info(`Waiting for element to be Attached: ${locator}`);
+        await fixture.page.locator(locator).waitFor({ state: 'attached', timeout: TIMEOUT });
+    }
     async getTextContent(locator: string): Promise<string | null> {
         fixture.logger.info(`Getting text content of element: ${locator}`);
         const element = fixture.page.locator(locator);
@@ -137,6 +144,12 @@ export default class GlobalActions {
         const element = fixture.page.locator(locator);
         await element.press(key, { timeout: TIMEOUT });
     }
+
+    async keyBoard( key: string) {
+        fixture.logger.info(`Pressing key '${key}' `);
+        await fixture.page.keyboard.press(key);
+    }
+
 
     async focus(locator: string) {
         fixture.logger.info(`Focusing on element: ${locator}`);

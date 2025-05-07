@@ -25,21 +25,25 @@ async function sampleFunction(jsonFilename: string) {
   console.log(JSON.stringify(jsonData));
 let modelNameForDropdown = jsonData[0].modelName;
 let prefixTheModelNameForDropdown = `XDL_${modelNameForDropdown}`;
+let OverviewTag = jsonData[0].SetupTags;
+let OverviewClassification = jsonData[0].SetupClassifications;
+let OverviewDomain = jsonData[0].SetupDomains;
+
 
   await xgengovernPg.navigateToGovernPage();
-  /*
-  await xgengovernPg.clickOnDataModel();
-  await xgengovernPg.selectDataModelsFromDropDown(prefixTheModelNameForDropdown);
-  */
+ 
   await  xgengovernPg.searchAndSelectFromDataModel(prefixTheModelNameForDropdown);
+  
   await xgengovernPg.clickOnOverviewTab();
-  await xgengovernPg.addTagIfNotPresent(jsonData[0].OverviewTag);
-  await xgengovernPg.deleteClassificationIfPresent(jsonData[0].OverviewClassification);
-  await xgengovernPg.addClassificationIfNotPresent(jsonData[0].OverviewClassification);
-  await xgengovernPg.deleteDomainIfPresent(jsonData[0].OverviewDomain);
-  await xgengovernPg.addDomainIfNotPresent(jsonData[0].OverviewDomain);
+  await xgengovernPg.deleteTagIfPresent(OverviewTag);
+  await xgengovernPg.addTagIfNotPresent(OverviewTag);
+  await xgengovernPg.deleteClassificationIfPresent(OverviewClassification);
+  await xgengovernPg.addClassificationIfNotPresent(OverviewClassification);
+  await xgengovernPg.deleteDomainIfPresent(OverviewDomain);
+  await xgengovernPg.addDomainIfNotPresent(OverviewDomain);
   await xgengovernPg.deleteOwnerIfPresent(jsonData[0].OverviewOwner);
   await xgengovernPg.addOwnerIfNotPresent(jsonData[0].OverviewOwner);
+  
 
   };
 
@@ -47,8 +51,23 @@ let prefixTheModelNameForDropdown = `XDL_${modelNameForDropdown}`;
   async function dataPreviewAndAddDataRules(jsonFilename: string) {
     const jsonData = getJsonDataUi(jsonFilename);
     console.log(JSON.stringify(jsonData));
-    await xgengovernPg. viewDataInPreviewTab();
-    await xgengovernPg.addDataQualityRules();
+    let dqRuleName= jsonData[0].DQName;
+    await xgengovernPg.viewDataInPreviewTab();
+    await xgengovernPg.deleteDataQualityRulesIfExist(dqRuleName);
+    await xgengovernPg.addDataQualityRules(jsonData);
+
+
+
+
+  };
+
+  When('the user add some notes in the Notes tab {string}',addNotes);
+  async function addNotes(jsonFilename: string) {
+    const jsonData = getJsonDataUi(jsonFilename);
+    console.log(JSON.stringify(jsonData));
+    let dqRuleName= jsonData[0].DQName;
+    
+    await xgengovernPg.addNotesToTheDataModel(jsonData);
 
 
 

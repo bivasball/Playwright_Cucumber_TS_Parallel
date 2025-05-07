@@ -1,5 +1,5 @@
 # to run api gherkin test by tag name
-npm run test-api -- --tags="@apitest1
+npm run test-api -- --tags="@apitest1"
 
 
 // Assertions

@@ -1,0 +1,11 @@
+[
+  {
+    "username": "automation1@spaces.com",
+    "password": "auto@12345678",
+    "message": "Please login to a subscription.",
+    "subscription": "TESTING",
+    "welcomeMessage":"Welcome, Automation!",
+    "spaceName":"AUTO_115",
+    "spaceDescription":"AUTO_115"
+  }
+]
